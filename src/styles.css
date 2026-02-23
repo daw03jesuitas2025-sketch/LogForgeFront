@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+  --mint:#19e5b3;
+  --dark:#0b1220;
+  --card:#0f172a;
+  --muted:#94a3b8;
+}
+
