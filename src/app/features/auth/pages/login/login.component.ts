@@ -33,14 +33,26 @@ export class LoginComponent {
 
     this.auth.login(credentials).subscribe({
       next: (res: any) => {
-        console.log('Login exitoso, redirigiendo...');
+        console.log('Login exitoso:', res.user.role);
         
-        // Redirigimos a la ruta hija del layout privado
-        this.router.navigate(['/dashboard/landing']);
+        // Lógica de redirección por ROL
+        const role = res.user.role;
+
+        if (role === 'admin') {
+          // Te lleva al panel que diseñamos antes
+          this.router.navigate(['/admin/dashboard']); 
+        } 
+        else if (role === 'company') {
+          // Aquí pones la ruta que crees para empresas
+          this.router.navigate(['/dashboard/company']); 
+        } 
+        else {
+          // El 'user' normal va a tu layout actual
+          this.router.navigate(['/dashboard/landing']);
+        }
       },
       error: (err) => {
         console.error('Error login:', err);
-        // Si el error es de CORS, recuerda lo que hablamos del .env en Laravel
         alert('Credenciales incorrectas o error de servidor');
       }
     });

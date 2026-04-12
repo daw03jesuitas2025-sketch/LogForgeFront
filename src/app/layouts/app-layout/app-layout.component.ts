@@ -11,9 +11,12 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './app-layout.component.css'
 })
 export class AppLayoutComponent {
+
   isMenuOpen = false;
-  userInitial: string = 'U'; // 'U' por defecto si falla algo
+  userInitial: string = 'U';
   userName: string = 'Usuario';
+
+  userRole: 'user' | 'company' = 'user';
 
   constructor(private auth: AuthService, private router: Router) {
     const name = localStorage.getItem('userName');
@@ -21,9 +24,16 @@ export class AppLayoutComponent {
       this.userName = name;
       this.userInitial = name.charAt(0).toUpperCase();
     }
+
+    const role = localStorage.getItem('role');
+    if (role === 'company') {
+      this.userRole = 'company';
+    }
   }
 
-  toggleMenu() { this.isMenuOpen = !this.isMenuOpen; }
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 
   onLogout() {
     this.auth.logout().subscribe({
@@ -31,4 +41,6 @@ export class AppLayoutComponent {
       error: () => this.router.navigate(['/login'])
     });
   }
+
+
 }

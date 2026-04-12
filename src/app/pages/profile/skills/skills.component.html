@@ -1,0 +1,58 @@
+<div class="bg-white rounded-xl border shadow-sm text-left">
+  <div class="flex justify-between items-center p-5 border-b bg-blue-50/30">
+    <h3 class="font-semibold text-gray-700">Habilidades</h3>
+    <button 
+      (click)="openAdd()"
+      class="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center hover:bg-blue-200 transition-colors">
+      +
+    </button>
+  </div>
+
+  <div class="p-6 flex flex-wrap gap-2">
+    <span
+      *ngFor="let skill of skills"
+      class="px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-sm border border-slate-200 shadow-sm"
+    >
+      {{ getSkillName(skill) }}
+    </span>
+
+    <div *ngIf="skills.length === 0" class="text-gray-400 text-sm italic">
+      No has añadido habilidades todavía.
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isModalOpen" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+    
+    <div class="px-6 py-4 border-b flex justify-between items-center bg-slate-50/50">
+      <h3 class="font-bold text-slate-800">Añadir Nueva Habilidad</h3>
+      <button (click)="isModalOpen = false" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="saveSkill()" class="p-6 space-y-4">
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Nombre de la Habilidad</label>
+        <input 
+          formControlName="name" 
+          type="text" 
+          placeholder="Ej: Angular, Laravel, Docker..." 
+          class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none"
+          autofocus
+        >
+      </div>
+
+      <div class="flex gap-3 pt-2">
+        <button type="button" (click)="isModalOpen = false" class="flex-1 px-4 py-2 border rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50">
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          [disabled]="form.invalid" 
+          class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-semibold hover:bg-blue-600 disabled:opacity-50 shadow-md">
+          Añadir
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -6,6 +6,9 @@ import { LandingComponent } from './pages/landing/landing.component';
 import { HomeComponent } from './features/public/pages/home/home.component';
 import { LoginComponent } from './features/auth/pages/login/login.component';
 import { RegisterComponent } from './features/auth/pages/register/register.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { AdminComponent } from './admin/dashboard/dashboard.component';
+import { CompanyDashboardComponent } from './features/company/dashboard/dashboard.component';
 
 export const routes: Routes = [
   // RUTAS PÚBLICAS
@@ -24,6 +27,14 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       { path: 'landing', component: LandingComponent },
+      { path: 'profile', component: ProfileComponent }, 
+      { path: 'company', component: CompanyDashboardComponent },
+    ]
+  },
+  {
+    path: 'admin',
+    children: [
+      { path: 'dashboard', component: AdminComponent }
     ]
   },
   { path: '**', redirectTo: '' }
