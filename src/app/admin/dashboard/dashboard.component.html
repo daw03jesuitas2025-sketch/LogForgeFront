@@ -42,13 +42,16 @@
             </div>
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <p class="text-sm text-gray-500 uppercase font-bold">Ofertas Activas</p>
-                <p class="text-3xl font-bold text-gray-900">432</p>
-                <span class="text-blue-500 text-sm">
-                    {{ stats.activeOffers }} en revisión
-                </span>
+                <p class="text-3xl font-bold text-gray-900">
+                    @if (stats.activeOffers > 0) {
+                    {{ stats.activeOffers | number }}
+                    } @else {
+                    <span class="text-sm text-gray-400 font-normal">Cargando...</span>
+                    }
+                </p>
             </div>
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                <p class="text-sm text-gray-500 uppercase font-bold">Mensajes (Reportes)</p>
+                <p class="text-sm text-gray-500 uppercase font-bold">Mensajes</p>
                 <p class="text-3xl font-bold text-red-600">12</p>
                 <span class="text-red-400 text-sm">Requieren atención</span>
             </div>
