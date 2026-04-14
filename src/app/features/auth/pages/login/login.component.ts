@@ -25,36 +25,46 @@ export class LoginComponent {
     this.showPassword = !this.showPassword;
   }
 
-  submit(): void {
-    const credentials = {
-      email: this.email.trim(),
-      password: this.password,
-    };
+submit(): void {
+  const credentials = {
+    email: this.email.trim(),
+    password: this.password,
+  };
 
-    this.auth.login(credentials).subscribe({
-      next: (res: any) => {
-        console.log('Login exitoso:', res.user.role);
-        
-        // Lógica de redirección por ROL
-        const role = res.user.role;
+  this.auth.login(credentials).subscribe({
+    next: (res: any) => {
+      console.log('Login exitoso. Rol:', res.user.role);
 
-        if (role === 'admin') {
-          // Te lleva al panel que diseñamos antes
-          this.router.navigate(['/admin/dashboard']); 
-        } 
-        else if (role === 'company') {
-          // Aquí pones la ruta que crees para empresas
-          this.router.navigate(['/dashboard/company']); 
-        } 
-        else {
-          // El 'user' normal va a tu layout actual
-          this.router.navigate(['/dashboard/landing']);
-        }
-      },
-      error: (err) => {
-        console.error('Error login:', err);
-        alert('Credenciales incorrectas o error de servidor');
+      // --- PASO CRÍTICO: GUARDAR LOS DATOS ---
+      // Guardamos el token para las cabeceras API
+      localStorage.setItem('auth_token', res.token); 
+      
+      // Guardamos el rol para que el Nav sepa qué mostrar
+      localStorage.setItem('role', res.user.role);
+      
+      // Guardamos el nombre para el avatar
+      localStorage.setItem('userName', res.user.name);
+      
+      // Guardamos el objeto completo por si acaso
+      localStorage.setItem('user_data', JSON.stringify(res.user));
+
+      // --- REDIRECCIÓN ---
+      const role = res.user.role;
+
+      if (role === 'admin') {
+        this.router.navigate(['/admin/dashboard']); 
+      } 
+      else if (role === 'company') {
+        this.router.navigate(['/dashboard/company']); 
+      } 
+      else {
+        this.router.navigate(['/dashboard/landing']);
       }
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Error login:', err);
+      alert('Credenciales incorrectas o error de servidor');
+    }
+  });
+}
 }

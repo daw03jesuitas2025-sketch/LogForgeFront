@@ -27,31 +27,34 @@
               <h2 class="text-xl font-semibold text-gray-800">
                 {{ profileData?.name || 'Usuario' }}
               </h2>
+
               <p class="text-sm text-gray-500">
-                {{ profileData?.job_title || 'Desarrollador' }}
+                {{ profileData?.profile?.title || 'Desarrollador' }}
               </p>
+
               <div class="flex gap-4 text-sm text-gray-400 mt-1">
-                <span>{{ profileData?.location || 'Ubicación no definida' }}</span>
+                <span>{{ profileData?.profile?.location || 'Ubicación no definida' }}</span>
                 <span>{{ profileData?.email }}</span>
               </div>
+
               <p class="text-sm text-gray-500 mt-3 max-w-xl">
-                {{ profileData?.bio || 'Sin biografía definida.' }}
+                {{ profileData?.profile?.biography || 'Sin biografía definida.' }}
               </p>
             </div>
           </div>
 
-          <button class="h-fit bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-200 transition-colors">
+          <button (click)="handleEditBasic()"
+            class="h-fit bg-green-100 text-green-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-200 transition-colors">
             Editar Información Básica
           </button>
         </div>
 
-        <app-experiences 
-          [jobs]="jobs" 
-          (add)="handleAdd('experience')" 
-          (edit)="handleEdit($event, 'experience')">
-        </app-experiences>
+        <app-experiences [jobs]="jobs" (add)="handleAdd('experience')" (edit)="handleEdit($event, 'experience')"
+          (delete)="deleteElement($event, 'experience')"> </app-experiences>
 
-        <app-educations [educations]="educations"></app-educations>
+        <app-educations [educations]="educations" (edit)="handleEdit($event, 'education')"
+          (delete)="deleteElement($event, 'education')">
+        </app-educations>
 
         <app-skills [skills]="skills"></app-skills>
 
@@ -80,10 +83,6 @@
   </div>
 </div>
 
-<app-edit-modal 
-  *ngIf="isModalOpen" 
-  [title]="modalTitle" 
-  [data]="selectedData" 
-  (close)="isModalOpen = false"
-  (save)="saveChanges($event)">
+<app-edit-modal *ngIf="isModalOpen" [title]="modalTitle" [data]="selectedData" [type]="currentType"
+  (close)="isModalOpen = false" (save)="saveChanges($event)">
 </app-edit-modal>

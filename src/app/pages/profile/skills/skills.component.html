@@ -9,12 +9,19 @@
   </div>
 
   <div class="p-6 flex flex-wrap gap-2">
-    <span
+    <div
       *ngFor="let skill of skills"
-      class="px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-sm border border-slate-200 shadow-sm"
+      class="group flex items-center gap-2 px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-sm border border-slate-200 shadow-sm hover:bg-white transition-all"
     >
-      {{ getSkillName(skill) }}
-    </span>
+      <span (click)="openEdit(skill)" class="cursor-pointer">{{ getSkillName(skill) }}</span>
+      
+      <button 
+        (click)="deleteSkill(skill.id)" 
+        class="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 transition-opacity leading-none text-lg"
+        title="Eliminar habilidad">
+        &times;
+      </button>
+    </div>
 
     <div *ngIf="skills.length === 0" class="text-gray-400 text-sm italic">
       No has añadido habilidades todavía.
@@ -26,7 +33,7 @@
   <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
     
     <div class="px-6 py-4 border-b flex justify-between items-center bg-slate-50/50">
-      <h3 class="font-bold text-slate-800">Añadir Nueva Habilidad</h3>
+      <h3 class="font-bold text-slate-800">{{ isEditing ? 'Editar Habilidad' : 'Añadir Nueva Habilidad' }}</h3>
       <button (click)="isModalOpen = false" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
     </div>
 
@@ -50,7 +57,7 @@
           type="submit" 
           [disabled]="form.invalid" 
           class="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm font-semibold hover:bg-blue-600 disabled:opacity-50 shadow-md">
-          Añadir
+          {{ isEditing ? 'Guardar Cambios' : 'Añadir' }}
         </button>
       </div>
     </form>

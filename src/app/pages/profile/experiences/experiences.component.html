@@ -42,6 +42,12 @@
       >
         Editar
       </button>
+      <button 
+          (click)="onDelete(job)"
+          class="text-[11px] font-bold text-red-500 hover:text-red-700 opacity-0 group-hover:opacity-100 transition-all uppercase tracking-tight"
+        >
+          Eliminar
+        </button>
     </div>
 
     <div *ngIf="jobs.length === 0" class="py-8 text-center border-2 border-dashed border-gray-50 rounded-xl">

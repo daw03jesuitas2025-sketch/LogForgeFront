@@ -9,7 +9,8 @@ export class ProfileService {
   constructor(private http: HttpClient) { }
 
   private getHeaders() {
-    const token = localStorage.getItem('token');
+    // IMPORTANTE: Asegúrate de que en el login guardas 'auth_token'
+    const token = localStorage.getItem('auth_token'); 
     return {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`
@@ -17,17 +18,16 @@ export class ProfileService {
     };
   }
 
-  // --- Métodos de Perfil ---
-  getFullProfile(): Observable<any> {
+  // --- Perfil Base ---
+  show(): Observable<any> {
     return this.http.get(`${this.apiUrl}/profile`, this.getHeaders());
   }
 
-  // --- Métodos de Skills (NUEVO) ---
-  getSkills(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/profile/skills`, this.getHeaders());
+  updateBasicInfo(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/profile`, data, this.getHeaders());
   }
 
-  // --- Métodos de Experiencia ---
+  // --- Experiencia ---
   addExperience(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/experiences`, data, this.getHeaders());
   }
@@ -40,28 +40,29 @@ export class ProfileService {
     return this.http.delete(`${this.apiUrl}/experiences/${id}`, this.getHeaders());
   }
 
-// Obtener todas las skills maestras para el selector
-getAvailableSkills(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/skills/available`);
-}
+  // --- Educación ---
+  addEducation(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/educations`, data, this.getHeaders());
+  }
 
-// Enviar los IDs elegidos por el usuario (Sincronizar)
-syncSkills(skillIds: number[]) {
-  return this.http.post(`${this.apiUrl}/profile/skills/sync`, { 
-    skills: skillIds 
-  });
-}
-addSkill(data: { name: string }): Observable<any> {
-  return this.http.post(`${this.apiUrl}/skills`, data);
-}
-addEducation(data: any): Observable<any> {
-  return this.http.post(`${this.apiUrl}/educations`, data);
-}
+  updateEducation(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/educations/${id}`, data, this.getHeaders());
+  }
 
-updateEducation(id: number, data: any): Observable<any> {
-  return this.http.put(`${this.apiUrl}/educations/${id}`, data);
-}
-show(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/profile`);
+  deleteEducation(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/educations/${id}`, this.getHeaders());
+  }
+
+  // --- Skills ---
+  addSkill(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/skills`, data, this.getHeaders());
+  }
+
+  updateSkill(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/skills/${id}`, data, this.getHeaders());
+  }
+
+  deleteSkill(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/skills/${id}`, this.getHeaders());
   }
 }

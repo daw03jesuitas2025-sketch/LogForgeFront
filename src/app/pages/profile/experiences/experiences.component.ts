@@ -8,10 +8,17 @@ import { CommonModule } from '@angular/common';
   templateUrl: './experiences.component.html'
 })
 export class ExperiencesComponent {
-  // Recibimos los trabajos desde el ProfileComponent
   @Input() jobs: any[] = [];
+
+  onDelete(job: any) {
+    if (confirm('¿Estás seguro de que deseas eliminar esta experiencia laboral?')) {
+      this.delete.emit(job);
+    }
+  }
 
   // Avisamos al padre cuando hay acción
   @Output() add = new EventEmitter<void>();
   @Output() edit = new EventEmitter<any>();
+  @Output() delete = new EventEmitter<any>(); // Nuevo evento para eliminar
+
 }

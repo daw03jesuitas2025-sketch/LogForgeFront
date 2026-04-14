@@ -1,10 +1,8 @@
 <header class="bg-[#f9fbfd] border-b border-[#e3e9ef] sticky top-0 z-50"> 
   <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
-    <!-- Logo -->
     <div class="flex items-center gap-3">
       <div class="w-9 h-9 bg-[#dbeafe] rounded-lg flex items-center justify-center">
-        <!-- Logo SVG -->
         <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
           <rect x="1" y="1" width="6" height="6" rx="1.5" fill="#3b82f6"/>
           <rect x="9" y="1" width="6" height="6" rx="1.5" fill="#93c5fd"/>
@@ -15,62 +13,71 @@
       <p class="text-base font-semibold text-[#1e3a8a] tracking-tight">LogForge</p>
     </div>
 
-    <!-- Buscador -->
     <div class="relative w-72">
       <input
         type="text"
-        placeholder="Buscar"
-        class="w-full bg-[#eef3f8] border border-transparent px-4 py-2 rounded-lg text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:bg-white focus:border-[#bfdbfe] transition"
+        placeholder="Buscar..."
+        class="w-full bg-[#eef3f8] border border-transparent px-4 py-2 rounded-lg text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-[#bfdbfe] transition"
       >
     </div>
 
-    <!-- Navegación -->
     <nav class="flex items-center gap-6">
 
-<a 
-  [routerLink]="userRole === 'company' ? '/dashboard/company' : '/dashboard/landing'"
-  routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
-  [routerLinkActiveOptions]="{ exact: true }"
-  class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
->
-  Inicio
-</a>
+      <a 
+        [routerLink]="userRole === 'company' ? '/dashboard/company' : '/dashboard/landing'"
+        routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
+      >
+        Inicio
+      </a>
 
-  <!-- Empleos -->
-<a 
-  routerLink="/dashboard/jobs"
-  routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
-  class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
->
-  Empleos
-</a>
+      @if (userRole === 'user') {
+        <a 
+          routerLink="/dashboard/my-applications" 
+          routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
+          class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
+        >
+          Mis Postulaciones
+        </a>
+      }
 
-  <!-- Perfil -->
-<a 
-  [routerLink]="userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile'"
-  routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
-  class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
->
-  Perfil
-</a>
+      @if (userRole === 'company') {
+        <a 
+          routerLink="/dashboard/my-offers" 
+          routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
+          class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
+        >
+          Mis Ofertas
+        </a>
+      }
 
-      <!-- Avatar -->
-      <div class="relative">
+      <a 
+        [routerLink]="userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile'"
+        routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
+        class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
+      >
+        Perfil
+      </a>
+
+      <div class="relative ml-4">
         <button
           (click)="toggleMenu()"
-          class="w-9 h-9 bg-[#dbeafe] rounded-full flex items-center justify-center text-[#1e3a8a] font-semibold text-sm hover:bg-[#bfdbfe] transition"
+          class="w-9 h-9 bg-[#dbeafe] rounded-full flex items-center justify-center text-[#1e3a8a] font-semibold text-sm hover:bg-[#bfdbfe] transition border-2 border-white shadow-sm"
         >
           {{ userInitial }}
         </button>
 
         @if (isMenuOpen) {
-          <div class="absolute right-0 mt-3 w-52 bg-white rounded-xl border border-[#e5e7eb] shadow-md py-2 z-[100]">
-            <div class="px-4 py-2 border-b border-gray-100">
-              <p class="text-sm font-medium text-gray-700">{{ userName }}</p>
+          <div class="absolute right-0 mt-3 w-52 bg-white rounded-xl border border-[#e5e7eb] shadow-lg py-2 z-[100]">
+            <div class="px-4 py-2 border-b border-gray-100 mb-1">
+              <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Usuario</p>
+              <p class="text-sm font-medium text-gray-700 truncate">{{ userName }}</p>
             </div>
+            
             <button
               (click)="onLogout()"
-              class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition"
+              class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition flex items-center gap-2"
             >
               Cerrar sesión
             </button>

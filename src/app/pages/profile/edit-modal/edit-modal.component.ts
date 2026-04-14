@@ -11,24 +11,22 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class EditModalComponent implements OnInit {
   @Input() title: string = '';
   @Input() data: any = null;
-  @Input() type: 'experience' | 'education' | 'skills' = 'experience';
-  
+  @Input() type: 'experience' | 'education' | 'skills' | 'basic' = 'experience';
+
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();
 
-  form!: FormGroup; // Usamos ! porque lo inicializaremos en el método
+  form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initForm();
-    
     if (this.data && this.type !== 'skills') {
       this.patchFormValues();
     }
   }
 
-  // Creamos el formulario EXACTO para cada tipo
   private initForm() {
     if (this.type === 'experience') {
       this.form = this.fb.group({
@@ -43,28 +41,34 @@ export class EditModalComponent implements OnInit {
         institution: ['', Validators.required],
         degree: ['', Validators.required],
         start_date: ['', Validators.required],
-        end_date: [''],
-        description: [''] // Tu modelo de educación puede no usarlo, pero lo dejamos por si acaso
+        end_date: ['']
+      });
+    } else if (this.type === 'basic') {
+      this.form = this.fb.group({
+        name: ['', Validators.required],
+        title: [''],
+        location: [''],
+        biography: ['']
       });
     } else {
-      // Para skills no necesitamos FormGroup necesariamente si usas el textarea directo
-      this.form = this.fb.group({}); 
+      this.form = this.fb.group({});
     }
   }
 
   private patchFormValues() {
+    if (!this.form) return;
     const formattedData = { ...this.data };
-    // Formateo de fechas para el input date de HTML5
-    if (this.data.start_date) formattedData.start_date = new Date(this.data.start_date).toISOString().split('T')[0];
-    if (this.data.end_date) formattedData.end_date = new Date(this.data.end_date).toISOString().split('T')[0];
-    
+
+    if (this.type !== 'basic') {
+      if (this.data.start_date) formattedData.start_date = new Date(this.data.start_date).toISOString().split('T')[0];
+      if (this.data.end_date) formattedData.end_date = new Date(this.data.end_date).toISOString().split('T')[0];
+    }
+
     this.form.patchValue(formattedData);
   }
 
   onSubmit() {
     if (this.form.valid) {
-      // Enviamos el valor del formulario tal cual, ya que ahora 
-      // solo contiene los campos que Laravel espera para ese modelo.
       this.save.emit(this.form.value);
     }
   }

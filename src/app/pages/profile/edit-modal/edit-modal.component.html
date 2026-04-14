@@ -1,68 +1,76 @@
 <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
   <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden text-slate-700">
-    
+
     <div class="px-6 py-4 border-b flex justify-between items-center bg-slate-50/50">
       <h3 class="font-bold text-slate-800">{{ title }}</h3>
       <button (click)="close.emit()" class="text-slate-400 hover:text-slate-600 text-2xl leading-none">&times;</button>
     </div>
 
     <div class="p-6">
-      
       <form *ngIf="type !== 'skills'" [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
-        
-        <div>
-          <label class="block text-[11px] font-bold text-slate-500 uppercasetracking-wider mb-1">
-            {{ type === 'experience' ? 'Empresa' : 'Institución' }}
-          </label>
-          
-          <input *ngIf="type === 'experience'" formControlName="company" type="text" placeholder="Ej: Google" class="w-full border rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none transition-all">
-          
-          <input *ngIf="type === 'education'" formControlName="institution" type="text" placeholder="Ej: Universidad de Barcelona" class="w-full border rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none transition-all">
-        </div>
 
-        <div>
-          <label class="block text-[11px] font-bold text-slate-500 uppercasetracking-wider mb-1">
-            {{ type === 'experience' ? 'Puesto / Cargo' : 'Título / Carrera' }}
-          </label>
-
-          <input *ngIf="type === 'experience'" formControlName="position" type="text" placeholder="Ej: Frontend Developer" class="w-full border rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none transition-all">
-          
-          <input *ngIf="type === 'education'" formControlName="degree" type="text" placeholder="Ej: Grado en Informática" class="w-full border rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none transition-all">
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
+        <div *ngIf="type === 'basic'" class="space-y-4">
           <div>
-            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Fecha Inicio</label>
-            <input formControlName="start_date" type="date" class="w-full border rounded-lg px-3 py-2 text-sm outline-none">
+            <label class="block text-[11px] font-bold text-slate-500 uppercase">Nombre Completo</label>
+            <input formControlName="name" type="text" class="w-full border rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
           </div>
           <div>
-            <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Fecha Fin (Opcional)</label>
-            <input formControlName="end_date" type="date" class="w-full border rounded-lg px-3 py-2 text-sm outline-none">
+            <label class="block text-[11px] font-bold text-slate-500 uppercase">Titular Profesional</label>
+            <input formControlName="title" type="text" placeholder="Ej: Fullstack Developer" class="w-full border rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase">Ubicación</label>
+            <input formControlName="location" type="text" placeholder="Ej: Madrid, España" class="w-full border rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500">
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase">Biografía</label>
+            <textarea formControlName="biography" rows="4" class="w-full border rounded-lg px-3 py-2 text-sm outline-none focus:border-blue-500 resize-none"></textarea>
           </div>
         </div>
 
-        <div *ngIf="type === 'experience'">
-          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Descripción</label>
-          <textarea formControlName="description" rows="3" placeholder="Cuéntanos más..." class="w-full border rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none resize-none transition-all"></textarea>
+        <div *ngIf="type === 'experience' || type === 'education'" class="space-y-4">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">
+              {{ type === 'experience' ? 'Empresa' : 'Institución' }}
+            </label>
+            <input *ngIf="type === 'experience'" formControlName="company" type="text" class="w-full border rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none">
+            <input *ngIf="type === 'education'" formControlName="institution" type="text" class="w-full border rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none">
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">
+              {{ type === 'experience' ? 'Puesto / Cargo' : 'Título / Carrera' }}
+            </label>
+            <input *ngIf="type === 'experience'" formControlName="position" type="text" class="w-full border rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none">
+            <input *ngIf="type === 'education'" formControlName="degree" type="text" class="w-full border rounded-lg px-3 py-2 text-sm focus:border-blue-500 outline-none">
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Fecha Inicio</label>
+              <input formControlName="start_date" type="date" class="w-full border rounded-lg px-3 py-2 text-sm outline-none">
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Fecha Fin</label>
+              <input formControlName="end_date" type="date" class="w-full border rounded-lg px-3 py-2 text-sm outline-none">
+            </div>
+          </div>
         </div>
 
-        <div class="flex gap-3 pt-4">
-          <button type="button" (click)="close.emit()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm font-semibold text-slate-600 hover:bg-slate-50">Cancelar</button>
-          <button type="submit" [disabled]="form.invalid" class="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-all shadow-md shadow-blue-100">
+        <div class="flex gap-3 pt-4 border-t">
+          <button type="button" (click)="close.emit()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm font-semibold text-slate-600">Cancelar</button>
+          <button type="submit" [disabled]="form.invalid" class="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-50 transition-all">
             Guardar Cambios
           </button>
         </div>
       </form>
 
       <div *ngIf="type === 'skills'" class="space-y-4">
-        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Gestionar Skills (separadas por comas)</label>
-        <textarea #skillsInput placeholder="Angular, Laravel, SQL..." class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm h-32 focus:border-blue-500 outline-none resize-none transition-all shadow-sm"></textarea>
-        
+        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">Gestionar Skills (comas)</label>
+        <textarea #skillsInput placeholder="Angular, Laravel, SQL..." class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm h-32 outline-none resize-none"></textarea>
         <div class="flex gap-3 pt-4">
           <button (click)="close.emit()" class="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm font-semibold text-slate-600">Cancelar</button>
-          <button (click)="onSaveSkills(skillsInput.value)" class="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">
-            Sincronizar Skills
-          </button>
+          <button (click)="onSaveSkills(skillsInput.value)" class="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">Sincronizar</button>
         </div>
       </div>
 

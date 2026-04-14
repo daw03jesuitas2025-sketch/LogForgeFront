@@ -13,6 +13,8 @@ export class SkillsComponent implements OnInit {
   @Input() skills: any[] = [];
   
   isModalOpen = false;
+  isEditing = false;
+  selectedSkillId: number | null = null;
   form!: FormGroup;
 
   constructor(
@@ -27,24 +29,46 @@ export class SkillsComponent implements OnInit {
   }
 
   openAdd() {
+    this.isEditing = false;
+    this.selectedSkillId = null;
     this.form.reset();
     this.isModalOpen = true;
   }
 
-saveSkill() {
-  if (this.form.invalid) return;
+  openEdit(skill: any) {
+    this.isEditing = true;
+    this.selectedSkillId = skill.id;
+    this.form.patchValue({ name: this.getSkillName(skill) });
+    this.isModalOpen = true;
+  }
 
-  this.profileService.addSkill(this.form.value).subscribe({
-    next: (newSkill: any) => { // <-- Añadido :any
-      this.isModalOpen = false;
-      window.location.reload();
-    },
-    error: (err: any) => { // <-- Añadido :any
-      console.error('Error al guardar skill:', err);
-      alert('No se pudo añadir la habilidad.');
+  saveSkill() {
+    if (this.form.invalid) return;
+
+    const request = this.isEditing && this.selectedSkillId
+      ? this.profileService.updateSkill(this.selectedSkillId, this.form.value)
+      : this.profileService.addSkill(this.form.value);
+
+    request.subscribe({
+      next: () => {
+        this.isModalOpen = false;
+        window.location.reload(); // O llama a un emit() para refrescar el padre sin recargar
+      },
+      error: (err: any) => {
+        console.error('Error al procesar skill:', err);
+        alert('Ocurrió un error.');
+      }
+    });
+  }
+
+  deleteSkill(id: number) {
+    if (confirm('¿Eliminar esta habilidad?')) {
+      this.profileService.deleteSkill(id).subscribe({
+        next: () => window.location.reload(),
+        error: (err: any) => console.error('Error al borrar:', err)
+      });
     }
-  });
-}
+  }
 
   getSkillName(skill: any): string {
     return typeof skill === 'string' ? skill : skill.name;

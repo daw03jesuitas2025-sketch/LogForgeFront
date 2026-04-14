@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProfileService } from '../../../services/profile.service';
@@ -11,7 +11,8 @@ import { ProfileService } from '../../../services/profile.service';
 })
 export class EducationsComponent implements OnInit {
   @Input() educations: any[] = [];
-  
+  @Output() delete = new EventEmitter<any>(); // Añadido para eliminar
+
   // Control del Modal interno
   isModalOpen = false;
   modalTitle = '';
@@ -21,7 +22,7 @@ export class EducationsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -46,16 +47,16 @@ export class EducationsComponent implements OnInit {
   openEdit(edu: any) {
     this.selectedId = edu.id;
     this.modalTitle = 'Editar Formación Académica';
-    
+
     // Formatear fechas para los inputs tipo date (YYYY-MM-DD)
     const data = { ...edu };
     if (edu.start_date) {
-        data.start_date = new Date(edu.start_date).toISOString().split('T')[0];
+      data.start_date = new Date(edu.start_date).toISOString().split('T')[0];
     }
     if (edu.end_date) {
-        data.end_date = new Date(edu.end_date).toISOString().split('T')[0];
+      data.end_date = new Date(edu.end_date).toISOString().split('T')[0];
     }
-    
+
     this.form.patchValue(data);
     this.isModalOpen = true;
   }
@@ -63,7 +64,7 @@ export class EducationsComponent implements OnInit {
   save() {
     if (this.form.invalid) return;
 
-    const request = this.selectedId 
+    const request = this.selectedId
       ? this.profileService.updateEducation(this.selectedId, this.form.value)
       : this.profileService.addEducation(this.form.value);
 
@@ -71,12 +72,17 @@ export class EducationsComponent implements OnInit {
       next: () => {
         this.isModalOpen = false;
         // Recargamos para que el ProfileComponent vuelva a pedir los datos actualizados
-        window.location.reload(); 
+        window.location.reload();
       },
       error: (err) => {
         console.error('Error al guardar educación:', err);
         alert('Error al guardar los cambios en el servidor');
       }
     });
+  }
+  onDelete(edu: any) {
+    if (confirm('¿Estás seguro de que quieres eliminar esta formación?')) {
+      this.delete.emit(edu);
+    }
   }
 }

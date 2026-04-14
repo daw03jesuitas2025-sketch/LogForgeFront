@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
 import { AppLayoutComponent } from './layouts/app-layout/app-layout.component';
-import { LandingComponent } from './pages/landing/landing.component';
+import { LandingComponent } from './pages/user/landing.component';
 import { HomeComponent } from './features/public/pages/home/home.component';
 import { LoginComponent } from './features/auth/pages/login/login.component';
 import { RegisterComponent } from './features/auth/pages/register/register.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AdminComponent } from './admin/dashboard/dashboard.component';
 import { CompanyDashboardComponent } from './features/company/dashboard/dashboard.component';
+import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
 
 export const routes: Routes = [
   // RUTAS PÚBLICAS
@@ -29,6 +30,7 @@ export const routes: Routes = [
       { path: 'landing', component: LandingComponent },
       { path: 'profile', component: ProfileComponent }, 
       { path: 'company', component: CompanyDashboardComponent },
+      { path: 'my-applications', component: MyApplicationsComponent },
     ]
   },
   {

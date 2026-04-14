@@ -21,6 +21,11 @@
       <button (click)="openEdit(edu)" class="text-[11px] font-bold text-blue-500 opacity-0 group-hover:opacity-100 transition-all uppercase">
         Editar
       </button>
+      <button 
+        (click)="onDelete(edu)" 
+        class="text-[11px] font-bold text-red-500 opacity-0 group-hover:opacity-100 transition-all uppercase hover:text-red-700">
+        Eliminar
+      </button>
     </div>
     
     <div *ngIf="educations.length === 0" class="text-center py-4 text-gray-400 text-sm italic">
