@@ -7,8 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AdminService {
   // Definimos una única base para evitar confusiones
-  private API = 'http://localhost:8000/api'; 
-
+private apiUrl = 'http://localhost:8000/api';
   constructor(private http: HttpClient) { }
 
   /**
@@ -16,7 +15,7 @@ export class AdminService {
    * URL final: http://localhost:8000/api/admin/stats
    */
   getDashboardStats(): Observable<any> {
-    return this.http.get<any>(`${this.API}/admin/stats`);
+    return this.http.get<any>(`${this.apiUrl}/admin/stats`);
   }
 
   /**
@@ -24,7 +23,7 @@ export class AdminService {
    * URL final: http://localhost:8000/api/admin/users
    */
   getUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API}/admin/users`);
+    return this.http.get<any[]>(`${this.apiUrl}/admin/users`);
   }
 
   /**
@@ -32,7 +31,7 @@ export class AdminService {
    * URL final: http://localhost:8000/api/admin/offers
    */
   getJobOffers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.API}/admin/offers`);
+    return this.http.get<any[]>(`${this.apiUrl}/admin/offers`);
   }
 
   /**
@@ -40,6 +39,10 @@ export class AdminService {
    * Lo unificamos para que use la misma estructura.
    */
   getStats(): Observable<any> {
-    return this.http.get<any>(`${this.API}/admin/stats`);
+    return this.http.get<any>(`${this.apiUrl}/admin/stats`);
   }
+  getMessages(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/admin/messages`);
+  }
+
 }

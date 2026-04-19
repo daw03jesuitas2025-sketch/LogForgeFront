@@ -1,5 +1,4 @@
 <div class="min-h-screen bg-gray-100 flex">
-
     <aside class="w-64 bg-white border-r border-gray-200 hidden md:block">
         <div class="p-6">
             <h1 class="text-2xl font-bold text-blue-700">Admin</h1>
@@ -21,7 +20,6 @@
     </aside>
 
     <main class="flex-1 p-8">
-
         <header class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-semibold text-gray-800">Panel de Control</h2>
             <div class="flex items-center space-x-4">
@@ -33,110 +31,99 @@
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Usuarios Totales</p>
                 <p class="text-3xl font-extrabold text-slate-900 mt-2">
-                    @if (stats.totalUsers > 0) {
-                    {{ stats.totalUsers | number }}
-                    } @else {
-                    <span class="text-sm text-gray-400">Cargando...</span>
-                    }
+                    @if (stats.totalUsers > 0) { {{ stats.totalUsers | number }} } @else { <span class="text-sm text-gray-400">Cargando...</span> }
                 </p>
             </div>
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <p class="text-sm text-gray-500 uppercase font-bold">Ofertas Activas</p>
                 <p class="text-3xl font-bold text-gray-900">
-                    @if (stats.activeOffers > 0) {
-                    {{ stats.activeOffers | number }}
-                    } @else {
-                    <span class="text-sm text-gray-400 font-normal">Cargando...</span>
-                    }
+                    @if (stats.activeOffers > 0) { {{ stats.activeOffers | number }} } @else { <span class="text-sm text-gray-400">Cargando...</span> }
                 </p>
             </div>
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                 <p class="text-sm text-gray-500 uppercase font-bold">Mensajes</p>
-                <p class="text-3xl font-bold text-red-600">12</p>
+                <p class="text-3xl font-bold text-red-600">{{ stats.reportedMessages }}</p>
                 <span class="text-red-400 text-sm">Requieren atención</span>
             </div>
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
             <div class="p-6 border-b border-gray-200 flex justify-between items-center bg-white">
-                <h3 class="text-lg font-bold text-gray-800">Gestión de Usuarios</h3>
-                <select class="border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500">
-                    <option>Todos los roles</option>
-                    <option>User (Candidato)</option>
-                    <option>Company (Empresa)</option>
-                    <option>Admin</option>
-                </select>
+                <h3 class="text-lg font-bold text-gray-800">Mensajes de Soporte / Reportes</h3>
+                <div class="flex space-x-2">
+                    <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-0.5 rounded-full">Nuevos: {{ stats.reportedMessages }}</span>
+                </div>
             </div>
 
-            <table class="w-full text-left">
-                <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
-                    <tr>
-                        <th class="px-6 py-4">Usuario / Empresa</th>
-                        <th class="px-6 py-4">Email / Verificación</th>
-                        <th class="px-6 py-4">Localización</th>
-                        <th class="px-6 py-4">Estado (Oferta)</th>
-                        <th class="px-6 py-4 text-center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-gray-900 font-bold">Juan Pérez</div>
-                            <div class="text-sm text-gray-500 italic">Tema: Dark Mode</div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="text-sm">juanexample.com</div>
-                            <button class="text-xs px-2 py-1 bg-yellow-100 text-yellow-700 rounded mt-1">Verificar
-                                Manual</button>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-600">Madrid, ES</td>
-                        <td class="px-6 py-4">
-                            <span
-                                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">Activo</span>
-                        </td>
-                        <td class="px-6 py-4 text-center space-x-2">
-                            <button title="Descargar CV" class="text-blue-600 hover:text-blue-800"><i
-                                    class="fas fa-file-download"></i> CV</button>
-                            <button class="text-red-600 hover:text-red-800 text-sm">Banear</button>
-                        </td>
-                    </tr>
-
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="px-6 py-4">
-                            <div class="font-medium text-blue-700 font-bold underline">Tech Solutions S.L.</div>
-                            <div class="text-xs text-gray-400">ID Usuario: 450</div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="text-sm text-blue-500 hover:underline cursor-pointer">www.techsolutions.com
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-sm text-gray-600">Barcelona, ES</td>
-                        <td class="px-6 py-4 text-center">
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" checked class="sr-only peer">
-                                <div
-                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+                        <tr>
+                            <th class="px-6 py-4">Remitente</th>
+                            <th class="px-6 py-4">Asunto / Mensaje</th>
+                            <th class="px-6 py-4">Fecha</th>
+                            <th class="px-6 py-4">Prioridad</th>
+                            <th class="px-6 py-4 text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold">JP</div>
+                                    <div class="ml-3">
+                                        <div class="font-medium text-gray-900 font-bold">Juan Pérez</div>
+                                        <div class="text-xs text-gray-500">juanexample.com</div>
+                                    </div>
                                 </div>
-                            </label>
-                        </td>
-                        <td class="px-6 py-4 text-center">
-                            <button
-                                class="text-gray-500 hover:text-gray-700 text-sm px-3 py-1 border rounded shadow-sm">Editar
-                                Perfil</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-<!-- 
-        <div class="mt-8 p-4 bg-orange-50 border border-orange-200 rounded-lg flex items-center justify-between">
-            <div class="flex items-center">
-                <span class="text-orange-600 mr-3 font-bold">!</span>
-                <p class="text-sm text-orange-700">Tienes 5 ofertas de trabajo en la papelera. ¿Deseas revisarlas para
-                    restaurar?</p>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm font-semibold text-gray-800">Error en el perfil</div>
+                                <div class="text-sm text-gray-500 truncate w-64">No puedo subir mi foto de avatar desde ayer...</div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">Hoy, 09:45 AM</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold">Alta</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <button class="text-blue-600 hover:text-blue-800 text-sm font-bold border border-blue-600 px-3 py-1 rounded-lg hover:bg-blue-50 transition">
+                                    Ver Detalle
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold">TS</div>
+                                    <div class="ml-3">
+                                        <div class="font-medium text-gray-900 font-bold">Tech Solutions</div>
+                                        <div class="text-xs text-gray-500">empresatech.com</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm font-semibold text-gray-800">Duda sobre facturación</div>
+                                <div class="text-sm text-gray-500 truncate w-64">¿Dónde puedo descargar las facturas de las ofertas premium?</div>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-600">Ayer, 18:20 PM</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-bold">Media</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <button class="text-blue-600 hover:text-blue-800 text-sm font-bold border border-blue-600 px-3 py-1 rounded-lg hover:bg-blue-50 transition">
+                                    Ver Detalle
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <button class="text-sm font-bold text-orange-800 hover:underline uppercase">Ver Papelera</button>
-        </div> -->
+            
+            <div class="p-4 bg-gray-50 border-t border-gray-200 text-center">
+                <button class="text-sm text-blue-600 font-bold hover:underline">Ver todos los mensajes</button>
+            </div>
+        </div>
 
     </main>
 </div>
