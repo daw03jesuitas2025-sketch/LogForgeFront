@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { finalize, tap, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,7 @@ export class AuthService {
   }
 
   login(data: any) {
-    return this.http.post<any>(`${this.API}/login`, data).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/login`, data).pipe(
       tap(res => {
         this.saveSession(res.token, res.user);
       })
@@ -49,4 +50,5 @@ export class AuthService {
   getRole(): string | null {
     return localStorage.getItem('userRole');
   }
+  
 }
