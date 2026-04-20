@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  apiUrl: 'https://tu-app-laravel-en-azure.azurewebsites.net/api'
+  production: false,
+  apiUrl: "http://127.0.0.1:8000/api"
 };
