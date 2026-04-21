@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from '@services/message.service';
 
 @Component({
   selector: 'app-landing',
@@ -16,8 +17,9 @@ export class LandingComponent implements OnInit {
   currentUser: any = null;
   suggestions: any[] = [];
   searchTerm: string = '';
+  messages: any[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private messageService: MessageService) { }
 
   ngOnInit(): void {
     // 1. Cargar ofertas globales
@@ -30,6 +32,7 @@ export class LandingComponent implements OnInit {
     this.loadMyApplications();
     this.loadCurrentUser();
     this.loadSuggestions();
+    this.loadMessages();
   }
 
   // Helper para obtener headers rápidamente
@@ -101,5 +104,14 @@ export class LandingComponent implements OnInit {
         this.jobOffers = this.jobOffers.filter(j => j.id !== id);
       });
     }
+  }
+  loadMessages() {
+    this.messageService.getMyMessages().subscribe({
+      next: (data) => {
+        this.messages = data;
+        console.log('Mis mensajes:', data);
+      },
+      error: (err) => console.error('Error cargando mensajes:', err)
+    });
   }
 }

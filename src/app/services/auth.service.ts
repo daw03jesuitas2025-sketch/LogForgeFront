@@ -52,5 +52,8 @@ export class AuthService {
   getRole(): string | null {
     return localStorage.getItem('userRole');
   }
+  getCandidates(): Observable<any[]> {
+  return this.http.get<any[]>(`${environment.apiUrl}/candidates`);
+}
   
 }

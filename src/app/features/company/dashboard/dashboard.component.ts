@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-
+import { MessageService } from '@services/message.service';
 @Component({
   selector: 'app-company-dashboard',
   standalone: true,
@@ -15,8 +15,9 @@ export class CompanyDashboardComponent implements OnInit {
   showModal: boolean = false;
   isEditing: boolean = false;
   selectedOfferId: number | null = null;
+  candidates: any[] = [];
 
-  // Definimos el objeto exactamente como lo espera Laravel
+
   newOffer = {
     title: '',
     description: '',
@@ -25,13 +26,14 @@ export class CompanyDashboardComponent implements OnInit {
   };
 
   private API_URL = 'http://127.0.0.1:8000/api/job-offers';
+  
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private messageService: MessageService) {}
 
-  ngOnInit(): void {
-    this.loadMyOffers();
-  }
-
+ngOnInit(): void {
+  this.loadMyOffers();
+  this.loadCandidates(); 
+}
   loadMyOffers(): void {
     this.http.get<any[]>(this.API_URL).subscribe({
       next: (data) => this.myOffers = data,
@@ -48,7 +50,6 @@ export class CompanyDashboardComponent implements OnInit {
   openEditModal(job: any) {
     this.isEditing = true;
     this.selectedOfferId = job.id;
-    // Aquí quitamos el companyName que daba error
     this.newOffer = {
       title: job.title,
       description: job.description,
@@ -64,7 +65,6 @@ export class CompanyDashboardComponent implements OnInit {
   }
 
   resetForm() {
-    // Reseteamos solo los campos que existen en la definición
     this.newOffer = { 
       title: '', 
       description: '', 
@@ -103,4 +103,28 @@ export class CompanyDashboardComponent implements OnInit {
       });
     }
   }
+showInterviewModal = false;
+selectedCandidate: any = null;
+interviewMessage: string = '';
+
+openInterviewModal(candidate: any) {
+  this.selectedCandidate = candidate;
+  this.interviewMessage = `Hola ${candidate.name}, nos ha gustado tu perfil y queremos agendar una entrevista contigo.`;
+  this.showInterviewModal = true;
+}
+
+confirmInterview() {
+  this.messageService.sendInterviewRequest(this.selectedCandidate.id, this.interviewMessage)
+    .subscribe(() => {
+      alert('¡Invitación enviada!');
+      this.showInterviewModal = false;
+    });
+}
+
+loadCandidates(): void {
+  this.http.get<any[]>('http://127.0.0.1:8000/api/candidates').subscribe({
+    next: (data) => this.candidates = data,
+    error: (err) => console.error('Error cargando candidatos:', err)
+  });
+}
 }
