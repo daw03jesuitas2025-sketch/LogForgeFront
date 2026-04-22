@@ -106,8 +106,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     });
   }
 
-  // --- Acciones de la interfaz ---
-
   /**
    * Lógica para ver el detalle de un mensaje de la tabla
    */

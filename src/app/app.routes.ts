@@ -10,6 +10,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { AdminComponent } from './admin/dashboard/dashboard.component';
 import { CompanyDashboardComponent } from './features/company/dashboard/dashboard.component';
 import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
+import { UsersListComponent } from './admin/users-list/users-list.component';
+import { CompaniesListComponent } from './admin/companies-list/companies-list.component';
 
 export const routes: Routes = [
   // RUTAS PÚBLICAS
@@ -35,8 +37,12 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
+    component: AdminComponent,
     children: [
-      { path: 'dashboard', component: AdminComponent }
+      { path: 'dashboard', component: AdminComponent },
+      { path: 'users', component: UsersListComponent },
+      { path: 'offers', component: UsersListComponent },
+      { path: 'companies', component: CompaniesListComponent }
     ]
   },
   { path: '**', redirectTo: '' }

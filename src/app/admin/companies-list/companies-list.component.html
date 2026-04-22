@@ -1,0 +1,61 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Empresas Registradas</h2>
+    <div class="text-sm text-gray-500">Total: {{ companies.length }}</div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full text-left">
+      <thead class="bg-gray-50 text-gray-600 uppercase text-xs font-bold">
+        <tr>
+          <th class="px-6 py-4">Empresa</th>
+          <th class="px-6 py-4">Sitio Web</th>
+          <th class="px-6 py-4">Admin de la Cuenta</th>
+          <th class="px-6 py-4 text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        @for (company of companies; track company.id) {
+        <tr class="hover:bg-gray-50 transition">
+          <td class="px-6 py-4">
+            <div class="flex items-center">
+              <div class="h-12 w-12 rounded bg-slate-100 border border-gray-200 flex items-center justify-center text-blue-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-10V4m-5 10h.01M9 17h.01M9 14h.01M12 11h.01M12 14h.01M12 17h.01M15 11h.01M15 14h.01M15 17h.01" />
+                </svg>
+              </div>
+              <div class="ml-4">
+                <div class="font-bold text-gray-900">{{ company.company_name }}</div>
+                <div class="text-xs text-gray-400">ID: #{{ company.id }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            <a [href]="company.website" target="_blank" class="text-blue-600 hover:underline text-sm">
+              {{ company.website || 'No disponible' }}
+            </a>
+          </td>
+          <td class="px-6 py-4">
+            <div class="text-sm text-gray-900">{{ company.user?.name }}</div>
+            <div class="text-xs text-gray-500">{{ company.user?.email }}</div>
+          </td>
+          <td class="px-6 py-4 text-center space-x-2">
+            <button class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-sm font-semibold transition">
+              Ver Perfil
+            </button>
+            <button class="px-3 py-1 bg-red-50 text-red-600 rounded hover:bg-red-100 text-sm font-semibold transition">
+              Bannear
+            </button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="4" class="px-6 py-10 text-center text-gray-400">
+            No hay empresas registradas todavía.
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

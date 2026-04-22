@@ -44,5 +44,13 @@ private apiUrl = 'http://localhost:8000/api';
   getMessages(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/admin/messages`);
   }
+  getCompanies(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/admin/companies`);
+}
+
+// cambbiar estado de oferta (activar/desactivar)
+toggleOfferStatus(id: number): Observable<any> {
+  return this.http.patch(`${this.apiUrl}/admin/offers/${id}/toggle`, {});
+}
 
 }
