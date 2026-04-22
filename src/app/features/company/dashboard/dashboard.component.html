@@ -11,21 +11,22 @@
               <span class="text-purple-600 font-bold">LOG</span>
             </div>
           </div>
-          <div class="mt-8 text-center">
-            <h2 class="font-medium text-purple-900 text-sm">
-              {{ myOffers[0]?.user?.company_profile?.company_name || 'Sin nombre configurado' }}
-            </h2>
-            @if (myOffers[0]?.user?.company_profile?.website) {
-            <a [href]="myOffers[0]?.user?.company_profile?.website" target="_blank"
-              class="text-[10px] text-blue-500 hover:underline block mt-1">
-              {{ myOffers[0]?.user?.company_profile?.website }}
-            </a>
-            }
+<div class="mt-8 text-center">
+  <h2 class="font-medium text-purple-900 text-sm">
+    {{ companyProfile?.company_name || 'Cargando nombre...' }}
+  </h2>
+  
+  @if (companyProfile?.website) {
+    <a [href]="companyProfile.website" target="_blank"
+       class="text-[10px] text-blue-500 hover:underline block mt-1">
+      {{ companyProfile.website }}
+    </a>
+  }
 
-            <p class="text-[11px] text-purple-400 mt-1 tracking-wider italic">
-              {{ myOffers[0]?.user?.company_profile?.description || 'Cuenta de Empresa' }}
-            </p>
-          </div>
+  <p class="text-[11px] text-purple-400 mt-1 tracking-wider italic">
+    {{ companyProfile?.description || 'Cuenta de Empresa' }}
+  </p>
+</div>
           <div class="mt-4 pt-4 border-t border-purple-50 space-y-2">
             <div class="flex justify-between text-[11px]">
               <span class="text-purple-400 font-medium">Ofertas publicadas</span>

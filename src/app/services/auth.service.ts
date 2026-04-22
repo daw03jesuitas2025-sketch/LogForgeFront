@@ -22,8 +22,6 @@ export class AuthService {
   
 
   login(data: any) {
-          console.log(environment.apiUrl);
-
     return this.http.post<any>(`${environment.apiUrl}/login`, data).pipe(
       tap(res => {
         this.saveSession(res.token, res.user);

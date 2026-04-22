@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from '@services/message.service';
+import { CompanyService } from '@services/company.service';
 @Component({
   selector: 'app-company-dashboard',
   standalone: true,
@@ -11,11 +12,13 @@ import { MessageService } from '@services/message.service';
   styleUrl: './dashboard.component.css'
 })
 export class CompanyDashboardComponent implements OnInit {
+  [x: string]: any;
   myOffers: any[] = [];
   showModal: boolean = false;
   isEditing: boolean = false;
   selectedOfferId: number | null = null;
   candidates: any[] = [];
+  companyProfile: any = null;
 
 
   newOffer = {
@@ -28,11 +31,12 @@ export class CompanyDashboardComponent implements OnInit {
   private API_URL = 'http://127.0.0.1:8000/api/job-offers';
   
 
-  constructor(private http: HttpClient, private messageService: MessageService) {}
+  constructor(private http: HttpClient, private messageService: MessageService, private companyService: CompanyService) {}
 
 ngOnInit(): void {
   this.loadMyOffers();
   this.loadCandidates(); 
+  this.loadCompanyProfile();
 }
   loadMyOffers(): void {
     this.http.get<any[]>(this.API_URL).subscribe({
@@ -127,4 +131,13 @@ loadCandidates(): void {
     error: (err) => console.error('Error cargando candidatos:', err)
   });
 }
+loadCompanyProfile() {
+    // Aquí debes llamar a un endpoint que devuelva el perfil del usuario autenticado
+    this.companyService.getMyProfile().subscribe({
+      next: (data) => {
+        this.companyProfile = data;
+      },
+      error: (err) => console.error('Error al cargar perfil:', err)
+    });
+  }
 }

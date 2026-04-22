@@ -1,197 +1,118 @@
 <div class="min-h-screen bg-gray-100 flex">
-  <aside class="w-64 bg-white border-r border-gray-200 hidden md:block">
-    <div class="p-6">
-      <h1 class="text-2xl font-bold text-blue-700">Admin</h1>
+  <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col h-screen sticky top-0 shadow-sm">
+    <div class="p-6 border-b border-gray-50">
+      <div class="flex items-center gap-2">
+        <div class="bg-blue-700 p-1.5 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Admin<span class="text-blue-700">Panel</span>
+        </h1>
+      </div>
     </div>
-    <nav class="mt-4">
-      <a
-        href="#"
-        class="flex items-center px-6 py-3 bg-blue-50 text-blue-700 border-r-4 border-blue-700"
-      >
-        <span class="mx-3 font-medium">Dashboard</span>
+
+    <nav class="mt-6 flex-1 px-3 space-y-1">
+      <a routerLink="/admin" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
+        [routerLinkActiveOptions]="{exact: true}"
+        class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+        <span class="font-semibold text-sm">Dashboard</span>
       </a>
-      <a
-        routerLink="/admin/users"
-        routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
-        class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50"
-      >
-        <span class="mx-3 font-medium">Usuarios</span>
+
+      <a routerLink="/admin/users" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
+        class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+        <span class="font-semibold text-sm">Usuarios</span>
       </a>
-      <a
-        routerLink="/admin/companies"
-        routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
-        class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50"
-      >
-        <span class="mx-3 font-medium">Empresas</span>
+
+      <a routerLink="/admin/companies" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
+        class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+        <span class="font-semibold text-sm">Empresas</span>
       </a>
-      <a
-        routerLink="/admin/offers"
-        routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
-        class="flex items-center px-6 py-3 text-gray-600 hover:bg-gray-50"
-      >
-        <span class="mx-3 font-medium">Ofertas de trabajo</span>
+
+      <a routerLink="/admin/offers" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
+        class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+        <span class="font-semibold text-sm">Ofertas de trabajo</span>
       </a>
     </nav>
+
+    <div class="p-4 border-t border-gray-100">
+      <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50">
+        <div
+          class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md">
+          AD</div>
+        <div class="flex-1 overflow-hidden">
+          <p class="text-xs font-bold text-slate-900 truncate">Administrador</p>
+          <p (click)="onLogout()"
+            class="text-[10px] text-slate-500 truncate cursor-pointer hover:text-red-500 transition-colors font-semibold">
+            Cerrar Sesión
+          </p>
+        </div>
+      </div>
+    </div>
   </aside>
 
   <main class="flex-1 p-8">
+
+    @if (isRootAdmin()) {
     <header class="flex justify-between items-center mb-8">
       <h2 class="text-3xl font-semibold text-gray-800">Panel de Control</h2>
-      <div class="flex items-center space-x-4">
-        <span class="text-sm text-gray-500"
-          >Última actualización: Hoy, 10:15 AM ESTO HAY Q HACER</span
-        >
-      </div>
+      <span class="text-sm text-gray-500">Última actualización: {{ lastUpdate | date:'HH:mm:ss' }}</span>
     </header>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">
-          Usuarios Totales
-        </p>
-        <p class="text-3xl font-extrabold text-slate-900 mt-2">
-          @if (stats.totalUsers > 0) {
-            {{ stats.totalUsers | number }}
-          } @else {
-            <span class="text-sm text-gray-400">Cargando...</span>
-          }
-        </p>
+        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Usuarios Totales</p>
+        <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ stats.totalUsers }}</p>
       </div>
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <p class="text-sm text-gray-500 uppercase font-bold">Ofertas Activas</p>
-        <p class="text-3xl font-bold text-gray-900">
-          @if (stats.activeOffers > 0) {
-            {{ stats.activeOffers | number }}
-          } @else {
-            <span class="text-sm text-gray-400">Cargando...</span>
-          }
-        </p>
+        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Ofertas Activas</p>
+        <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ stats.activeOffers }}</p>
       </div>
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <p class="text-sm text-gray-500 uppercase font-bold">Mensajes</p>
-        <p class="text-3xl font-bold text-red-600">
-          {{ stats.reportedMessages }}
-        </p>
+        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Mensajes</p>
+        <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ stats.reportedMessages }}</p>
       </div>
     </div>
 
-    <div
-      class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
-    >
-      <div
-        class="p-6 border-b border-gray-200 flex justify-between items-center bg-white"
-      >
-        <h3 class="text-lg font-bold text-gray-800">
-          Mensajes de Soporte / Reportes
-        </h3>
-        <div class="flex space-x-2">
-          <span
-            class="bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-0.5 rounded-full"
-            >Nuevos: {{ stats.reportedMessages }}</span
-          >
-        </div>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+        <h3 class="text-lg font-bold text-gray-800">Mensajes de Soporte</h3>
+        <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-0.5 rounded-full">Nuevos: {{
+          stats.reportedMessages }}</span>
       </div>
-
       <div class="overflow-x-auto">
         <table class="w-full text-left">
-          <thead class="bg-gray-50 text-gray-600 uppercase text-xs">
+          <thead class="bg-gray-50 text-gray-600 uppercase text-xs font-bold">
             <tr>
               <th class="px-6 py-4">Remitente</th>
-              <th class="px-6 py-4">Asunto / Mensaje</th>
+              <th class="px-6 py-4">Asunto</th>
               <th class="px-6 py-4">Fecha</th>
-              <th class="px-6 py-4">Prioridad</th>
               <th class="px-6 py-4 text-center">Acciones</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
+            @for (msg of messages; track msg.id) {
             <tr class="hover:bg-gray-50 transition">
               <td class="px-6 py-4">
-                <div class="flex items-center">
-                  <div
-                    class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs font-bold"
-                  >
-                    JP
-                  </div>
-                  <div class="ml-3">
-                    <div class="font-medium text-gray-900 font-bold">
-                      Juan Pérez
-                    </div>
-                    <div class="text-xs text-gray-500">juanexample.com</div>
-                  </div>
-                </div>
+                <div class="font-bold text-gray-900 text-sm">{{ msg.from_name }}</div>
+                <div class="text-xs text-gray-500">{{ msg.from_email }}</div>
               </td>
-              <td class="px-6 py-4">
-                <div class="text-sm font-semibold text-gray-800">
-                  Error en el perfil
-                </div>
-                <div class="text-sm text-gray-500 truncate w-64">
-                  No puedo subir mi foto de avatar desde ayer...
-                </div>
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-600">Hoy, 09:45 AM</td>
-              <td class="px-6 py-4">
-                <span
-                  class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold"
-                  >Alta</span
-                >
-              </td>
+              <td class="px-6 py-4 text-sm">{{ msg.subject }}</td>
+              <td class="px-6 py-4 text-sm text-gray-600">{{ msg.created_at | date:'dd/MM HH:mm' }}</td>
               <td class="px-6 py-4 text-center">
-                <button
-                  class="text-blue-600 hover:text-blue-800 text-sm font-bold border border-blue-600 px-3 py-1 rounded-lg hover:bg-blue-50 transition"
-                >
-                  Ver Detalle
-                </button>
+                <button (click)="viewMessageDetail(msg.id)"
+                  class="text-blue-600 hover:underline font-bold text-sm">Detalle</button>
               </td>
             </tr>
-
-            <tr class="hover:bg-gray-50 transition">
-              <td class="px-6 py-4">
-                <div class="flex items-center">
-                  <div
-                    class="h-8 w-8 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs font-bold"
-                  >
-                    TS
-                  </div>
-                  <div class="ml-3">
-                    <div class="font-medium text-gray-900 font-bold">
-                      Tech Solutions
-                    </div>
-                    <div class="text-xs text-gray-500">empresatech.com</div>
-                  </div>
-                </div>
-              </td>
-              <td class="px-6 py-4">
-                <div class="text-sm font-semibold text-gray-800">
-                  Duda sobre facturación
-                </div>
-                <div class="text-sm text-gray-500 truncate w-64">
-                  ¿Dónde puedo descargar las facturas de las ofertas premium?
-                </div>
-              </td>
-              <td class="px-6 py-4 text-sm text-gray-600">Ayer, 18:20 PM</td>
-              <td class="px-6 py-4">
-                <span
-                  class="px-2 py-1 bg-yellow-100 text-yellow-700 rounded text-xs font-bold"
-                  >Media</span
-                >
-              </td>
-              <td class="px-6 py-4 text-center">
-                <button
-                  class="text-blue-600 hover:text-blue-800 text-sm font-bold border border-blue-600 px-3 py-1 rounded-lg hover:bg-blue-50 transition"
-                >
-                  Ver Detalle
-                </button>
-              </td>
-            </tr>
+            }
           </tbody>
         </table>
       </div>
-
-      <div class="p-4 bg-gray-50 border-t border-gray-200 text-center">
-        <button class="text-sm text-blue-600 font-bold hover:underline">
-          Ver todos los mensajes
-        </button>
-      </div>
     </div>
+    }
+
+    <router-outlet></router-outlet>
+
   </main>
 </div>

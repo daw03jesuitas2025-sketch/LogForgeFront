@@ -12,6 +12,7 @@ import { CompanyDashboardComponent } from './features/company/dashboard/dashboar
 import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
 import { UsersListComponent } from './admin/users-list/users-list.component';
 import { CompaniesListComponent } from './admin/companies-list/companies-list.component';
+import { JobOffersListComponent } from './admin/offers-list/offers-list.component';
 
 export const routes: Routes = [
   // RUTAS PÚBLICAS
@@ -41,7 +42,7 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: AdminComponent },
       { path: 'users', component: UsersListComponent },
-      { path: 'offers', component: UsersListComponent },
+      { path: 'offers', component: JobOffersListComponent },
       { path: 'companies', component: CompaniesListComponent }
     ]
   },

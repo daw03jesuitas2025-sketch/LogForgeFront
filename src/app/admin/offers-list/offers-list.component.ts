@@ -6,7 +6,7 @@ import { AdminService } from '../../services/admin.service';
   selector: 'app-job-offers-list',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './ffers-list.component.html'
+  templateUrl: './offers-list.component.html'
 })
 export class JobOffersListComponent implements OnInit {
   offers: any[] = [];
