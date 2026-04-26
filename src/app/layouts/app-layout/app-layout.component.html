@@ -21,72 +21,7 @@
       >
     </div>
 
-    <nav class="flex items-center gap-6">
-
-      <a 
-        [routerLink]="userRole === 'company' ? '/dashboard/company' : '/dashboard/landing'"
-        routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
-      >
-        Inicio
-      </a>
-
-      @if (userRole === 'user') {
-        <a 
-          routerLink="/dashboard/my-applications" 
-          routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
-          class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
-        >
-          Mis Postulaciones
-        </a>
-      }
-
-      @if (userRole === 'company') {
-        <a 
-          routerLink="/dashboard/my-offers" 
-          routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
-          class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
-        >
-          Mis Ofertas
-        </a>
-      }
-
-      <a 
-        [routerLink]="userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile'"
-        routerLinkActive="text-[#1e3a8a] border-b-2 border-[#3b82f6]"
-        class="text-sm font-medium text-gray-500 hover:text-gray-700 transition pb-1"
-      >
-        Perfil
-      </a>
-
-      <div class="relative ml-4">
-        <button
-          (click)="toggleMenu()"
-          class="w-9 h-9 bg-[#dbeafe] rounded-full flex items-center justify-center text-[#1e3a8a] font-semibold text-sm hover:bg-[#bfdbfe] transition border-2 border-white shadow-sm"
-        >
-          {{ userInitial }}
-        </button>
-
-        @if (isMenuOpen) {
-          <div class="absolute right-0 mt-3 w-52 bg-white rounded-xl border border-[#e5e7eb] shadow-lg py-2 z-[100]">
-            <div class="px-4 py-2 border-b border-gray-100 mb-1">
-              <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Usuario</p>
-              <p class="text-sm font-medium text-gray-700 truncate">{{ userName }}</p>
-            </div>
-            
-            <button
-              (click)="onLogout()"
-              class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition flex items-center gap-2"
-            >
-              Cerrar sesión
-            </button>
-          </div>
-          <div class="fixed inset-0 z-[90]" (click)="isMenuOpen = false"></div>
-        }
-      </div>
-
-    </nav>
+    <app-shared-nav></app-shared-nav>
   </div>
 </header>
 <!-- Aquí se cargan las páginas -->

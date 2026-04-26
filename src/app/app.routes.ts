@@ -13,6 +13,7 @@ import { MyApplicationsComponent } from './pages/my-applications/my-applications
 import { UsersListComponent } from './admin/users-list/users-list.component';
 import { CompaniesListComponent } from './admin/companies-list/companies-list.component';
 import { JobOffersListComponent } from './admin/offers-list/offers-list.component';
+import { CompanyProfileComponent } from './company/company-profile/company-profile.component';
 
 export const routes: Routes = [
   // RUTAS PÚBLICAS
@@ -34,6 +35,7 @@ export const routes: Routes = [
       { path: 'profile', component: ProfileComponent }, 
       { path: 'company', component: CompanyDashboardComponent },
       { path: 'my-applications', component: MyApplicationsComponent },
+{ path: 'company-profile', component: CompanyProfileComponent },
     ]
   },
   {

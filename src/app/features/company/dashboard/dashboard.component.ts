@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from '@services/message.service';
 import { CompanyService } from '@services/company.service';
+
 @Component({
   selector: 'app-company-dashboard',
   standalone: true,
@@ -12,14 +13,17 @@ import { CompanyService } from '@services/company.service';
   styleUrl: './dashboard.component.css'
 })
 export class CompanyDashboardComponent implements OnInit {
-  [x: string]: any;
   myOffers: any[] = [];
+  candidates: any[] = [];
+  companyProfile: any = null;
+  
   showModal: boolean = false;
   isEditing: boolean = false;
   selectedOfferId: number | null = null;
-  candidates: any[] = [];
-  companyProfile: any = null;
-
+  
+  showInterviewModal: boolean = false;
+  selectedCandidate: any = null;
+  interviewMessage: string = '';
 
   newOffer = {
     title: '',
@@ -28,58 +32,44 @@ export class CompanyDashboardComponent implements OnInit {
     is_active: true
   };
 
-  private API_URL = 'http://127.0.0.1:8000/api/job-offers';
-  
+  // URLs unificadas con el prefijo 'company' definido en Laravel
+  private API_BASE = 'http://127.0.0.1:8000/api/company';
 
-  constructor(private http: HttpClient, private messageService: MessageService, private companyService: CompanyService) {}
+  constructor(
+    private http: HttpClient, 
+    private messageService: MessageService, 
+    private companyService: CompanyService
+  ) {}
 
-ngOnInit(): void {
-  this.loadMyOffers();
-  this.loadCandidates(); 
-  this.loadCompanyProfile();
-}
+  ngOnInit(): void {
+    this.loadMyOffers();
+    this.loadCandidates(); 
+    this.loadCompanyProfile();
+  }
+
   loadMyOffers(): void {
-    this.http.get<any[]>(this.API_URL).subscribe({
+    this.http.get<any[]>(`${this.API_BASE}/my-offers`).subscribe({
       next: (data) => this.myOffers = data,
       error: (err) => console.error('Error cargando ofertas:', err)
     });
   }
 
-  openCreateModal() {
-    this.isEditing = false;
-    this.resetForm();
-    this.showModal = true;
+  loadCandidates(): void {
+    this.http.get<any[]>(`${this.API_BASE}/candidates`).subscribe({
+      next: (data) => this.candidates = data,
+      error: (err) => console.error('Error cargando candidatos:', err)
+    });
   }
 
-  openEditModal(job: any) {
-    this.isEditing = true;
-    this.selectedOfferId = job.id;
-    this.newOffer = {
-      title: job.title,
-      description: job.description,
-      location: job.location,
-      is_active: job.is_active
-    };
-    this.showModal = true;
-  }
-
-  closeModal() {
-    this.showModal = false;
-    this.resetForm();
-  }
-
-  resetForm() {
-    this.newOffer = { 
-      title: '', 
-      description: '', 
-      location: '', 
-      is_active: true 
-    };
-    this.selectedOfferId = null;
+  loadCompanyProfile(): void {
+    this.companyService.getMyProfile().subscribe({
+      next: (data) => this.companyProfile = data,
+      error: (err) => console.error('Error cargando perfil:', err)
+    });
   }
 
   createOffer() {
-    this.http.post(this.API_URL, this.newOffer).subscribe({
+    this.http.post(`${this.API_BASE}/job-offers`, this.newOffer).subscribe({
       next: () => {
         this.loadMyOffers();
         this.closeModal();
@@ -90,7 +80,7 @@ ngOnInit(): void {
 
   updateOffer() {
     if (this.selectedOfferId) {
-      this.http.put(`${this.API_URL}/${this.selectedOfferId}`, this.newOffer).subscribe({
+      this.http.put(`${this.API_BASE}/job-offers/${this.selectedOfferId}`, this.newOffer).subscribe({
         next: () => {
           this.loadMyOffers();
           this.closeModal();
@@ -102,42 +92,50 @@ ngOnInit(): void {
 
   eliminarOferta(id: number) {
     if (confirm('¿Estás seguro de que deseas eliminar esta vacante?')) {
-      this.http.delete(`${this.API_URL}/${id}`).subscribe(() => {
-        this.myOffers = this.myOffers.filter(j => j.id !== id);
+      this.http.delete(`${this.API_BASE}/job-offers/${id}`).subscribe({
+        next: () => {
+          this.myOffers = this.myOffers.filter(j => j.id !== id);
+        },
+        error: (err) => alert('Error al eliminar')
       });
     }
   }
-showInterviewModal = false;
-selectedCandidate: any = null;
-interviewMessage: string = '';
 
-openInterviewModal(candidate: any) {
-  this.selectedCandidate = candidate;
-  this.interviewMessage = `Hola ${candidate.name}, nos ha gustado tu perfil y queremos agendar una entrevista contigo.`;
-  this.showInterviewModal = true;
-}
+  // MODALES
+  openCreateModal() {
+    this.isEditing = false;
+    this.resetForm();
+    this.showModal = true;
+  }
 
-confirmInterview() {
-  this.messageService.sendInterviewRequest(this.selectedCandidate.id, this.interviewMessage)
-    .subscribe(() => {
-      alert('¡Invitación enviada!');
-      this.showInterviewModal = false;
-    });
-}
+  openEditModal(job: any) {
+    this.isEditing = true;
+    this.selectedOfferId = job.id;
+    this.newOffer = { ...job };
+    this.showModal = true;
+  }
 
-loadCandidates(): void {
-  this.http.get<any[]>('http://127.0.0.1:8000/api/candidates').subscribe({
-    next: (data) => this.candidates = data,
-    error: (err) => console.error('Error cargando candidatos:', err)
-  });
-}
-loadCompanyProfile() {
-    // Aquí debes llamar a un endpoint que devuelva el perfil del usuario autenticado
-    this.companyService.getMyProfile().subscribe({
-      next: (data) => {
-        this.companyProfile = data;
-      },
-      error: (err) => console.error('Error al cargar perfil:', err)
-    });
+  closeModal() {
+    this.showModal = false;
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.newOffer = { title: '', description: '', location: '', is_active: true };
+    this.selectedOfferId = null;
+  }
+
+  openInterviewModal(candidate: any) {
+    this.selectedCandidate = candidate;
+    this.interviewMessage = `Hola ${candidate.name}, nos ha gustado tu perfil y queremos agendar una entrevista contigo.`;
+    this.showInterviewModal = true;
+  }
+
+  confirmInterview() {
+    this.messageService.sendInterviewRequest(this.selectedCandidate.id, this.interviewMessage)
+      .subscribe(() => {
+        alert('¡Invitación enviada!');
+        this.showInterviewModal = false;
+      });
   }
 }

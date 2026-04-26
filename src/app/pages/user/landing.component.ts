@@ -114,4 +114,5 @@ export class LandingComponent implements OnInit {
       error: (err) => console.error('Error cargando mensajes:', err)
     });
   }
+  
 }
