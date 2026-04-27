@@ -6,13 +6,14 @@ import { AuthService } from '@services/auth.service';
 
 interface AdminMessage {
   id: number;
+  from_user_id: number;
+  to_user_id: number;
   from_name: string;
   from_email: string;
+  to_name : string;
   subject: string;
   message: string;
-  created_at: string;
-  initials?: string;
-  priority?: string;
+  created_at: string; 
 }
 
 @Component({

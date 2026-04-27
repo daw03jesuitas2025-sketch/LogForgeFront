@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from '@services/message.service';
 import { CompanyService } from '@services/company.service';
@@ -13,10 +13,12 @@ import { CompanyService } from '@services/company.service';
   styleUrl: './dashboard.component.css'
 })
 export class CompanyDashboardComponent implements OnInit {
+  // Datos de la interfaz
   myOffers: any[] = [];
   candidates: any[] = [];
   companyProfile: any = null;
   
+  // Estados de Modales
   showModal: boolean = false;
   isEditing: boolean = false;
   selectedOfferId: number | null = null;
@@ -25,6 +27,7 @@ export class CompanyDashboardComponent implements OnInit {
   selectedCandidate: any = null;
   interviewMessage: string = '';
 
+  // Modelo para nueva oferta
   newOffer = {
     title: '',
     description: '',
@@ -32,7 +35,6 @@ export class CompanyDashboardComponent implements OnInit {
     is_active: true
   };
 
-  // URLs unificadas con el prefijo 'company' definido en Laravel
   private API_BASE = 'http://127.0.0.1:8000/api/company';
 
   constructor(
@@ -42,34 +44,59 @@ export class CompanyDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.refreshDashboard();
+  }
+
+  /**
+   * Refresca todos los datos del dashboard
+   */
+  refreshDashboard(): void {
     this.loadMyOffers();
     this.loadCandidates(); 
     this.loadCompanyProfile();
   }
 
+  /**
+   * Genera los headers con el token Bearer para Laravel Sanctum
+   */
+  private getHeaders() {
+    const token = localStorage.getItem('auth_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  // --- CARGA DE DATOS ---
+
   loadMyOffers(): void {
-    this.http.get<any[]>(`${this.API_BASE}/my-offers`).subscribe({
+    this.http.get<any[]>(`${this.API_BASE}/my-offers`, { headers: this.getHeaders() }).subscribe({
       next: (data) => this.myOffers = data,
       error: (err) => console.error('Error cargando ofertas:', err)
     });
   }
 
   loadCandidates(): void {
-    this.http.get<any[]>(`${this.API_BASE}/candidates`).subscribe({
-      next: (data) => this.candidates = data,
+    this.http.get<any[]>(`${this.API_BASE}/candidates`, { headers: this.getHeaders() }).subscribe({
+      next: (data) => {
+        console.log('Candidatos cargados con éxito');
+        this.candidates = data;
+      },
       error: (err) => console.error('Error cargando candidatos:', err)
     });
   }
 
   loadCompanyProfile(): void {
+    // Usamos el servicio que ya maneja la lógica de perfil
     this.companyService.getMyProfile().subscribe({
       next: (data) => this.companyProfile = data,
       error: (err) => console.error('Error cargando perfil:', err)
     });
   }
 
+  // --- GESTIÓN DE OFERTAS ---
+
   createOffer() {
-    this.http.post(`${this.API_BASE}/job-offers`, this.newOffer).subscribe({
+    this.http.post(`${this.API_BASE}/job-offers`, this.newOffer, { headers: this.getHeaders() }).subscribe({
       next: () => {
         this.loadMyOffers();
         this.closeModal();
@@ -80,7 +107,7 @@ export class CompanyDashboardComponent implements OnInit {
 
   updateOffer() {
     if (this.selectedOfferId) {
-      this.http.put(`${this.API_BASE}/job-offers/${this.selectedOfferId}`, this.newOffer).subscribe({
+      this.http.put(`${this.API_BASE}/job-offers/${this.selectedOfferId}`, this.newOffer, { headers: this.getHeaders() }).subscribe({
         next: () => {
           this.loadMyOffers();
           this.closeModal();
@@ -92,7 +119,7 @@ export class CompanyDashboardComponent implements OnInit {
 
   eliminarOferta(id: number) {
     if (confirm('¿Estás seguro de que deseas eliminar esta vacante?')) {
-      this.http.delete(`${this.API_BASE}/job-offers/${id}`).subscribe({
+      this.http.delete(`${this.API_BASE}/job-offers/${id}`, { headers: this.getHeaders() }).subscribe({
         next: () => {
           this.myOffers = this.myOffers.filter(j => j.id !== id);
         },
@@ -101,7 +128,8 @@ export class CompanyDashboardComponent implements OnInit {
     }
   }
 
-  // MODALES
+  // --- GESTIÓN DE MODALES ---
+
   openCreateModal() {
     this.isEditing = false;
     this.resetForm();
@@ -111,7 +139,12 @@ export class CompanyDashboardComponent implements OnInit {
   openEditModal(job: any) {
     this.isEditing = true;
     this.selectedOfferId = job.id;
-    this.newOffer = { ...job };
+    this.newOffer = { 
+      title: job.title, 
+      description: job.description, 
+      location: job.location, 
+      is_active: job.is_active 
+    };
     this.showModal = true;
   }
 
@@ -125,6 +158,8 @@ export class CompanyDashboardComponent implements OnInit {
     this.selectedOfferId = null;
   }
 
+  // --- GESTIÓN DE ENTREVISTAS ---
+
   openInterviewModal(candidate: any) {
     this.selectedCandidate = candidate;
     this.interviewMessage = `Hola ${candidate.name}, nos ha gustado tu perfil y queremos agendar una entrevista contigo.`;
@@ -132,10 +167,18 @@ export class CompanyDashboardComponent implements OnInit {
   }
 
   confirmInterview() {
+    if (!this.selectedCandidate) return;
+
     this.messageService.sendInterviewRequest(this.selectedCandidate.id, this.interviewMessage)
-      .subscribe(() => {
-        alert('¡Invitación enviada!');
-        this.showInterviewModal = false;
+      .subscribe({
+        next: () => {
+          alert('¡Invitación enviada con éxito!');
+          this.showInterviewModal = false;
+        },
+        error: (err) => {
+          console.error('Error enviando mensaje:', err);
+          alert('Hubo un problema al enviar la invitación.');
+        }
       });
   }
 }

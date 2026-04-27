@@ -1,24 +1,30 @@
 <nav class="flex items-center gap-6">
-<a [routerLink]="homeRoute" routerLinkActive="active-class">Inicio</a>
+  <a [routerLink]="homeRoute" routerLinkActive="active-class">Inicio</a>
 
-<a *ngIf="userRole === 'user'" routerLink="/dashboard/my-applications">Mis Postulaciones</a>
-<a *ngIf="userRole === 'company'" routerLink="/dashboard/my-offers">Mis Ofertas</a>
+  @if (userRole === 'user') {
+  <a routerLink="/dashboard/my-applications" routerLinkActive="active-class">Mis Postulaciones</a>
+  }
 
-<a [routerLink]="profileRoute" routerLinkActive="active-class">Perfil</a>
+  @if (userRole === 'company') {
+  <a routerLink="/dashboard/my-offers" routerLinkActive="active-class">Mis Ofertas</a>
+  }
+
+  <a [routerLink]="profileRoute" routerLinkActive="active-class">Perfil</a>
   <div class="relative ml-4">
-    <button
-      (click)="toggleMenu()"
-      class="w-9 h-9 bg-[#dbeafe] rounded-full flex items-center justify-center text-[#1e3a8a] font-semibold text-sm hover:bg-[#bfdbfe] transition border-2 border-white shadow-sm"
-    >
+    <button (click)="toggleMenu()"
+      class="w-9 h-9 bg-[#dbeafe] rounded-full flex items-center justify-center text-[#1e3a8a] font-semibold text-sm hover:bg-[#bfdbfe] transition border-2 border-white shadow-sm">
       {{ userInitial }}
     </button>
 
-    <div *ngIf="isMenuOpen" class="absolute right-0 mt-3 w-52 bg-white rounded-xl border border-[#e5e7eb] shadow-lg py-2 z-[100]">
+    <div *ngIf="isMenuOpen"
+      class="absolute right-0 mt-3 w-52 bg-white rounded-xl border border-[#e5e7eb] shadow-lg py-2 z-[100]">
       <div class="px-4 py-2 border-b border-gray-100 mb-1">
         <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Usuario</p>
         <p class="text-sm font-medium text-gray-700 truncate">{{ userName }}</p>
       </div>
-      <button (click)="onLogout()" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition flex items-center gap-2">Cerrar sesión</button>
+      <button (click)="onLogout()"
+        class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition flex items-center gap-2">Cerrar
+        sesión</button>
     </div>
     <div *ngIf="isMenuOpen" class="fixed inset-0 z-[90]" (click)="isMenuOpen = false"></div>
   </div>

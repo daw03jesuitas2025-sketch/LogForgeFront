@@ -1,24 +1,33 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { ProfileService } from '../../../services/profile.service';
 @Component({
   selector: 'app-cv-sidebar',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
-      <h3 class="font-bold text-gray-700">Tu CV</h3>
-      <div class="w-full bg-gray-100 h-2 rounded-full">
-        <div class="bg-green-500 h-full rounded-full transition-all" 
-             [style.width.%]="completionPercentage"></div>
-      </div>
-      <p class="text-xs text-gray-500">Fortaleza del perfil: {{ completionPercentage }}%</p>
-      <button class="w-full py-2 bg-blue-600 text-white rounded-lg text-sm font-bold">
-        Descargar CV (PDF)
-      </button>
-    </div>
-  `
+  templateUrl: './cv-sidebar.component.html' // Apunta al archivo HTML
 })
 export class CvSidebarComponent {
-  @Input() completionPercentage: number = 0; 
-  @Input() cvPath: string = ''; }
+  @Input() completionPercentage: number = 0;
+
+  constructor(private profileService: ProfileService) {}
+
+  downloadResume() {
+    this.profileService.downloadResume().subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `mi_curriculum_logforge.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      },
+      error: (err: any) => {
+        console.error('Error descargando CV:', err);
+        alert('No se pudo generar el PDF. Revisa que tu perfil tenga datos.');
+      }
+    });
+  }
+}

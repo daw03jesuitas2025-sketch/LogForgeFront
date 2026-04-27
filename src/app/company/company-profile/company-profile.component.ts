@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // Añadido HttpHeaders
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -20,7 +20,8 @@ export class CompanyProfileComponent implements OnInit {
   loading: boolean = true;
   successMessage: string = '';
 
-  private API_URL = 'http://127.0.0.1:8000/api/company/my-profile';
+  // Usamos la variable de environment para ser consistentes
+  private API_URL = `${environment.apiUrl}/company/my-profile`;
 
   constructor(private http: HttpClient) {}
 
@@ -28,24 +29,39 @@ export class CompanyProfileComponent implements OnInit {
     this.loadProfile();
   }
 
+  // Función auxiliar para obtener los headers con el token
+  private getHeaders() {
+    const token = localStorage.getItem('auth_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
   loadProfile() {
-    this.http.get(this.API_URL).subscribe({
+    this.http.get(this.API_URL, { headers: this.getHeaders() }).subscribe({
       next: (data: any) => {
+        // Si el backend devuelve el perfil (aunque sea vacío), lo asignamos
         this.profile = data;
         this.loading = false;
       },
-      error: (err) => console.error('Error al cargar perfil', err)
+      error: (err) => {
+        console.error('Error al cargar perfil:', err);
+        this.loading = false;
+      }
     });
   }
 
   updateProfile() {
-    // Usamos PUT para actualizar los datos en el servidor
-    this.http.put(this.API_URL, this.profile).subscribe({
-      next: () => {
+    this.http.put(this.API_URL, this.profile, { headers: this.getHeaders() }).subscribe({
+      next: (response: any) => {
         this.successMessage = '¡Perfil actualizado con éxito!';
+        this.profile = response; // Actualizamos con lo que devuelve el servidor
         setTimeout(() => this.successMessage = '', 3000);
       },
-      error: (err) => alert('Error al actualizar el perfil')
+      error: (err) => {
+        console.error('Error en update:', err);
+        alert('Error al actualizar el perfil');
+      }
     });
   }
 }

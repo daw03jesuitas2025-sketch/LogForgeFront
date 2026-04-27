@@ -117,4 +117,5 @@ export class ProfileComponent implements OnInit {
       error: (err) => alert('No se pudo eliminar.')
     });
   }
+
 }

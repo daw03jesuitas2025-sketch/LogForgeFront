@@ -1,5 +1,5 @@
 // src/environments/environment.prod.ts
 export const environment = {
   production: true,
-  apiUrl: "https://logforge-api.azurewebsites.net/api" // Aunque no exista aún
+  apiUrl: "https://logforgeback.up.railway.app/" // Aunque no exista aún
 };

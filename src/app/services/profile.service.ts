@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
-  private apiUrl = 'http://localhost:8000/api'; 
+  private apiUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) { }
 
   private getHeaders() {
     // IMPORTANTE: Asegúrate de que en el login guardas 'auth_token'
-    const token = localStorage.getItem('auth_token'); 
+    const token = localStorage.getItem('auth_token');
     return {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`
@@ -65,4 +66,20 @@ export class ProfileService {
   deleteSkill(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/skills/${id}`, this.getHeaders());
   }
+  // Descargar CV / resume como blob
+downloadResume(): Observable<Blob> {
+  
+  const token = localStorage.getItem('auth_token');
+  
+  // Forzamos los headers correctos
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`,
+    'Accept': 'application/json' // Esto evita que Laravel intente redirigir al login
+  });
+
+  return this.http.get(`${this.apiUrl}/profile/resume`, {
+    headers: headers,
+    responseType: 'blob'
+  });
+}
 }

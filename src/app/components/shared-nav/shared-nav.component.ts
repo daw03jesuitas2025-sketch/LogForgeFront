@@ -17,13 +17,13 @@ export class SharedNavComponent implements OnInit {
   isMenuOpen = false;
   userInitial: string = 'U';
   userName: string = 'Usuario';
-  userRole: string = 'user';
+  userRole: string = '';
 
   constructor(
     private auth: AuthService,
     private router: Router,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadUser();
@@ -41,7 +41,8 @@ export class SharedNavComponent implements OnInit {
       this.userInitial = savedName.charAt(0).toUpperCase();
     }
 
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth_token');
+
     if (token) {
       const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
       this.http.get<any>(`${environment.apiUrl}/me`, { headers }).subscribe({
@@ -73,12 +74,12 @@ export class SharedNavComponent implements OnInit {
       }
     });
   }
-get homeRoute(): string {
-  return this.userRole === 'company' ? '/dashboard/company' : '/dashboard/landing';
-}
+  get homeRoute(): string {
+    return this.userRole === 'company' ? '/dashboard/company' : '/dashboard/landing';
+  }
 
-get profileRoute(): string {
-  return this.userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile';
-}
+  get profileRoute(): string {
+    return this.userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile';
+  }
 
 }
