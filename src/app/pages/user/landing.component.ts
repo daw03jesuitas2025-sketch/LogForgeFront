@@ -23,8 +23,7 @@ export class LandingComponent implements OnInit {
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
   ngOnInit(): void {
-    // 1. Cargar ofertas globales
-    this.http.get<any[]>(`http://${environment.apiUrl}/api/job-offers`).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/job-offers`).subscribe({
       next: (data) => this.jobOffers = data,
       error: (err) => console.error('Error cargando ofertas:', err)
     });
@@ -38,7 +37,7 @@ export class LandingComponent implements OnInit {
 
   // Helper para obtener headers rápidamente
   private getHeaders() {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('token');
     return {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`
@@ -47,7 +46,7 @@ export class LandingComponent implements OnInit {
   }
 
   loadCurrentUser() {
-    this.http.get<any>('http://${environment.apiUrl/api/me', this.getHeaders()).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/me`, this.getHeaders()).subscribe({
       next: (user) => this.currentUser = user,
       error: (err) => console.log('Error User:', err)
     });
@@ -61,14 +60,14 @@ export class LandingComponent implements OnInit {
   }
 
   loadSuggestions() {
-    this.http.get<any[]>('http://${environment.apiUrl/api/suggestions', this.getHeaders()).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/suggestions`, this.getHeaders()).subscribe({
       next: (data) => this.suggestions = data,
       error: (err) => console.error('Error Suggestions:', err)
     });
   }
 
   loadMyApplications() {
-    this.http.get<any[]>('http://${environment.apiUrl/api/my-applications', this.getHeaders()).subscribe({
+    this.http.get<any[]>(`${environment.apiUrl}/my-applications`, this.getHeaders()).subscribe({
       next: (data) => {
         this.appliedJobs = data;
         console.log('Mis postulaciones:', data);
@@ -83,7 +82,7 @@ export class LandingComponent implements OnInit {
       message: 'Hola, me interesa esta vacante.'
     };
 
-    this.http.post('http://${environment.apiUrl/api/applications', payload, this.getHeaders()).subscribe({
+    this.http.post(`${environment.apiUrl}/applications`, payload, this.getHeaders()).subscribe({
       next: (res) => {
         alert('¡Postulación enviada con éxito!');
         this.loadMyApplications(); // Recarga la lista lateral automáticamente
