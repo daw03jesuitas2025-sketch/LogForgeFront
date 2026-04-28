@@ -35,7 +35,7 @@ export class CompanyDashboardComponent implements OnInit {
     is_active: true
   };
 
-  private API_BASE = 'http://127.0.0.1:8000/api/company';
+  private API_BASE = 'http://${environment.apiUrl/api/company';
 
   constructor(
     private http: HttpClient, 

@@ -29,14 +29,14 @@ export class MyApplicationsComponent implements OnInit {
   }
 
   loadCurrentUser() {
-    this.http.get<any>('http://127.0.0.1:8000/api/me', this.getHeaders()).subscribe({
+    this.http.get<any>('http://${environment.apiUrl/api/me', this.getHeaders()).subscribe({
       next: (user) => this.currentUser = user,
       error: (err) => console.log('Error User:', err)
     });
   }
 
   loadMyApplications() {
-    this.http.get<any[]>('http://127.0.0.1:8000/api/my-applications', this.getHeaders()).subscribe({
+    this.http.get<any[]>('http://${environment.apiUrl/api/my-applications', this.getHeaders()).subscribe({
       next: (data) => {
         this.appliedJobs = data;
         console.log('Mis postulaciones:', data);

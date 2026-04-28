@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from '@services/message.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-landing',
@@ -23,7 +24,7 @@ export class LandingComponent implements OnInit {
 
   ngOnInit(): void {
     // 1. Cargar ofertas globales
-    this.http.get<any[]>('http://127.0.0.1:8000/api/job-offers').subscribe({
+    this.http.get<any[]>(`http://${environment.apiUrl}/api/job-offers`).subscribe({
       next: (data) => this.jobOffers = data,
       error: (err) => console.error('Error cargando ofertas:', err)
     });
@@ -46,28 +47,28 @@ export class LandingComponent implements OnInit {
   }
 
   loadCurrentUser() {
-    this.http.get<any>('http://127.0.0.1:8000/api/me', this.getHeaders()).subscribe({
+    this.http.get<any>('http://${environment.apiUrl/api/me', this.getHeaders()).subscribe({
       next: (user) => this.currentUser = user,
       error: (err) => console.log('Error User:', err)
     });
   }
   // Crea este método para obtener las ofertas filtradas
- get filteredJobOffers() {
-  if (!this.jobOffers) return [];
-  return this.jobOffers.filter(job =>
-    job.title.toLowerCase().includes(this.searchTerm.toLowerCase())
-  );
-}
+  get filteredJobOffers() {
+    if (!this.jobOffers) return [];
+    return this.jobOffers.filter(job =>
+      job.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
 
   loadSuggestions() {
-    this.http.get<any[]>('http://127.0.0.1:8000/api/suggestions', this.getHeaders()).subscribe({
+    this.http.get<any[]>('http://${environment.apiUrl/api/suggestions', this.getHeaders()).subscribe({
       next: (data) => this.suggestions = data,
       error: (err) => console.error('Error Suggestions:', err)
     });
   }
 
   loadMyApplications() {
-    this.http.get<any[]>('http://127.0.0.1:8000/api/my-applications', this.getHeaders()).subscribe({
+    this.http.get<any[]>('http://${environment.apiUrl/api/my-applications', this.getHeaders()).subscribe({
       next: (data) => {
         this.appliedJobs = data;
         console.log('Mis postulaciones:', data);
@@ -82,8 +83,7 @@ export class LandingComponent implements OnInit {
       message: 'Hola, me interesa esta vacante.'
     };
 
-    // AÑADIDO: getHeaders() para que Laravel sepa quién se postula
-    this.http.post('http://127.0.0.1:8000/api/applications', payload, this.getHeaders()).subscribe({
+    this.http.post('http://${environment.apiUrl/api/applications', payload, this.getHeaders()).subscribe({
       next: (res) => {
         alert('¡Postulación enviada con éxito!');
         this.loadMyApplications(); // Recarga la lista lateral automáticamente
@@ -100,11 +100,18 @@ export class LandingComponent implements OnInit {
 
   eliminarOferta(id: number) {
     if (confirm('¿Borrar oferta?')) {
-      this.http.delete(`http://127.0.0.1:8000/api/job-offers/${id}`, this.getHeaders()).subscribe(() => {
-        this.jobOffers = this.jobOffers.filter(j => j.id !== id);
-      });
+      this.http.delete(`${environment.apiUrl}/job-offers/${id}`, this.getHeaders())
+        .subscribe({
+          next: () => {
+            this.jobOffers = this.jobOffers.filter(j => j.id !== id);
+          },
+          error: (err) => {
+            console.error('Error al eliminar:', err);
+          }
+        });
     }
   }
+
   loadMessages() {
     this.messageService.getMyMessages().subscribe({
       next: (data) => {
@@ -114,5 +121,4 @@ export class LandingComponent implements OnInit {
       error: (err) => console.error('Error cargando mensajes:', err)
     });
   }
-  
 }
