@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http'; // Añadido HttpHeaders
 import { environment } from '../../../environments/environment';
+import { CompanyService } from '@services/company.service';
 
 @Component({
   selector: 'app-company-profile',
@@ -16,14 +17,14 @@ export class CompanyProfileComponent implements OnInit {
     website: '',
     description: ''
   };
-  
+
   loading: boolean = true;
   successMessage: string = '';
 
   // Usamos la variable de environment para ser consistentes
   private API_URL = `${environment.apiUrl}/company/my-profile`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private companyService: CompanyService) { }
 
   ngOnInit(): void {
     this.loadProfile();
@@ -38,7 +39,7 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   loadProfile() {
-    this.http.get(this.API_URL, { headers: this.getHeaders() }).subscribe({
+    this.companyService.getMyProfile().subscribe({
       next: (data: any) => {
         // Si el backend devuelve el perfil (aunque sea vacío), lo asignamos
         this.profile = data;
@@ -52,7 +53,7 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   updateProfile() {
-    this.http.put(this.API_URL, this.profile, { headers: this.getHeaders() }).subscribe({
+    this.companyService.updateProfile(this.profile).subscribe({
       next: (response: any) => {
         this.successMessage = '¡Perfil actualizado con éxito!';
         this.profile = response; // Actualizamos con lo que devuelve el servidor

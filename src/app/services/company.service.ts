@@ -7,14 +7,18 @@ import { environment } from '../../environments/environment'; // Asegúrate de t
   providedIn: 'root'
 })
 export class CompanyService {
-private apiUrl = `https://${environment.apiUrl}/api/company`;
+  private apiUrl = `https://${environment.apiUrl}/api/company`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Obtener el perfil de la empresa autenticada
-getMyProfile(): Observable<any> {
-  return this.http.get<any>(`${this.apiUrl}/my-profile`);
-}
+  getMyProfile(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/my-profile`);
+  }
+  // editar perfil de empresa
+  updateProfile(data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/my-profile`, data);
+  }
 
   // Obtener las ofertas de esta empresa
   getMyOffers(): Observable<any[]> {
@@ -25,4 +29,5 @@ getMyProfile(): Observable<any> {
   getCandidates(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/candidates`);
   }
+
 }
