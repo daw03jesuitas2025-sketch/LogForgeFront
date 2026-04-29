@@ -29,34 +29,41 @@ export class SharedNavComponent implements OnInit {
     this.loadUser();
   }
 
-  loadUser() {
-    const savedRole = localStorage.getItem('userRole');
-    const savedName = localStorage.getItem('userName');
+loadUser() {
+  // 1. Carga inicial desde LocalStorage para evitar el parpadeo de la interfaz
+  const savedRole = localStorage.getItem('userRole');
+  const savedName = localStorage.getItem('userName');
+  const token = localStorage.getItem('token'); 
 
-    if (savedRole) {
-      this.userRole = savedRole.toLowerCase().trim();
-    }
-    if (savedName) {
-      this.userName = savedName;
-      this.userInitial = savedName.charAt(0).toUpperCase();
-    }
-
-    const token = localStorage.getItem('auth_token');
-
-    if (token) {
-      const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-      this.http.get<any>(`${environment.apiUrl}/me`, { headers }).subscribe({
-        next: (user: any) => {
-          if (user?.role) this.userRole = user.role.toLowerCase().trim();
-          if (user?.name) {
-            this.userName = user.name;
-            this.userInitial = user.name.charAt(0).toUpperCase();
-          }
-        },
-        error: (err: any) => console.error('Error cargando usuario en nav:', err)
-      });
-    }
+  if (savedRole) {
+    this.userRole = savedRole.toLowerCase().trim();
   }
+  if (savedName) {
+    this.userName = savedName;
+    this.userInitial = savedName.charAt(0).toUpperCase();
+  }
+
+  // 2. Si hay token, consultamos al servidor para asegurar que los datos son reales
+  if (token) {
+    this.http.get<any>(`https://${environment.apiUrl}/api/me`).subscribe({
+      next: (user: any) => {
+        if (user?.role) {
+          this.userRole = user.role.toLowerCase().trim();
+          localStorage.setItem('userRole', this.userRole); // Actualizamos por si cambió
+        }
+        if (user?.name) {
+          this.userName = user.name;
+          this.userInitial = user.name.charAt(0).toUpperCase();
+          localStorage.setItem('userName', user.name);
+        }
+      },
+      error: (err: any) => {
+        console.error('Error cargando usuario en nav:', err);
+        // Si el token es inválido (401), el interceptor limpiará el storage y redirigirá
+      }
+    });
+  }
+}
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
