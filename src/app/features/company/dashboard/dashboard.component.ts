@@ -61,7 +61,8 @@ export class CompanyDashboardComponent implements OnInit {
    * Genera los headers con el token Bearer para Laravel Sanctum
    */
   private getHeaders() {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('token');
+    // const token = localStorage.getItem('auth_token');
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
