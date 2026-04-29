@@ -5,8 +5,8 @@ import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
-  private apiUrl = 'http://localhost:8000/api';
-
+  
+private apiUrl = `https://${environment.apiUrl}/api`;
   constructor(private http: HttpClient) { }
 
   private getHeaders() {

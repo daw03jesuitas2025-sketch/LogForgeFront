@@ -13,7 +13,7 @@ private apiUrl = `${environment.apiUrl}/company`;
 
   // Obtener el perfil de la empresa autenticada
 getMyProfile(): Observable<any> {
-  return this.http.get<any>(`${environment.apiUrl}/company/my-profile`);
+  return this.http.get<any>(`${this.apiUrl}/company/my-profile`);
 }
 
   // Obtener las ofertas de esta empresa
