@@ -9,11 +9,12 @@ import { environment } from '../../environments/environment';
 export class AuthService {
 
   // private API = 'http://${environment.apiUrl/api';
+  private apiUrl = `https://${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient) {}
 
   register(data: { name: string; email: string; password: string; password_confirmation: string; role: string }) {
-    return this.http.post<any>(`${environment.apiUrl}/register`, data).pipe(
+    return this.http.post<any>(`${this.apiUrl}/register`, data).pipe(
       tap((res) => {
         this.saveSession(res.token, res.user);
       })
@@ -22,7 +23,7 @@ export class AuthService {
   
 
   login(data: any) {
-    return this.http.post<any>(`${environment.apiUrl}/login`, data).pipe(
+    return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
       tap(res => {
         this.saveSession(res.token, res.user);
       })
@@ -37,7 +38,7 @@ export class AuthService {
   }
 
   logout() {
-    return this.http.post<any>(`${environment.apiUrl}/logout`, {}).pipe(
+    return this.http.post<any>(`${this.apiUrl}/logout`, {}).pipe(
       finalize(() => localStorage.clear())
     );
   }
@@ -51,7 +52,7 @@ export class AuthService {
     return localStorage.getItem('userRole');
   }
   getCandidates(): Observable<any[]> {
-  return this.http.get<any[]>(`${environment.apiUrl}/candidates`);
+  return this.http.get<any[]>(`${this.apiUrl}/candidates`);
 }
   
 }

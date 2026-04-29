@@ -7,13 +7,13 @@ import { environment } from '../../environments/environment'; // Asegúrate de t
   providedIn: 'root'
 })
 export class CompanyService {
-private apiUrl = `${environment.apiUrl}/company`;
+private apiUrl = `https://${environment.apiUrl}/api/company`;
 
   constructor(private http: HttpClient) {}
 
   // Obtener el perfil de la empresa autenticada
 getMyProfile(): Observable<any> {
-  return this.http.get<any>(`${this.apiUrl}/company/my-profile`);
+  return this.http.get<any>(`${this.apiUrl}/my-profile`);
 }
 
   // Obtener las ofertas de esta empresa
