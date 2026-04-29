@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-my-applications',
@@ -29,14 +30,14 @@ export class MyApplicationsComponent implements OnInit {
   }
 
   loadCurrentUser() {
-    this.http.get<any>('http://${environment.apiUrl/api/me', this.getHeaders()).subscribe({
+    this.http.get<any>(`https://${environment.apiUrl}/api/me`).subscribe({
       next: (user) => this.currentUser = user,
       error: (err) => console.log('Error User:', err)
     });
   }
 
   loadMyApplications() {
-    this.http.get<any[]>('http://${environment.apiUrl/api/my-applications', this.getHeaders()).subscribe({
+    this.http.get<any[]>(`https://${environment.apiUrl}/api/my-applications`).subscribe({
       next: (data) => {
         this.appliedJobs = data;
         console.log('Mis postulaciones:', data);

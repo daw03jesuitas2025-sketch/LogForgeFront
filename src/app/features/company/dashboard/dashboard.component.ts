@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from '@services/message.service';
 import { CompanyService } from '@services/company.service';
+import { environment } from 'src/environments/environment'; // mirar si es este o prod
 
 @Component({
   selector: 'app-company-dashboard',
@@ -35,7 +36,7 @@ export class CompanyDashboardComponent implements OnInit {
     is_active: true
   };
 
-  private API_BASE = 'http://${environment.apiUrl/api/company';
+  private API_BASE = `https://${environment.apiUrl}/api/company`;
 
   constructor(
     private http: HttpClient, 
