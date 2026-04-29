@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 export class MyApplicationsComponent implements OnInit {
   appliedJobs: any[] = [];
   currentUser: any = null;
+  private API_BASE = `https://${environment.apiUrl}/api`; 
 
   constructor(private http: HttpClient) { }
 
@@ -21,7 +22,7 @@ export class MyApplicationsComponent implements OnInit {
   }
 
   private getHeaders() {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('token');
     return {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`
@@ -30,14 +31,14 @@ export class MyApplicationsComponent implements OnInit {
   }
 
   loadCurrentUser() {
-    this.http.get<any>(`https://${environment.apiUrl}/api/me`).subscribe({
+    this.http.get<any>(`${this.API_BASE}/me`, this.getHeaders()).subscribe({
       next: (user) => this.currentUser = user,
       error: (err) => console.log('Error User:', err)
     });
   }
 
   loadMyApplications() {
-    this.http.get<any[]>(`https://${environment.apiUrl}/api/my-applications`).subscribe({
+    this.http.get<any[]>(`${this.API_BASE}/my-applications`, this.getHeaders()).subscribe({
       next: (data) => {
         this.appliedJobs = data;
         console.log('Mis postulaciones:', data);

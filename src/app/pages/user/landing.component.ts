@@ -22,8 +22,10 @@ export class LandingComponent implements OnInit {
 
   constructor(private http: HttpClient, private messageService: MessageService) { }
 
+  private API_BASE = `https://${environment.apiUrl}/api`;
+
   ngOnInit(): void {
-    this.http.get<any[]>(`${environment.apiUrl}/job-offers`).subscribe({
+    this.http.get<any[]>(`${this.API_BASE}/job-offers`).subscribe({
       next: (data) => this.jobOffers = data,
       error: (err) => console.error('Error cargando ofertas:', err)
     });
@@ -46,7 +48,7 @@ export class LandingComponent implements OnInit {
   }
 
   loadCurrentUser() {
-    this.http.get<any>(`${environment.apiUrl}/me`, this.getHeaders()).subscribe({
+    this.http.get<any>(`${this.API_BASE}/me`, this.getHeaders()).subscribe({
       next: (user) => this.currentUser = user,
       error: (err) => console.log('Error User:', err)
     });
@@ -60,14 +62,14 @@ export class LandingComponent implements OnInit {
   }
 
   loadSuggestions() {
-    this.http.get<any[]>(`${environment.apiUrl}/suggestions`, this.getHeaders()).subscribe({
+    this.http.get<any[]>(`${this.API_BASE}/suggestions`, this.getHeaders()).subscribe({
       next: (data) => this.suggestions = data,
       error: (err) => console.error('Error Suggestions:', err)
     });
   }
 
   loadMyApplications() {
-    this.http.get<any[]>(`${environment.apiUrl}/my-applications`, this.getHeaders()).subscribe({
+    this.http.get<any[]>(`${this.API_BASE}/my-applications`, this.getHeaders()).subscribe({
       next: (data) => {
         this.appliedJobs = data;
         console.log('Mis postulaciones:', data);
@@ -82,7 +84,7 @@ export class LandingComponent implements OnInit {
       message: 'Hola, me interesa esta vacante.'
     };
 
-    this.http.post(`${environment.apiUrl}/applications`, payload, this.getHeaders()).subscribe({
+    this.http.post(`${this.API_BASE}/applications`, payload, this.getHeaders()).subscribe({
       next: (res) => {
         alert('¡Postulación enviada con éxito!');
         this.loadMyApplications(); // Recarga la lista lateral automáticamente
@@ -99,7 +101,7 @@ export class LandingComponent implements OnInit {
 
   eliminarOferta(id: number) {
     if (confirm('¿Borrar oferta?')) {
-      this.http.delete(`${environment.apiUrl}/job-offers/${id}`, this.getHeaders())
+      this.http.delete(`${this.API_BASE}/job-offers/${id}`, this.getHeaders())
         .subscribe({
           next: () => {
             this.jobOffers = this.jobOffers.filter(j => j.id !== id);
