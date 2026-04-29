@@ -30,4 +30,8 @@ export class CompanyService {
     return this.http.get<any[]>(`${this.apiUrl}/candidates`);
   }
 
+  // ver candidatos que se han postulado a una oferta concreta
+  getOfferApplications(offerId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/job-offers/${offerId}/applications`);
+  }
 }

@@ -81,12 +81,35 @@ loadUser() {
       }
     });
   }
-  get homeRoute(): string {
-    return this.userRole === 'company' ? '/dashboard/company' : '/dashboard/landing';
-  }
+  // get homeRoute(): string {
+  //   return this.userRole === 'company' ? '/dashboard/company' : '/dashboard/landing';
+  // }
 
-  get profileRoute(): string {
-    return this.userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile';
-  }
+  // get profileRoute(): string {
+  //   return this.userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile';
+  // }
+
+  // Dentro de tu SharedNavComponent
+
+// 1. Ruta de Inicio
+get homeRoute(): string {
+  // Empresa -> Su dashboard con métricas
+  // Alumno -> Su listado de ofertas disponibles para postular
+  return this.userRole === 'company' ? '/dashboard/company' : '/dashboard/landing';
+}
+
+// 2. Ruta de "Mis Ofertas"
+get offersRoute(): string {
+  // Empresa -> Las ofertas que ella ha publicado (para ver candidatos)
+  // Alumno -> Las ofertas en las que él está participando (sus aplicaciones)
+  return this.userRole === 'company' ? '/dashboard/my-offers' : '/dashboard/my-applications';
+}
+
+// 3. Ruta de Perfil
+get profileRoute(): string {
+  // Empresa -> Formulario con nombre de empresa, CIF, web...
+  // Alumno -> Formulario con nombre, apellidos, CV...
+  return this.userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile';
+}
 
 }

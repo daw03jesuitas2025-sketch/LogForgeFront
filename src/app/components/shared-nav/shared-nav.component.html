@@ -1,15 +1,10 @@
 <nav class="flex items-center gap-6">
   <a [routerLink]="homeRoute" routerLinkActive="active-class">Inicio</a>
 
-  @if (userRole === 'user') {
-  <a routerLink="/dashboard/my-applications" routerLinkActive="active-class">Mis Postulaciones</a>
-  }
-
-  @if (userRole === 'company') {
-  <a routerLink="/dashboard/my-offers" routerLinkActive="active-class">Mis Ofertas</a>
-  }
+  <a [routerLink]="offersRoute" routerLinkActive="active-class">Mis Ofertas</a>
 
   <a [routerLink]="profileRoute" routerLinkActive="active-class">Perfil</a>
+
   <div class="relative ml-4">
     <button (click)="toggleMenu()"
       class="w-9 h-9 bg-[#dbeafe] rounded-full flex items-center justify-center text-[#1e3a8a] font-semibold text-sm hover:bg-[#bfdbfe] transition border-2 border-white shadow-sm">
@@ -23,10 +18,11 @@
         <p class="text-sm font-medium text-gray-700 truncate">{{ userName }}</p>
       </div>
       <button (click)="onLogout()"
-        class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition flex items-center gap-2">Cerrar
-        sesión</button>
+        class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition flex items-center gap-2">
+        Cerrar sesión
+      </button>
     </div>
+    
     <div *ngIf="isMenuOpen" class="fixed inset-0 z-[90]" (click)="isMenuOpen = false"></div>
   </div>
-
 </nav>

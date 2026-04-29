@@ -14,6 +14,7 @@ import { UsersListComponent } from './admin/users-list/users-list.component';
 import { CompaniesListComponent } from './admin/companies-list/companies-list.component';
 import { JobOffersListComponent } from './admin/offers-list/offers-list.component';
 import { CompanyProfileComponent } from './company/company-profile/company-profile.component';
+import { MyOffersComponent } from './company/my-offers/my-offers.component';
 
 export const routes: Routes = [
   // RUTAS PÚBLICAS
@@ -21,7 +22,7 @@ export const routes: Routes = [
     path: '',
     component: PublicLayoutComponent,
     children: [
-      { path: '', component: HomeComponent }, 
+      { path: '', component: HomeComponent },
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
     ]
@@ -32,10 +33,11 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       { path: 'landing', component: LandingComponent },
-      { path: 'profile', component: ProfileComponent }, 
+      { path: 'profile', component: ProfileComponent },
       { path: 'company', component: CompanyDashboardComponent },
       { path: 'my-applications', component: MyApplicationsComponent },
-{ path: 'company-profile', component: CompanyProfileComponent },
+      { path: 'company-profile', component: CompanyProfileComponent },
+      { path: 'my-offers', component: MyOffersComponent },
     ]
   },
   {
