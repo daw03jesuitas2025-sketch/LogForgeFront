@@ -20,19 +20,19 @@
                 class="w-14 h-14 bg-slate-50 border border-gray-100 rounded-lg flex items-center justify-center"
               >
                 <img
-                  *ngIf="app.job_offer?.user?.company_profile?.logo"
-                  [src]="app.job_offer.user.company_profile.logo"
+                  *ngIf="app.jobOffer?.user?.companyProfile?.logo"
+                  [src]="app.jobOffer?.user?.companyProfile?.logo"
                   class="object-contain p-2"
                 />
 
                 <span
-                  *ngIf="!app.job_offer?.user?.company_profile?.logo"
+                  *ngIf="!app.jobOffer?.user?.companyProfile?.logo"
                   class="text-indigo-600 font-bold text-xl uppercase"
                 >
                   {{
                     (
-                      app.job_offer?.user?.company_profile?.company_name ||
-                      app.job_offer?.title ||
+                      app.jobOffer?.user?.companyProfile?.company_name ||
+                      app.jobOffer?.title ||
                       "?"
                     ).charAt(0)
                   }}
@@ -41,10 +41,10 @@
 
               <div>
                 <h3 class="font-bold text-xl text-slate-800">
-                  {{ app.job_offer?.title }}
+                  {{ app.jobOffer?.title }}
                 </h3>
                 <p class="text-indigo-600 font-medium">
-                  {{ app.job_offer?.user?.company_profile?.company_name }}
+                  {{ app.jobOffer?.user?.companyProfile?.company_name }}
                 </p>
 
                 <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
@@ -52,7 +52,7 @@
                     Postulado el: {{ app.created_at | date: "dd/MM/yyyy" }}
                   </span>
                   <span class="flex items-center gap-1">
-                    {{ app.job_offer?.location }}
+                    {{ app.jobOffer?.location }}
                   </span>
                 </div>
               </div>

@@ -15,13 +15,14 @@ export class CompanyProfileComponent implements OnInit {
   profile: any = {
     company_name: '',
     website: '',
-    description: ''
+    description: '',
+    logo: null
   };
 
   loading: boolean = true;
   successMessage: string = '';
+  selectedFile: File | null = null; 
 
-  // Usamos la variable de environment para ser consistentes
   private API_URL = `${environment.apiUrl}/company/my-profile`;
 
   constructor(private companyService: CompanyService) { }
@@ -52,11 +53,33 @@ export class CompanyProfileComponent implements OnInit {
     });
   }
 
+onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.profile.logo = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   updateProfile() {
-    this.companyService.updateProfile(this.profile).subscribe({
+    const formData = new FormData();
+    formData.append('company_name', this.profile.company_name || '');
+    formData.append('website', this.profile.website || '');
+    formData.append('description', this.profile.description || '');
+    
+    if (this.selectedFile) {
+      formData.append('logo', this.selectedFile);
+    }
+
+    this.companyService.updateProfile(formData).subscribe({
       next: (response: any) => {
         this.successMessage = '¡Perfil actualizado con éxito!';
-        this.profile = response; // Actualizamos con lo que devuelve el servidor
+        this.profile = response;
+        this.selectedFile = null; // Limpiamos el archivo seleccionado
         setTimeout(() => this.successMessage = '', 3000);
       },
       error: (err) => {

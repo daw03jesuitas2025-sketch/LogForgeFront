@@ -11,11 +11,21 @@
     </div>
 
     <div class="bg-white rounded-[2.5rem] border border-purple-100 shadow-xl shadow-purple-100/50 overflow-hidden">
-      <div class="h-32 bg-gradient-to-r from-purple-100 to-purple-50 flex items-center justify-center">
-         <div class="w-20 h-20 bg-white rounded-3xl shadow-sm border-2 border-purple-100 flex items-center justify-center">
-            <span class="text-purple-600 font-black text-xl italic">LOG</span>
-         </div>
-      </div>
+<!-- Sustituye la sección del banner/logo por esta -->
+<div class="h-40 bg-gradient-to-r from-purple-100 to-purple-50 flex flex-col items-center justify-center relative">
+  <div class="group relative w-24 h-24 bg-white rounded-3xl shadow-sm border-2 border-purple-100 flex items-center justify-center overflow-hidden">
+    <!-- Imagen actual o previsualización -->
+    <img *ngIf="profile.logo" [src]="profile.logo" class="w-full h-full object-contain p-2">
+    <span *ngIf="!profile.logo" class="text-purple-600 font-black text-xl italic">LOG</span>
+
+    <!-- Overlay de edición al pasar el ratón -->
+    <label class="absolute inset-0 bg-purple-900/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center">
+      <input type="file" (change)="onFileSelected($event)" class="hidden" accept="image/*">
+      <span class="text-white text-[10px] font-black uppercase">Cambiar</span>
+    </label>
+  </div>
+  <p class="text-[10px] font-black text-purple-400 uppercase mt-2 tracking-widest">Logo de Empresa</p>
+</div>
 
       <form (ngSubmit)="updateProfile()" class="p-10 space-y-6">
         

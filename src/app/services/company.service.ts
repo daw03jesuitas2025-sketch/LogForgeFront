@@ -17,6 +17,9 @@ export class CompanyService {
   }
   // editar perfil de empresa
   updateProfile(data: any): Observable<any> {
+    if (data instanceof FormData) {
+      return this.http.post(`${this.apiUrl}/my-profile`, data);
+    }
     return this.http.put(`${this.apiUrl}/my-profile`, data);
   }
 
