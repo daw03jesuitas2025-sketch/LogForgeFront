@@ -37,8 +37,8 @@ export class MyApplicationsComponent implements OnInit {
     });
   }
 
-  loadMyApplications() {
-    this.http.get<any[]>(`${this.API_BASE}/my-applications`, this.getHeaders()).subscribe({
+ loadMyApplications() {
+    this.http.get<any[]>(`${this.API_BASE}/user/my-applications`, this.getHeaders()).subscribe({
       next: (data) => {
         this.appliedJobs = data;
         console.log('Mis postulaciones:', data);

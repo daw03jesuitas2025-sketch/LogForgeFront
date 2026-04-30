@@ -62,7 +62,6 @@ export class CompanyDashboardComponent implements OnInit {
    */
   private getHeaders() {
     const token = localStorage.getItem('token');
-    // const token = localStorage.getItem('auth_token');
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });

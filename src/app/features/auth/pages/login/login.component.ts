@@ -37,7 +37,7 @@ submit(): void {
 
       // --- PASO CRÍTICO: GUARDAR LOS DATOS ---
       // Guardamos el token para las cabeceras API
-      localStorage.setItem('auth_token', res.token); 
+      localStorage.setItem('token', res.token); 
       
       // Guardamos el rol para que el Nav sepa qué mostrar
       localStorage.setItem('role', res.user.role);

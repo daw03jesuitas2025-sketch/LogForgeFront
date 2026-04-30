@@ -33,7 +33,7 @@ export class CompanyProfileComponent implements OnInit {
 
   // Función auxiliar para obtener los headers con el token
   private getHeaders() {
-    const token = localStorage.getItem('auth_token');
+    const token = localStorage.getItem('token');
     return new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
