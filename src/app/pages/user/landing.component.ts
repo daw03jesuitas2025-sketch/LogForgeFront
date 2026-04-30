@@ -68,36 +68,43 @@ export class LandingComponent implements OnInit {
     });
   }
 
-  loadMyApplications() {
-    this.http.get<any[]>(`${this.API_BASE}/my-applications`, this.getHeaders()).subscribe({
-      next: (data) => {
-        this.appliedJobs = data;
-        console.log('Mis postulaciones:', data);
-      },
-      error: (err) => console.error('Error MyApps:', err)
-    });
-  }
+loadMyApplications() {
+  this.http.get<any[]>(`${this.API_BASE}/my-applications`, this.getHeaders()).subscribe({
+    next: (data) => {
+      this.appliedJobs = data;
+      console.log('Mis postulaciones cargadas:', this.appliedJobs);
+    },
+    error: (err) => console.error('Error MyApps:', err)
+  });
+}
 
-  postularse(jobId: number) {
-    const payload = {
-      job_offer_id: jobId,
-      message: 'Hola, me interesa esta vacante.'
-    };
+postularse(jobId: number) {
+  const payload = {
+    job_offer_id: jobId,
+    message: 'Hola, me interesa esta vacante.'
+  };
 
-    this.http.post(`${this.API_BASE}/applications`, payload, this.getHeaders()).subscribe({
-      next: (res) => {
-        alert('¡Postulación enviada con éxito!');
-        this.loadMyApplications(); // Recarga la lista lateral automáticamente
-      },
-      error: (err) => {
-        alert('Error: ' + (err.error.message || 'No se pudo enviar'));
-      }
-    });
-  }
+  this.http.post(`${this.API_BASE}/applications`, payload, this.getHeaders()).subscribe({
+    next: (res: any) => {
+      alert('¡Postulación enviada con éxito!');
+      const newApp = { job_offer_id: jobId };
+      this.appliedJobs = [...this.appliedJobs, newApp];
+      
+      this.loadMyApplications(); 
+    },
+    error: (err) => {
+      alert('Error: ' + (err.error.message || 'No se pudo enviar'));
+    }
+  });
+}
 
-  hasApplied(jobId: number): boolean {
-    return this.appliedJobs.some(app => app.job_offer_id === jobId);
-  }
+hasApplied(jobId: number): boolean {
+  if (!this.appliedJobs) return false;
+  return this.appliedJobs.some(app => 
+    app.job_offer_id === jobId || 
+    (app.job_offer && app.job_offer.id === jobId)
+  );
+}
 
   eliminarOferta(id: number) {
     if (confirm('¿Borrar oferta?')) {
