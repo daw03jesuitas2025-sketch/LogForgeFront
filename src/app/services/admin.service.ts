@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AdminService {
   // Definimos una única base para evitar confusiones
-private apiUrl = `https://${environment.apiUrl}/api`;
+  private apiUrl = `https://${environment.apiUrl}/api`;
   constructor(private http: HttpClient) { }
 
   /**
@@ -25,6 +25,18 @@ private apiUrl = `https://${environment.apiUrl}/api`;
     return this.http.get<any[]>(`${this.apiUrl}/admin/users`);
   }
 
+  createUser(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/admin/users`, userData);
+  }
+
+  updateUser(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/admin/users/${id}`, data);
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/admin/users/${id}`);
+  }
+
   /**
    * Obtiene la lista de ofertas de trabajo
    */
@@ -39,12 +51,13 @@ private apiUrl = `https://${environment.apiUrl}/api`;
     return this.http.get<any[]>(`${this.apiUrl}/admin/messages`);
   }
   getCompanies(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/admin/companies`);
-}
+    return this.http.get<any[]>(`${this.apiUrl}/admin/companies`);
+  }
 
-// cambbiar estado de oferta (activar/desactivar)
-toggleOfferStatus(id: number): Observable<any> {
-  return this.http.patch(`${this.apiUrl}/admin/offers/${id}/toggle`, {});
-}
+  // cambbiar estado de oferta (activar/desactivar)
+  toggleOfferStatus(id: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/admin/offers/${id}/toggle`, {});
+  }
+
 
 }

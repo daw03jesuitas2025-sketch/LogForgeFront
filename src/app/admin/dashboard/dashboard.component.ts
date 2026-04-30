@@ -42,7 +42,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     this.loadDashboardData();
     this.statsInterval = setInterval(() => {
       this.refreshStats();
-    }, 10000); 
+    }, 60000); // Refresca cada 60 segundos
   }
 
   ngOnDestroy() {
