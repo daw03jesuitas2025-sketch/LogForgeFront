@@ -5,8 +5,8 @@ import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
-  
-private apiUrl = `https://${environment.apiUrl}/api`;
+
+  private apiUrl = `https://${environment.apiUrl}/api`;
   constructor(private http: HttpClient) { }
 
   private getHeaders() {
@@ -67,19 +67,19 @@ private apiUrl = `https://${environment.apiUrl}/api`;
     return this.http.delete(`${this.apiUrl}/skills/${id}`, this.getHeaders());
   }
   // Descargar CV / resume como blob
-downloadResume(): Observable<Blob> {
-  
-  const token = localStorage.getItem('auth_token');
-  
-  // Forzamos los headers correctos
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${token}`,
-    'Accept': 'application/json' // Esto evita que Laravel intente redirigir al login
-  });
+  downloadResume(): Observable<Blob> {
 
-  return this.http.get(`${this.apiUrl}/profile/resume`, {
-    headers: headers,
-    responseType: 'blob'
-  });
-}
+    const token = localStorage.getItem('auth_token');
+
+    // Forzamos los headers correctos
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Accept': 'application/json'
+    });
+
+    return this.http.get(`${this.apiUrl}/profile/resume`, {
+      headers: headers,
+      responseType: 'blob'
+    });
+  }
 }

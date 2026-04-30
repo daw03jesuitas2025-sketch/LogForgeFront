@@ -85,24 +85,20 @@ export class ProfileComponent implements OnInit {
       : this.profileService.addEducation(formData);
   }
 
-  if (request) {
+if (request) {
     request.subscribe({
       next: (res: any) => {
-        console.log('Datos recibidos de Laravel:', res);
-        
-        // Si Laravel devuelve el usuario actualizado (con su relación profile)
-        if (this.currentType === 'basic' && res.user) {
-          this.profileData = res.user; 
+        if (this.currentType === 'basic') {
+          this.profileData = res; 
+          this.educations = res.educations || [];
+          this.jobs = res.experiences || [];
         } else {
-          // Para experiencias y educación, recargamos todo
           this.loadProfile();
         }
-
         this.isModalOpen = false;
       },
       error: (err) => {
         console.error('Error al guardar:', err);
-        alert('Error al guardar los cambios.');
       }
     });
   }

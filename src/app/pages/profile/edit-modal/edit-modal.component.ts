@@ -56,12 +56,19 @@ export class EditModalComponent implements OnInit {
   }
 
   private patchFormValues() {
-    if (!this.form) return;
+    if (!this.form || !this.data) return;
+    
+    // Hacemos una copia para no alterar el objeto original directamente
     const formattedData = { ...this.data };
 
-    if (this.type !== 'basic') {
-      if (this.data.start_date) formattedData.start_date = new Date(this.data.start_date).toISOString().split('T')[0];
-      if (this.data.end_date) formattedData.end_date = new Date(this.data.end_date).toISOString().split('T')[0];
+    // Solo intentamos procesar fechas si el formulario las requiere
+    if (this.type === 'experience' || this.type === 'education') {
+      if (this.data.start_date) {
+        formattedData.start_date = new Date(this.data.start_date).toISOString().split('T')[0];
+      }
+      if (this.data.end_date) {
+        formattedData.end_date = new Date(this.data.end_date).toISOString().split('T')[0];
+      }
     }
 
     this.form.patchValue(formattedData);
@@ -74,6 +81,7 @@ export class EditModalComponent implements OnInit {
   }
 
   onSaveSkills(value: string) {
+    // Convierte el string separado por comas en un array limpio
     const skillsArray = value.split(',').map(s => s.trim()).filter(s => s !== '');
     this.save.emit(skillsArray);
   }

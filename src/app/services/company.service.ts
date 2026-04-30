@@ -28,7 +28,7 @@ export class CompanyService {
     return this.http.get<any[]>(`${this.apiUrl}/my-offers`);
   }
 
-  // Obtener candidatos (estudiantes)
+  // Obtener candidatos
   getCandidates(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/candidates`);
   }
