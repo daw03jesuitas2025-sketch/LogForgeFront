@@ -84,24 +84,6 @@ export class ProfileComponent implements OnInit {
       ? this.profileService.updateEducation(this.selectedData.id, formData)
       : this.profileService.addEducation(formData);
   }
-
-if (request) {
-    request.subscribe({
-      next: (res: any) => {
-        if (this.currentType === 'basic') {
-          this.profileData = res; 
-          this.educations = res.educations || [];
-          this.jobs = res.experiences || [];
-        } else {
-          this.loadProfile();
-        }
-        this.isModalOpen = false;
-      },
-      error: (err) => {
-        console.error('Error al guardar:', err);
-      }
-    });
-  }
 }
   deleteElement(item: any, type: 'experience' | 'education') {
     const request = type === 'experience' 

@@ -1,5 +1,7 @@
 <div class="min-h-screen bg-[#f3f4f6] font-sans text-slate-900">
   <div class="max-w-4xl mx-auto px-4 py-8">
+    
+    <!-- Título de la sección -->
     <div class="flex items-center gap-3 mb-8">
       <div>
         <h2 class="text-2xl font-bold text-slate-800">Mis Postulaciones</h2>
@@ -9,92 +11,91 @@
       </div>
     </div>
 
+    <!-- Contenedor de las tarjetas -->
     <div class="space-y-4">
       @for (app of appliedJobs; track app.id) {
-        <div
-          class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow"
-        >
+        <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+          
           <div class="flex justify-between items-start">
             <div class="flex gap-4">
-              <div
-                class="w-14 h-14 bg-slate-50 border border-gray-100 rounded-lg flex items-center justify-center"
-              >
-                <img
-                  *ngIf="app.jobOffer?.user?.companyProfile?.logo"
-                  [src]="app.jobOffer?.user?.companyProfile?.logo"
-                  class="object-contain p-2"
-                />
-
-                <span
-                  *ngIf="!app.jobOffer?.user?.companyProfile?.logo"
-                  class="text-indigo-600 font-bold text-xl uppercase"
-                >
-                  {{
-                    (
-                      app.jobOffer?.user?.companyProfile?.company_name ||
-                      app.jobOffer?.title ||
-                      "?"
-                    ).charAt(0)
-                  }}
-                </span>
+              
+              <!-- Imagen/Logo de la Empresa -->
+              <div class="w-16 h-16 bg-slate-50 border border-gray-100 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0">
+                @if (app.job_offer?.user?.company_profile?.logo || app.jobOffer?.user?.companyProfile?.logo) {
+                  <img [src]="app.job_offer?.user?.company_profile?.logo || app.jobOffer?.user?.companyProfile?.logo" 
+                       class="object-contain w-full h-full p-2" 
+                       alt="Logo empresa" />
+                } @else {
+                  <span class="text-indigo-600 font-bold text-2xl uppercase">
+                    {{ (app.job_offer?.user?.company_profile?.company_name || app.jobOffer?.user?.companyProfile?.company_name || "?").charAt(0) }}
+                  </span>
+                }
               </div>
 
+              <!-- Información principal de la oferta -->
               <div>
-                <h3 class="font-bold text-xl text-slate-800">
-                  {{ app.jobOffer?.title }}
+                <h3 class="font-bold text-xl text-slate-800 leading-tight">
+                  {{ app.job_offer?.title || app.jobOffer?.title }}
                 </h3>
                 <p class="text-indigo-600 font-medium">
-                  {{ app.jobOffer?.user?.companyProfile?.company_name }}
+                  {{ app.job_offer?.user?.company_profile?.company_name || app.jobOffer?.user?.companyProfile?.company_name }}
                 </p>
 
-                <div class="flex items-center gap-4 mt-2 text-xs text-gray-400">
+                <div class="flex flex-wrap items-center gap-4 mt-2 text-xs text-gray-400">
                   <span class="flex items-center gap-1">
                     Postulado el: {{ app.created_at | date: "dd/MM/yyyy" }}
                   </span>
-                  <span class="flex items-center gap-1">
-                    {{ app.jobOffer?.location }}
+                  <span class="flex items-center gap-1 font-semibold text-slate-500 uppercase tracking-wider">
+                    Ubicación: {{ app.job_offer?.location || app.jobOffer?.location }}
                   </span>
                 </div>
               </div>
             </div>
 
+            <!-- Badge de Estado (Derecha) -->
             <div class="text-right">
-              <span
-                [ngClass]="{
+              <span [ngClass]="{
                   'bg-yellow-100 text-yellow-700': app.status === 'pending',
                   'bg-green-100 text-green-700': app.status === 'accepted',
-                  'bg-red-100 text-red-700': app.status === 'rejected',
+                  'bg-red-100 text-red-700': app.status === 'rejected'
                 }"
-                class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
-              >
+                class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border">
                 {{ app.status === "pending" ? "Pendiente" : app.status }}
               </span>
             </div>
           </div>
 
-          <div
-            *ngIf="app.cover_letter"
-            class="mt-4 p-3 bg-slate-50 rounded-lg border border-gray-100"
-          >
-            <p class="text-xs text-slate-600 italic">
-              "{{ app.cover_letter }}"
+          <!-- Bloque de Descripción (Lo que pedías añadir) -->
+          <div class="mt-5 pt-4 border-t border-gray-50">
+            <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2">Descripción del puesto</h4>
+            <p class="text-sm text-slate-600 leading-relaxed">
+              {{ app.job_offer?.description || app.jobOffer?.description }}
             </p>
           </div>
+
+          <!-- Bloque de Mensaje / Carta de Presentación -->
+          @if (app.cover_letter) {
+            <div class="mt-4 p-4 bg-indigo-50/40 rounded-xl border border-indigo-100/50">
+              <p class="text-[10px] font-bold text-indigo-400 uppercase mb-1 tracking-wider">Tu mensaje enviado:</p>
+              <p class="text-xs text-slate-600 italic leading-relaxed">
+                "{{ app.cover_letter }}"
+              </p>
+            </div>
+          }
+
         </div>
       } @empty {
-        <div
-          class="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-gray-200"
-        >
-          <h3 class="text-lg font-medium text-slate-800">
-            No tienes postulaciones activas
-          </h3>
-          <p class="text-gray-500 mb-6">
-            Explora ofertas y comienza tu carrera hoy mismo.
-          </p>
-          <a
-            routerLink="/dashboard/landing"
-            class="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold text-sm hover:bg-indigo-700 transition"
-          >
+        <!-- Vista cuando no hay datos -->
+        <div class="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-gray-200">
+          <div class="mb-4 flex justify-center">
+             <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-300">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+             </div>
+          </div>
+          <h3 class="text-lg font-medium text-slate-800">No tienes postulaciones activas</h3>
+          <p class="text-gray-500 mb-6">Explora ofertas y comienza tu carrera hoy mismo.</p>
+          <a routerLink="/dashboard/landing" 
+             class="inline-block bg-indigo-600 text-white px-8 py-2.5 rounded-full font-bold text-sm hover:bg-indigo-700 transition shadow-lg shadow-indigo-100">
             Buscar empleos
           </a>
         </div>
