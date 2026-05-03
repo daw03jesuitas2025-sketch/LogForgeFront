@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CompanyService } from '../../services/company.service';
+import { UserService } from 'src/app/services/user.service'; 
 
 @Component({
   selector: 'app-my-offers',
@@ -9,7 +10,8 @@ import { CompanyService } from '../../services/company.service';
   templateUrl: './my-offers.component.html'
 })
 export class MyOffersComponent implements OnInit {
-  offers: any[] = [];
+  appliedJobs: any[] = [];
+  //offers: any[] = [];
   selectedApplications: any[] = [];
   selectedOfferTitle: string = '';
   showModal: boolean = false;
@@ -24,7 +26,7 @@ export class MyOffersComponent implements OnInit {
   loadOffers() {
     this.companyService.getMyOffers().subscribe({
       next: (data) => {
-        this.offers = data;
+        this.appliedJobs = data;
         this.loading = false;
       },
       error: (err) => {

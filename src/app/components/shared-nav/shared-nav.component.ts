@@ -89,8 +89,6 @@ loadUser() {
   //   return this.userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile';
   // }
 
-  // Dentro de tu SharedNavComponent
-
 // 1. Ruta de Inicio
 get homeRoute(): string {
   // Empresa -> Su dashboard con métricas

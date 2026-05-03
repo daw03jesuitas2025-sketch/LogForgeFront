@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MessageService } from '@services/message.service';
+import { UserService } from '@services/user.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -20,24 +21,34 @@ export class LandingComponent implements OnInit {
   searchTerm: string = '';
   messages: any[] = [];
 
-  constructor(private http: HttpClient, private messageService: MessageService) { }
+  // Inyectamos el UserService
+  constructor(
+    private http: HttpClient, 
+    private messageService: MessageService,
+    private userService: UserService 
+  ) { }
 
-  private API_BASE = `https://${environment.apiUrl}/api`;
+  // Función para obtener la URL base limpia (evita el error de doble https://)
+  private get API_BASE() {
+    return environment.apiUrl.includes('http') 
+      ? `${environment.apiUrl}/api` 
+      : `https://${environment.apiUrl}/api`;
+  }
 
   ngOnInit(): void {
+    // 1. Cargar ofertas públicas (esta ruta es libre)
     this.http.get<any[]>(`${this.API_BASE}/job-offers`).subscribe({
       next: (data) => this.jobOffers = data,
       error: (err) => console.error('Error cargando ofertas:', err)
     });
 
-    // 2. Cargar datos privados del usuario
+    // 2. Cargar datos privados usando el UserService (esto arregla el 404)
     this.loadMyApplications();
     this.loadCurrentUser();
     this.loadSuggestions();
     this.loadMessages();
   }
 
-  // Helper para obtener headers rápidamente
   private getHeaders() {
     const token = localStorage.getItem('token');
     return {
@@ -48,12 +59,12 @@ export class LandingComponent implements OnInit {
   }
 
   loadCurrentUser() {
-    this.http.get<any>(`${this.API_BASE}/me`, this.getHeaders()).subscribe({
+    this.userService.getCurrentUser().subscribe({
       next: (user) => this.currentUser = user,
       error: (err) => console.log('Error User:', err)
     });
   }
-  // Crea este método para obtener las ofertas filtradas
+
   get filteredJobOffers() {
     if (!this.jobOffers) return [];
     return this.jobOffers.filter(job =>
@@ -68,63 +79,46 @@ export class LandingComponent implements OnInit {
     });
   }
 
-loadMyApplications() {
-  this.http.get<any[]>(`${this.API_BASE}/my-applications`, this.getHeaders()).subscribe({
-    next: (data) => {
-      this.appliedJobs = data;
-      console.log('Mis postulaciones cargadas:', this.appliedJobs);
-    },
-    error: (err) => console.error('Error MyApps:', err)
-  });
-}
+  loadMyApplications() {
+    this.userService.getMyApplications().subscribe({
+      next: (data) => {
+        this.appliedJobs = data;
+        console.log('Mis postulaciones cargadas correctamente');
+      },
+      error: (err) => console.error('Error MyApps:', err)
+    });
+  }
 
-postularse(jobId: number) {
-  const payload = {
-    job_offer_id: jobId,
-    message: 'Hola, me interesa esta vacante.'
-  };
+  postularse(jobId: number) {
+    const payload = {
+      job_offer_id: jobId,
+      message: 'Hola, me interesa esta vacante.'
+    };
 
-  this.http.post(`${this.API_BASE}/applications`, payload, this.getHeaders()).subscribe({
-    next: (res: any) => {
-      alert('¡Postulación enviada con éxito!');
-      const newApp = { job_offer_id: jobId };
-      this.appliedJobs = [...this.appliedJobs, newApp];
-      
-      this.loadMyApplications(); 
-    },
-    error: (err) => {
-      alert('Error: ' + (err.error.message || 'No se pudo enviar'));
-    }
-  });
-}
+    // Usamos el API_BASE corregido para evitar el doble https
+    this.http.post(`${this.API_BASE}/applications`, payload, this.getHeaders()).subscribe({
+      next: (res: any) => {
+        alert('¡Postulación enviada con éxito!');
+        this.loadMyApplications(); 
+      },
+      error: (err) => {
+        alert('Error: ' + (err.error.message || 'No se pudo enviar'));
+      }
+    });
+  }
 
-hasApplied(jobId: number): boolean {
-  if (!this.appliedJobs) return false;
-  return this.appliedJobs.some(app => 
-    app.job_offer_id === jobId || 
-    (app.job_offer && app.job_offer.id === jobId)
-  );
-}
-
-  eliminarOferta(id: number) {
-    if (confirm('¿Borrar oferta?')) {
-      this.http.delete(`${this.API_BASE}/job-offers/${id}`, this.getHeaders())
-        .subscribe({
-          next: () => {
-            this.jobOffers = this.jobOffers.filter(j => j.id !== id);
-          },
-          error: (err) => {
-            console.error('Error al eliminar:', err);
-          }
-        });
-    }
+  hasApplied(jobId: number): boolean {
+    if (!this.appliedJobs) return false;
+    return this.appliedJobs.some(app => 
+      app.job_offer_id === jobId || 
+      (app.job_offer && app.job_offer.id === jobId)
+    );
   }
 
   loadMessages() {
     this.messageService.getMyMessages().subscribe({
       next: (data) => {
         this.messages = data;
-        console.log('Mis mensajes:', data);
       },
       error: (err) => console.error('Error cargando mensajes:', err)
     });

@@ -1,68 +1,93 @@
-<div class="p-6">
-  <h2 class="text-2xl font-bold mb-6 text-gray-800">Mis Ofertas de Trabajo</h2>
-
-  <div class="grid gap-4">
-    <div
-      *ngFor="let offer of offers"
-      class="bg-white p-4 rounded-lg shadow border flex justify-between items-center"
-    >
+<div class="min-h-screen bg-[#f3f4f6] font-sans text-slate-900">
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="flex items-center gap-3 mb-8">
       <div>
-        <h3 class="font-bold text-lg text-blue-700">{{ offer.title }}</h3>
-        <p class="text-gray-500 text-sm">
-          {{ offer.location }} | {{ offer.type }}
+        <h2 class="text-2xl font-bold text-slate-800">Mis Postulaciones</h2>
+        <p class="text-sm text-slate-500">
+          Gestiona y revisa el estado de tus aplicaciones laborales
         </p>
       </div>
-      <button
-        (click)="verCandidatos(offer.id, offer.title)"
-        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-      >
-        Ver Candidatos ({{ offer.job_applications_count || 0 }})
-      </button>
     </div>
-  </div>
 
-  <div
-    *ngIf="showModal"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
-  >
-    <div
-      class="bg-white rounded-xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col"
-    >
-      <div class="p-4 border-b flex justify-between items-center bg-gray-50">
-        <h3 class="font-bold text-lg">
-          Candidatos para: {{ selectedOfferTitle }}
-        </h3>
-        <button
-          (click)="cerrarModal()"
-          class="text-gray-500 hover:text-red-500 text-2xl"
-        >
-          &times;
-        </button>
-      </div>
+    <div class="space-y-4">
+      @for (app of appliedJobs; track app.id) {
+        <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+          
+          <!-- Cabecera de la oferta -->
+          <div class="flex justify-between items-start mb-4">
+            <div class="flex gap-4">
+              <div class="w-14 h-14 bg-slate-50 border border-gray-100 rounded-lg flex items-center justify-center">
+                <img *ngIf="app.jobOffer?.user?.companyProfile?.logo"
+                     [src]="app.jobOffer?.user?.companyProfile?.logo"
+                     class="object-contain p-2" />
 
-      <div class="p-4 overflow-y-auto flex-1">
-        <div
-          *ngIf="selectedApplications.length === 0"
-          class="text-center py-10 text-gray-400"
-        >
-          No hay postulaciones para esta oferta aún.
-        </div>
+                <span *ngIf="!app.jobOffer?.user?.companyProfile?.logo"
+                      class="text-indigo-600 font-bold text-xl uppercase">
+                  {{ (app.jobOffer?.user?.companyProfile?.company_name || app.jobOffer?.title || "?").charAt(0) }}
+                </span>
+              </div>
 
-        <div
-          *ngFor="let app of selectedApplications"
-          class="flex items-center justify-between p-3 border-b hover:bg-gray-50"
-        >
-          <div>
-            <p class="font-semibold text-gray-800">{{ app.user.name }}</p>
-            <p class="text-sm text-gray-500">{{ app.user.email }}</p>
+              <div>
+                <h3 class="font-bold text-xl text-slate-800">
+                  {{ app.jobOffer?.title }}
+                </h3>
+                <p class="text-indigo-600 font-medium">
+                  {{ app.jobOffer?.user?.companyProfile?.company_name }}
+                </p>
+
+                <div class="flex items-center gap-4 mt-2">
+                  <span class="flex items-center gap-1 text-xs text-gray-400">
+                    <i class="far fa-calendar-alt"></i> Postulado: {{ app.created_at | date: "dd/MM/yyyy" }}
+                  </span>
+                  <!-- Ubicación con Estilo -->
+                  <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded text-[10px] font-bold uppercase">
+                    <i class="fas fa-map-marker-alt"></i> {{ app.jobOffer?.location }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Estado de la Candidatura -->
+            <div class="text-right">
+              <span [ngClass]="{
+                  'bg-yellow-100 text-yellow-700': app.status === 'pending',
+                  'bg-green-100 text-green-700': app.status === 'accepted',
+                  'bg-red-100 text-red-700': app.status === 'rejected'
+                }"
+                class="px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                {{ app.status === "pending" ? "Pendiente" : app.status }}
+              </span>
+            </div>
           </div>
-          <span
-            class="text-xs px-2 py-1 rounded bg-green-100 text-green-700 font-bold uppercase"
-          >
-            {{ app.status }}
-          </span>
+
+          <!-- DETALLES ADICIONALES DE LA OFERTA -->
+          <div class="mt-4 pt-4 border-t border-gray-50">
+            <h4 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-2">Descripción del Puesto</h4>
+            <p class="text-sm text-slate-600 leading-relaxed line-clamp-3">
+              {{ app.jobOffer?.description }}
+            </p>
+          </div>
+
+          <!-- Carta de Presentación (Si existe) -->
+          <div *ngIf="app.cover_letter" class="mt-4 p-3 bg-indigo-50/50 rounded-lg border border-indigo-100/50">
+            <h4 class="text-[10px] font-bold text-indigo-400 uppercase mb-1">Tu mensaje:</h4>
+            <p class="text-xs text-slate-600 italic leading-relaxed">
+              "{{ app.cover_letter }}"
+            </p>
+          </div>
+
         </div>
-      </div>
+      } @empty {
+        <!-- Estado Vacío -->
+        <div class="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-gray-200">
+          <h3 class="text-lg font-medium text-slate-800">No tienes postulaciones activas</h3>
+          <p class="text-gray-500 mb-6">Explora ofertas y comienza tu carrera hoy mismo.</p>
+          <a routerLink="/dashboard/landing" 
+             class="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold text-sm hover:bg-indigo-700 transition">
+            Buscar empleos
+          </a>
+        </div>
+      }
     </div>
   </div>
 </div>
