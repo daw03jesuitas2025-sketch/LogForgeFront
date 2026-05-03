@@ -1,15 +1,15 @@
 <div class="min-h-screen bg-[#f3f4f6] font-sans text-slate-900">
+
   <div class="max-w-6xl mx-auto px-4 py-6 grid grid-cols-12 gap-6">
 
-    <!-- COLUMNA IZQUIERDA: Perfil y Mensajes -->
-    <aside class="col-span-12 md:col-span-3 space-y-4">
-      
-      <!-- Card Perfil Usuario -->
+    <aside class="col-span-3 space-y-4">
+
       <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
         <div class="h-14 bg-[#e0e7ff]"></div>
         <div class="px-4 pb-4">
           <div class="relative flex justify-center">
-            <div class="absolute -top-8 w-16 h-16 bg-orange-200 rounded-full border-4 border-white flex items-center justify-center text-xl font-bold text-orange-700 shadow-sm">
+            <div
+              class="absolute -top-8 w-16 h-16 bg-orange-200 rounded-full border-4 border-white flex items-center justify-center text-xl font-bold text-orange-700 shadow-sm">
               {{ currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : '?' }}
             </div>
           </div>
@@ -17,12 +17,16 @@
             <h2 class="font-bold text-slate-800 hover:underline cursor-pointer">
               {{ currentUser?.name || 'Cargando...' }}
             </h2>
-            <p class="text-[11px] text-gray-500 mt-1 uppercase tracking-wider">
-              {{ currentUser?.profile?.title || 'Candidato' }}
+            <p class="text-[11px] text-gray-500 mt-1 uppercase">
+              {{ currentUser?.profile?.headline || 'Candidato en busca de retos' }}
             </p>
           </div>
 
           <div class="mt-4 pt-4 border-t border-gray-100 space-y-2">
+            <div class="flex justify-between text-[11px]">
+              <span class="text-gray-500 font-semibold">Email</span>
+              <span class="text-indigo-600 font-bold">{{ currentUser?.email }}</span>
+            </div>
             <div class="flex justify-between text-[11px]">
               <span class="text-gray-500 font-semibold">Postulaciones</span>
               <span class="text-indigo-600 font-bold">{{ appliedJobs.length }}</span>
@@ -31,124 +35,134 @@
         </div>
       </div>
 
-      <!-- Buscador Adaptado al Diseño -->
-      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-        <nav class="flex flex-col">
-          <div class="flex items-center gap-3 p-3 text-indigo-600 font-bold text-[10px] bg-indigo-50/50 border-l-4 border-indigo-500 uppercase tracking-wider">
-            <i class="fas fa-search"></i> Filtrar Ofertas
-          </div>
-          <div class="p-4">
-            <div class="relative w-full">
-              <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                <i class="fas fa-search text-xs"></i>
-              </span>
-              <input 
-                type="text" 
-                placeholder="Título del puesto..."
-                [(ngModel)]="searchTerm"
-                class="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs text-slate-700 outline-none focus:bg-white focus:border-indigo-400 transition shadow-sm"
-              >
-            </div>
-          </div>
-        </nav>
-      </div>
-
-      <!-- Bandeja de Mensajes -->
       <div class="bg-white rounded-xl border border-indigo-100 shadow-sm overflow-hidden">
-        <div class="p-4 border-b border-indigo-50 bg-indigo-50/30">
+        <div class="p-4 border-b border-indigo-50 bg-indigo-50/30 flex items-center gap-2">
           <h4 class="font-bold text-[10px] text-indigo-900 uppercase tracking-wider">Mis mensajes</h4>
         </div>
-        <div class="divide-y divide-gray-50 max-h-64 overflow-y-auto">
+
+        <div class="divide-y divide-gray-50">
           @for (msg of messages; track msg.id) {
-            <div class="p-4 hover:bg-indigo-50/30 transition cursor-pointer group">
-              <div class="flex justify-between items-start">
-                <span class="text-[9px] font-black text-indigo-600 uppercase">{{ msg.from_name }}</span>
-                <span class="text-[8px] text-gray-400">{{ msg.created_at | date:'dd MMM' }}</span>
-              </div>
-              <p class="text-[11px] font-bold text-slate-800 mt-1 line-clamp-1 italic">"{{ msg.subject }}"</p>
+          <div class="p-4 hover:bg-indigo-50/30 transition cursor-pointer group">
+            <div class="flex justify-between items-start">
+              <span class="text-[9px] font-black text-indigo-600 uppercase tracking-tighter">{{ msg.from_name }}</span>
+              <span class="text-[8px] text-gray-400">{{ msg.created_at | date:'dd MMM' }}</span>
             </div>
+            <p class="text-[11px] font-bold text-slate-800 mt-1 line-clamp-1 group-hover:text-indigo-700 transition">
+              {{ msg.subject }}
+            </p>
+            <p class="text-[10px] text-slate-500 mt-1 line-clamp-2 leading-relaxed italic">
+              "{{ msg.message }}"
+            </p>
+          </div>
           } @empty {
-            <div class="p-8 text-center text-[10px] text-gray-400">No hay mensajes.</div>
+          <div class="p-8 text-center">
+            <p class="text-[10px] text-gray-400 font-medium">Bandeja de entrada vacía</p>
+          </div>
           }
         </div>
+
+        @if (messages.length > 0) {
+        <button
+          class="w-full py-2.5 bg-indigo-50/50 text-indigo-600 text-[9px] font-bold uppercase tracking-widest hover:bg-indigo-100 transition border-t border-indigo-50">
+          Ver todos los mensajes
+        </button>
+        }
       </div>
+
     </aside>
 
-    <!-- COLUMNA CENTRAL: Listado de Ofertas -->
-    <main class="col-span-12 md:col-span-6 space-y-4">
+    <main class="col-span-6 space-y-4">
+      <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+        <div class="flex gap-3">
+          <div
+            class="w-10 h-10 bg-orange-100 rounded-full flex-shrink-0 flex items-center justify-center text-orange-600 font-bold">
+            {{ currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : '?' }}
+          </div>
+
+          <div class="flex-1 relative">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar una oferta de trabajo..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-full text-slate-700 text-sm font-medium focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+          </div>
+        </div>
+      </div>
       <div class="flex items-center gap-4 py-2">
         <div class="h-[1px] bg-gray-200 flex-1"></div>
-        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">Ofertas disponibles</span>
+        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">Sugerencias para ti</span>
         <div class="h-[1px] bg-gray-200 flex-1"></div>
       </div>
 
       @for (job of filteredJobOffers; track job.id) {
-        <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-all">
-          <div class="flex flex-col sm:flex-row gap-4">
-            <!-- LOGO DE LA EMPRESA CORREGIDO -->
-            <div class="w-14 h-14 bg-white border border-gray-100 rounded-lg flex items-center justify-center shadow-sm p-1 overflow-hidden shrink-0 mx-auto sm:mx-0">
-              @if (job.user?.company_profile?.logo || job.company?.logo) {
-                <img [src]="getFullImageUrl(job.user?.company_profile?.logo || job.company?.logo)" 
-                     class="w-full h-full object-contain" alt="logo">
-              } @else {
-                <span class="font-bold text-indigo-600 text-xl uppercase">
-                  {{ (job.user?.company_profile?.company_name || job.company?.company_name || 'G').charAt(0) }}
-                </span>
-              }
-            </div>
+      <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm relative hover:shadow-md transition-shadow">
+        <button class="absolute top-4 right-4 text-gray-400 hover:text-indigo-600 transition">
+        </button>
 
-            <!-- Información Oferta -->
-            <div class="flex-1 text-center sm:text-left">
-              <h3 class="font-bold text-lg text-slate-800 leading-tight hover:text-indigo-600 transition cursor-pointer">
-                {{ job.title }}
-              </h3>
-              <p class="text-sm text-indigo-600 font-medium">
-                {{ job.user?.company_profile?.company_name || job.company?.company_name || 'Empresa' }}
-              </p>
-              <p class="text-xs text-gray-400 mt-1">
-                <i class="fas fa-map-marker-alt mr-1"></i> {{ job.location }} • 
-                <span class="text-green-600 font-medium">Activa</span>
-              </p>
-            </div>
+        <div class="flex gap-4">
+          <div
+            class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex items-center justify-center shadow-sm p-1">
+            <img *ngIf="job.company?.logo" [src]="getFullImageUrl(job.company.logo)"
+              class="w-full h-full object-contain" alt="logo">
+
+            <!-- Si no hay logo, mostramos la inicial del nombre de la empresa -->
+            <span *ngIf="!job.company?.logo" class="font-bold text-indigo-600 uppercase">
+              {{ job.company?.company_name?.charAt(0) || 'G' }}
+            </span>
           </div>
-
-          <p class="text-xs text-slate-500 mt-4 leading-relaxed line-clamp-3">
-            {{ job.description }}
-          </p>
-
-          <div class="mt-4 pt-4 border-t border-gray-50 flex justify-center sm:justify-end">
-            <button (click)="postularse(job.id)" [disabled]="hasApplied(job.id)"
-              [ngClass]="{
-                'bg-gray-100 text-gray-400 cursor-not-allowed': hasApplied(job.id),
-                'bg-indigo-600 text-white hover:bg-indigo-700 shadow-indigo-100 shadow-lg': !hasApplied(job.id)
-              }" 
-              class="w-full sm:w-auto px-8 py-2 rounded-lg font-bold text-xs transition-all uppercase tracking-widest">
-              {{ hasApplied(job.id) ? 'Ya te has postulado' : 'Postularse ahora' }}
-            </button>
+          <div class="flex-1">
+            <h3
+              class="font-bold text-lg text-slate-800 leading-snug hover:text-indigo-600 hover:underline cursor-pointer">
+              {{ job.title }}</h3>
+            <p class="text-sm text-slate-600">{{ job.companyName }}</p>
+            <p class="text-xs text-gray-400 mt-0.5">{{ job.location }} • <span class="text-green-600 font-medium">hace 2
+                horas</span></p>
           </div>
         </div>
+
+        <p class="text-xs text-slate-500 mt-4 leading-relaxed line-clamp-2">
+          {{ job.description }}
+        </p>
+
+        <div class="mt-4 pt-4 border-t border-gray-50 flex items-center justify-between">
+          <button (click)="postularse(job.id)" [disabled]="hasApplied(job.id)" [ngClass]="{
+          'bg-gray-200 text-gray-500 cursor-not-allowed': hasApplied(job.id),
+          'bg-[#fce7f3] text-[#be185d] hover:bg-[#fbcfe8]': !hasApplied(job.id)
+        }" class="px-6 py-2 rounded-lg font-bold text-xs transition">
+            {{ hasApplied(job.id) ? 'Ya postulado' : 'Postularse' }}
+          </button>
+        </div>
+      </div>
       }
     </main>
 
-    <!-- COLUMNA DERECHA: Sugerencias y Extras -->
-    <aside class="col-span-12 md:col-span-3 space-y-4">
+    <aside class="col-span-3 space-y-4">
+      
+      
+
       <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-        <h4 class="font-bold text-xs text-slate-800 mb-4">Gente que podrías conocer</h4>
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="font-bold text-xs text-slate-800">Gente que podrías conocer</h4>
+        </div>
+
         <div class="space-y-4">
           @for (user of suggestions; track user.id) {
-            <div class="flex items-center gap-3">
-              <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 font-bold text-[10px]">
-                {{ user.name.charAt(0).toUpperCase() }}
-              </div>
-              <div class="flex-1">
-                <p class="text-[11px] font-bold text-slate-800">{{ user.name }}</p>
-                <p class="text-[9px] text-gray-400">Usuario de la red</p>
-              </div>
+          <div class="flex gap-3">
+            <div
+              class="w-10 h-10 bg-orange-100 rounded-full flex-shrink-0 border border-orange-50 flex items-center justify-center text-orange-600 font-bold text-xs">
+              {{ user.name.charAt(0).toUpperCase() }}
             </div>
+            <div>
+              <p class="text-xs font-bold text-slate-800 hover:underline cursor-pointer">{{ user.name }}</p>
+              <p class="text-[10px] text-gray-400">Usuario de la plataforma</p>
+              <button
+                class="mt-2 border-2 border-slate-200 text-slate-600 px-4 py-1 rounded-full text-[10px] font-bold hover:bg-slate-50 transition hover:border-slate-400">
+                Conectar
+              </button>
+            </div>
+          </div>
+          } @empty {
+          <p class="text-[10px] text-gray-400 text-center">No hay más usuarios por conocer.</p>
           }
         </div>
       </div>
     </aside>
-
   </div>
 </div>

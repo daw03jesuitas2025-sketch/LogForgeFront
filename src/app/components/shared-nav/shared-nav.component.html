@@ -1,87 +1,28 @@
-<header class="fixed top-0 left-0 right-0 z-[100] bg-white/80 backdrop-blur-md border-b border-gray-100">
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+<nav class="flex items-center gap-6">
+  <a [routerLink]="homeRoute" routerLinkActive="active-class">Inicio</a>
+
+  <a [routerLink]="offersRoute" routerLinkActive="active-class">Mis Ofertas</a>
+
+  <a [routerLink]="profileRoute" routerLinkActive="active-class">Perfil</a>
+
+  <div class="relative ml-4">
+    <button (click)="toggleMenu()"
+      class="w-9 h-9 bg-[#dbeafe] rounded-full flex items-center justify-center text-[#1e3a8a] font-semibold text-sm hover:bg-[#bfdbfe] transition border-2 border-white shadow-sm">
+      {{ userInitial }}
+    </button>
+
+    <div *ngIf="isMenuOpen"
+      class="absolute right-0 mt-3 w-52 bg-white rounded-xl border border-[#e5e7eb] shadow-lg py-2 z-[100]">
+      <div class="px-4 py-2 border-b border-gray-100 mb-1">
+        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Usuario</p>
+        <p class="text-sm font-medium text-gray-700 truncate">{{ userName }}</p>
+      </div>
+      <button (click)="onLogout()"
+        class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition flex items-center gap-2">
+        Cerrar sesión
+      </button>
+    </div>
     
-    <!-- Lado Izquierdo: Logo y Links -->
-    <div class="flex items-center gap-8">
-      <!-- Logo -->
-      <div class="flex items-center gap-2 cursor-pointer" [routerLink]="homeRoute">
-        <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-indigo-200 shadow-lg">
-          <span class="text-white font-black text-xl italic leading-none">G</span>
-        </div>
-        <span class="text-slate-800 font-bold tracking-tight text-lg hidden sm:block">GeminiJobs</span>
-      </div>
-
-      <!-- Navegación Principal -->
-      <div class="hidden md:flex items-center gap-1">
-        <!-- Inicio -->
-        <a [routerLink]="homeRoute" 
-           routerLinkActive="text-indigo-600 bg-indigo-50 font-bold" 
-           [routerLinkActiveOptions]="{exact: true}"
-           class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all duration-200">
-          <i class="fas fa-home text-xs"></i> Inicio
-        </a>
-
-        <!-- Mis Ofertas -->
-        <a [routerLink]="offersRoute" 
-           routerLinkActive="text-indigo-600 bg-indigo-50 font-bold"
-           class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all duration-200">
-          <i class="fas fa-briefcase text-xs"></i> Mis Ofertas
-        </a>
-
-        <!-- Perfil -->
-        <a [routerLink]="profileRoute" 
-           routerLinkActive="text-indigo-600 bg-indigo-50 font-bold"
-           class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-indigo-600 hover:bg-indigo-50/50 transition-all duration-200">
-          <i class="fas fa-user text-xs"></i> Perfil
-        </a>
-      </div>
-    </div>
-
-    <!-- Lado Derecho: Usuario -->
-    <div class="flex items-center gap-4">
-      
-      <div class="relative">
-        <button (click)="toggleMenu()"
-          class="group flex items-center gap-2 p-1 pr-3 hover:bg-gray-50 rounded-full transition border border-transparent hover:border-gray-100 outline-none">
-          <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md border-2 border-white">
-            {{ userInitial }}
-          </div>
-          <i class="fas fa-chevron-down text-[10px] text-gray-400 group-hover:text-indigo-600 transition"></i>
-        </button>
-
-        <!-- Dropdown -->
-        <div *ngIf="isMenuOpen"
-          class="absolute right-0 mt-3 w-56 bg-white rounded-2xl border border-gray-100 shadow-2xl py-2 z-[110] animate-in fade-in zoom-in duration-150">
-          
-          <div class="px-4 py-3 border-b border-gray-50 mb-1">
-            <p class="text-[10px] text-indigo-500 uppercase font-black tracking-[0.15em] mb-1">Cuenta</p>
-            <p class="text-sm font-bold text-slate-800 truncate">{{ userName }}</p>
-          </div>
-
-          <!-- Items del Dropdown -->
-          <button [routerLink]="profileRoute" (click)="isMenuOpen = false"
-            class="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-gray-50 hover:text-indigo-600 transition-colors flex items-center gap-3 font-medium group">
-            <i class="far fa-user-circle text-gray-400 group-hover:text-indigo-600 w-4"></i> Mi Perfil
-          </button>
-
-          <button class="w-full text-left px-4 py-2.5 text-sm text-slate-600 hover:bg-gray-50 hover:text-indigo-600 transition-colors flex items-center gap-3 font-medium group">
-            <i class="fas fa-cog text-gray-400 group-hover:text-indigo-600 w-4"></i> Configuración
-          </button>
-
-          <div class="h-px bg-gray-50 my-1 mx-2"></div>
-
-          <button (click)="onLogout()"
-            class="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 font-bold transition flex items-center gap-3 group">
-            <i class="fas fa-sign-out-alt text-red-400 group-hover:text-red-600 w-4"></i> Cerrar sesión
-          </button>
-        </div>
-        
-        <!-- Overlay -->
-        <div *ngIf="isMenuOpen" class="fixed inset-0 z-[100]" (click)="isMenuOpen = false"></div>
-      </div>
-    </div>
-  </nav>
-</header>
-
-<!-- Spacer -->
-<div class="h-16"></div>
+    <div *ngIf="isMenuOpen" class="fixed inset-0 z-[90]" (click)="isMenuOpen = false"></div>
+  </div>
+</nav>
