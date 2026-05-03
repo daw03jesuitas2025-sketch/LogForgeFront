@@ -18,14 +18,14 @@ export class CompanyDashboardComponent implements OnInit {
   myOffers: any[] = [];
   candidates: any[] = [];
   companyProfile: any = null;
-allOffers: any[] = [];     // El respaldo con todas las ofertas reales
-searchTerm: string = '';   // El texto del buscador
-  
+  allOffers: any[] = [];     // El respaldo con todas las ofertas reales
+  searchTerm: string = '';   // El texto del buscador
+
   // Estados de Modales
   showModal: boolean = false;
   isEditing: boolean = false;
   selectedOfferId: number | null = null;
-  
+
   showInterviewModal: boolean = false;
   selectedCandidate: any = null;
   interviewMessage: string = '';
@@ -41,10 +41,10 @@ searchTerm: string = '';   // El texto del buscador
   private API_BASE = `https://${environment.apiUrl}/api/company`;
 
   constructor(
-    private http: HttpClient, 
-    private messageService: MessageService, 
+    private http: HttpClient,
+    private messageService: MessageService,
     private companyService: CompanyService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.refreshDashboard();
@@ -55,7 +55,7 @@ searchTerm: string = '';   // El texto del buscador
    */
   refreshDashboard(): void {
     this.loadMyOffers();
-    this.loadCandidates(); 
+    this.loadCandidates();
     this.loadCompanyProfile();
   }
 
@@ -71,29 +71,29 @@ searchTerm: string = '';   // El texto del buscador
 
   // --- CARGA DE DATOS ---
 
-loadMyOffers(): void {
-  this.http.get<any[]>(`${this.API_BASE}/my-offers`, { headers: this.getHeaders() }).subscribe({
-    next: (data) => {
-      this.myOffers = data;
-      this.allOffers = data;
-    },
-    error: (err) => console.error('Error cargando ofertas:', err)
-  });
-}
-
-  onSearch() {
-  const term = this.searchTerm.toLowerCase().trim();
-
-  if (!term) {
-    this.myOffers = [...this.allOffers]; // Si está vacío, restauramos todo
-    return;
+  loadMyOffers(): void {
+    this.http.get<any[]>(`${this.API_BASE}/my-offers`, { headers: this.getHeaders() }).subscribe({
+      next: (data) => {
+        this.myOffers = data;
+        this.allOffers = data;
+      },
+      error: (err) => console.error('Error cargando ofertas:', err)
+    });
   }
 
-  // Filtramos sobre la copia original
-  this.myOffers = this.allOffers.filter(job => 
-    job.title.toLowerCase().includes(term)
-  );
-}
+  onSearch() {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    if (!term) {
+      this.myOffers = [...this.allOffers]; // Si está vacío, restauramos todo
+      return;
+    }
+
+    // Filtramos sobre la copia original
+    this.myOffers = this.allOffers.filter(job =>
+      job.title.toLowerCase().includes(term)
+    );
+  }
 
   loadCandidates(): void {
     this.http.get<any[]>(`${this.API_BASE}/candidates`, { headers: this.getHeaders() }).subscribe({
@@ -159,11 +159,11 @@ loadMyOffers(): void {
   openEditModal(job: any) {
     this.isEditing = true;
     this.selectedOfferId = job.id;
-    this.newOffer = { 
-      title: job.title, 
-      description: job.description, 
-      location: job.location, 
-      is_active: job.is_active 
+    this.newOffer = {
+      title: job.title,
+      description: job.description,
+      location: job.location,
+      is_active: job.is_active
     };
     this.showModal = true;
   }
@@ -202,19 +202,19 @@ loadMyOffers(): void {
       });
   }
   getTotalCandidates(): number {
-  return this.myOffers.reduce((acc, offer) => acc + (offer.applications_count || 0), 0);
-}
+    return this.myOffers.reduce((acc, offer) => acc + (offer.applications_count || 0), 0);
+  }
 
-// 2. Método para obtener la URL correcta del logo (el mismo que usamos en el perfil)
-getFullImageUrl(logoPath: string | null | undefined): string {
-  if (!logoPath) return '';
-  if (logoPath.startsWith('data:')) return logoPath;
-  if (logoPath.startsWith('http')) return logoPath;
+  // 2. Método para obtener la URL correcta del logo (el mismo que usamos en el perfil)
+  getFullImageUrl(logoPath: string | null | undefined): string {
+    if (!logoPath) return '';
+    if (logoPath.startsWith('data:')) return logoPath;
+    if (logoPath.startsWith('http')) return logoPath;
 
-  const baseUrl = environment.apiUrl.includes('http')
-    ? environment.apiUrl
-    : `https://${environment.apiUrl}`;
+    const baseUrl = environment.apiUrl.includes('http')
+      ? environment.apiUrl
+      : `https://${environment.apiUrl}`;
 
-  return `${baseUrl}${logoPath}`;
-}
+    return `${baseUrl}${logoPath}`;
+  }
 }

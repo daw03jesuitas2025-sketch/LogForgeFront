@@ -97,15 +97,15 @@
         </button>
 
         <div class="flex gap-4">
-          <div
-            class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex items-center justify-center shadow-sm p-1">
-            <img *ngIf="job.company?.logo" [src]="getFullImageUrl(job.company.logo)"
-              class="w-full h-full object-contain" alt="logo">
+          <div class="relative flex justify-center">
+            <div
+              class="absolute -top-6 w-12 h-12 bg-white rounded-xl border-2 border-purple-100 flex items-center justify-center shadow-sm overflow-hidden">
+              <!-- Si hay logo, lo mostramos; si no, mostramos las iniciales o el texto LOG -->
+              <img *ngIf="companyProfile?.logo" [src]="getFullImageUrl(companyProfile.logo)"
+                class="w-full h-full object-cover">
 
-            <!-- Si no hay logo, mostramos la inicial del nombre de la empresa -->
-            <span *ngIf="!job.company?.logo" class="font-bold text-indigo-600 uppercase">
-              {{ job.company?.company_name?.charAt(0) || 'G' }}
-            </span>
+              <span *ngIf="!companyProfile?.logo" class="text-purple-600 font-bold text-[10px]">LOG</span>
+            </div>
           </div>
           <div class="flex-1">
             <h3
@@ -152,10 +152,6 @@
             <div>
               <p class="text-xs font-bold text-slate-800 hover:underline cursor-pointer">{{ user.name }}</p>
               <p class="text-[10px] text-gray-400">Usuario de la plataforma</p>
-              <button
-                class="mt-2 border-2 border-slate-200 text-slate-600 px-4 py-1 rounded-full text-[10px] font-bold hover:bg-slate-50 transition hover:border-slate-400">
-                Conectar
-              </button>
             </div>
           </div>
           } @empty {

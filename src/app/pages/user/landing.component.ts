@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { MessageService } from '@services/message.service';
 import { UserService } from '@services/user.service';
 import { environment } from '../../../environments/environment';
+import { CompanyService } from '@services/company.service';
+
 
 @Component({
   selector: 'app-landing',
@@ -20,6 +22,8 @@ export class LandingComponent implements OnInit {
   suggestions: any[] = [];
   searchTerm: string = '';
   messages: any[] = [];
+  companyProfile: any = null;
+
 
   // Inyectamos el UserService
   constructor(
@@ -124,16 +128,15 @@ export class LandingComponent implements OnInit {
     });
   }
 
-getFullImageUrl(logoPath: string | null | undefined): string {
-  if (!logoPath) return '';
-  if (logoPath.startsWith('data:')) return logoPath;
-  if (logoPath.startsWith('http')) return logoPath;
+  getFullImageUrl(logoPath: string | null | undefined): string {
+    if (!logoPath) return '';
+    if (logoPath.startsWith('data:')) return logoPath;
+    if (logoPath.startsWith('http')) return logoPath;
 
-  // Usamos el entorno para saber la URL de Railway
-  const baseUrl = environment.apiUrl.includes('http')
-    ? environment.apiUrl
-    : `https://${environment.apiUrl}`;
+    const baseUrl = environment.apiUrl.includes('http')
+      ? environment.apiUrl
+      : `https://${environment.apiUrl}`;
 
-  return `${baseUrl}${logoPath}`;
-}
+    return `${baseUrl}${logoPath}`;
+  }
 }
