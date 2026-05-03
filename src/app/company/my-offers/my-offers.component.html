@@ -7,7 +7,7 @@
       </p>
     </div>
 
-    <!-- Lista de Ofertas de la Empresa -->
+    <!-- LISTA DE OFERTAS -->
     <div class="grid gap-4">
       @for (offer of appliedJobs; track offer.id) {
       <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm flex justify-between items-center hover:shadow-md transition">
@@ -25,7 +25,7 @@
 
         <button (click)="verCandidatos(offer.id, offer.title)"
           class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold text-sm hover:bg-indigo-700 transition">
-          Ver Postulados
+          Ver Candidatos
         </button>
       </div>
       } @empty {
@@ -37,12 +37,10 @@
   </div>
 </div>
 
-<!-- MODAL DE CANDIDATOS -->
+<!-- MODAL 1: LISTA DE CANDIDATOS -->
 <div *ngIf="showModal" class="fixed inset-0 z-[150] flex items-center justify-center p-4">
-  <!-- Fondo oscuro -->
   <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" (click)="cerrarModal()"></div>
 
-  <!-- Contenido del Modal -->
   <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl z-[160] overflow-hidden">
     <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-slate-50">
       <h3 class="font-bold text-slate-800">Candidatos para: {{ selectedOfferTitle }}</h3>
@@ -54,7 +52,6 @@
       <div class="border rounded-xl p-4 hover:bg-slate-50 transition">
         <div class="flex justify-between items-start">
           <div class="flex gap-4">
-            <!-- Inicial del Candidato -->
             <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold">
               {{ app.user?.name?.charAt(0) }}
             </div>
@@ -63,19 +60,16 @@
               <p class="text-xs text-slate-500">{{ app.user?.email }}</p>
             </div>
           </div>
-          <span class="text-[10px] bg-slate-100 px-2 py-1 rounded font-bold text-slate-500 uppercase">
-            {{ app.created_at | date:'dd/MM/yyyy' }}
-          </span>
+          
+          <!-- BOTÓN PARA ENVIAR MENSAJE -->
+          <button (click)="openInterviewModal(app.user)" 
+                  class="text-xs font-bold bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-lg hover:bg-emerald-100 transition">
+            <i class="fas fa-paper-plane mr-1"></i> Enviar Mensaje
+          </button>
         </div>
 
-        <!-- Mensaje (Cover Letter) que el usuario envió -->
         <div *ngIf="app.cover_letter" class="mt-3 p-3 bg-white border border-slate-100 rounded-lg italic text-sm text-slate-600">
           "{{ app.cover_letter }}"
-        </div>
-
-        <div class="mt-4 flex gap-3">
-          <!-- Aquí podrías añadir un botón para descargar su CV -->
-          <button class="text-xs font-bold text-indigo-600 hover:underline">Ver Perfil</button>
         </div>
       </div>
       } @empty {
@@ -86,3 +80,36 @@
     </div>
   </div>
 </div>
+
+<!-- MODAL 2: FORMULARIO DE MENSAJE / ENTREVISTA -->
+@if (showInterviewModal) {
+<div class="fixed inset-0 z-[200] flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-purple-900/40 backdrop-blur-md" (click)="showInterviewModal = false"></div>
+  
+  <div class="relative bg-white w-full max-md rounded-[2rem] shadow-2xl border border-purple-100 overflow-hidden animate-in zoom-in duration-300">
+    <div class="p-6 bg-purple-50/50 border-b border-purple-100">
+      <h3 class="font-black text-purple-900 italic tracking-tighter uppercase">Solicitar Entrevista</h3>
+      <p class="text-[10px] text-purple-400 font-bold uppercase mt-1">Candidato: {{ selectedCandidate?.name }}</p>
+    </div>
+
+    <div class="p-6 space-y-4">
+      <label class="block text-[10px] font-bold text-purple-400 uppercase">Mensaje de invitación</label>
+      <textarea [(ngModel)]="interviewMessage" 
+                class="w-full bg-purple-50 border border-purple-100 rounded-2xl p-4 text-sm text-purple-900 outline-none focus:ring-2 focus:ring-purple-500/20 transition"
+                rows="5"
+                placeholder="Escribe algo personalizado..."></textarea>
+      
+      <div class="flex gap-3 pt-2">
+        <button (click)="showInterviewModal = false" 
+                class="flex-1 py-3 text-[10px] font-bold text-purple-400 hover:bg-purple-50 rounded-xl transition uppercase tracking-widest">
+          Cancelar
+        </button>
+        <button (click)="confirmInterview()" 
+                class="flex-1 py-3 text-[10px] font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow-lg shadow-purple-200 transition uppercase tracking-widest">
+          Enviar Invitación
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+}

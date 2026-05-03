@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CompanyService } from '../../services/company.service';
-import { UserService } from 'src/app/services/user.service'; 
+import { FormsModule } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
+import { MessageService } from 'src/app/services/message.service'; 
+
 
 @Component({
   selector: 'app-my-offers',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './my-offers.component.html'
 })
 export class MyOffersComponent implements OnInit {
@@ -15,6 +18,13 @@ export class MyOffersComponent implements OnInit {
   selectedOfferTitle: string = '';
   showModal: boolean = false;
   loading: boolean = true;
+  isEditing: boolean = false;
+  selectedOfferId: number | null = null;
+  
+  showInterviewModal: boolean = false;
+  selectedCandidate: any = null;
+  interviewMessage: string = '';
+
 
   constructor(private companyService: CompanyService) {}
 
@@ -50,5 +60,22 @@ export class MyOffersComponent implements OnInit {
   cerrarModal() {
     this.showModal = false;
     this.selectedApplications = [];
+  }
+  openInterviewModal(candidate: any) {
+    this.selectedCandidate = candidate;
+    this.interviewMessage = `Hola ${candidate.name}, nos ha gustado tu perfil para la oferta "${this.selectedOfferTitle}" y queremos agendar una entrevista contigo.`;
+    this.showInterviewModal = true;
+  }
+
+  confirmInterview() {
+    if (!this.selectedCandidate) return;
+
+    // Aquí llamarías a tu servicio de mensajería o backend
+    console.log('Enviando a:', this.selectedCandidate.id, 'Mensaje:', this.interviewMessage);
+    
+    // Simulación de éxito
+    alert('¡Invitación enviada con éxito!');
+    this.showInterviewModal = false;
+    this.interviewMessage = '';
   }
 }
