@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CompanyService } from '@services/company.service';
 
@@ -23,26 +22,15 @@ export class CompanyProfileComponent implements OnInit {
   successMessage: string = '';
   selectedFile: File | null = null;
 
-  private API_URL = `${environment.apiUrl}/company/my-profile`;
-
   constructor(private companyService: CompanyService) { }
 
   ngOnInit(): void {
     this.loadProfile();
   }
 
-  // Función auxiliar para obtener los headers con el token
-  private getHeaders() {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-  }
-
   loadProfile() {
     this.companyService.getMyProfile().subscribe({
       next: (data: any) => {
-        // Si el backend devuelve el perfil (aunque sea vacío), lo asignamos
         this.profile = data;
         this.loading = false;
       },
@@ -70,7 +58,6 @@ export class CompanyProfileComponent implements OnInit {
     formData.append('company_name', this.profile.company_name || '');
     formData.append('website', this.profile.website || '');
     formData.append('description', this.profile.description || '');
-
     formData.append('_method', 'PUT');
 
     if (this.selectedFile) {
@@ -81,7 +68,7 @@ export class CompanyProfileComponent implements OnInit {
       next: (response: any) => {
         this.successMessage = '¡Perfil actualizado con éxito!';
         this.profile = response;
-        this.selectedFile = null; // Limpiamos el archivo seleccionado
+        this.selectedFile = null;
         setTimeout(() => this.successMessage = '', 3000);
       },
       error: (err) => {
@@ -90,14 +77,12 @@ export class CompanyProfileComponent implements OnInit {
       }
     });
   }
-  getFullImageUrl(logoPath: string): string {
-    // 1. Si es una previsualización en base64 (FileReader)
-    if (logoPath.startsWith('data:')) {
-      return logoPath;
-    }
 
-    // 2. Si es una ruta del servidor, construir URL completa
-    // Asumiendo que environment.apiUrl es algo como 'localhost:8000' o 'api.dominio.com'
+  getFullImageUrl(logoPath: string | null): string {
+    if (!logoPath) return '';
+    if (logoPath.startsWith('data:')) return logoPath;
+    if (logoPath.startsWith('http')) return logoPath;
+
     const baseUrl = environment.apiUrl.includes('http')
       ? environment.apiUrl
       : `https://${environment.apiUrl}`;
