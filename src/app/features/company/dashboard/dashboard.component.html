@@ -8,25 +8,29 @@
           <div class="relative flex justify-center">
             <div
               class="absolute -top-6 w-12 h-12 bg-white rounded-xl border-2 border-purple-100 flex items-center justify-center shadow-sm overflow-hidden">
-              <span class="text-purple-600 font-bold">LOG</span>
+              <!-- Si hay logo, lo mostramos; si no, mostramos las iniciales o el texto LOG -->
+              <img *ngIf="companyProfile?.logo" [src]="getFullImageUrl(companyProfile.logo)"
+                class="w-full h-full object-cover">
+
+              <span *ngIf="!companyProfile?.logo" class="text-purple-600 font-bold text-[10px]">LOG</span>
             </div>
           </div>
-<div class="mt-8 text-center">
-  <h2 class="font-medium text-purple-900 text-sm">
-    {{ companyProfile?.company_name || 'Cargando nombre...' }}
-  </h2>
-  
-  @if (companyProfile?.website) {
-    <a [href]="companyProfile.website" target="_blank"
-       class="text-[10px] text-blue-500 hover:underline block mt-1">
-      {{ companyProfile.website }}
-    </a>
-  }
+          <div class="mt-8 text-center">
+            <h2 class="font-medium text-purple-900 text-sm">
+              {{ companyProfile?.company_name || 'Cargando nombre...' }}
+            </h2>
 
-  <p class="text-[11px] text-purple-400 mt-1 tracking-wider italic">
-    {{ companyProfile?.description || 'Cuenta de Empresa' }}
-  </p>
-</div>
+            @if (companyProfile?.website) {
+            <a [href]="companyProfile.website" target="_blank"
+              class="text-[10px] text-blue-500 hover:underline block mt-1">
+              {{ companyProfile.website }}
+            </a>
+            }
+
+            <p class="text-[11px] text-purple-400 mt-1 tracking-wider italic">
+              {{ companyProfile?.description || 'Cuenta de Empresa' }}
+            </p>
+          </div>
           <div class="mt-4 pt-4 border-t border-purple-50 space-y-2">
             <div class="flex justify-between text-[11px]">
               <span class="text-purple-400 font-medium">Ofertas publicadas</span>
@@ -34,23 +38,30 @@
             </div>
             <div class="flex justify-between text-[11px]">
               <span class="text-purple-400 font-medium">Candidatos totales</span>
-              <span class="text-purple-600 font-medium">84</span>
+              <span class="text-purple-600 font-medium">{{ getTotalCandidates() }}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl border border-purple-100 overflow-hidden shadow-sm">
-        <nav class="flex flex-col">
-          <a
-            class="flex items-center gap-3 p-3 text-purple-600 font-medium text-xs bg-purple-50 border-l-4 border-purple-500 cursor-pointer">Mis Vacantes
-          </a>
-          <a
-            class="flex items-center gap-3 p-3 text-purple-300 font-medium text-xs hover:bg-purple-50 cursor-pointer transition">
-            Ver Candidatos
-          </a>
-        </nav>
+<div class="bg-white rounded-2xl border border-purple-100 overflow-hidden shadow-sm">
+  <nav class="flex flex-col">
+    <a class="flex items-center gap-3 p-3 text-purple-600 font-medium text-xs bg-purple-50 border-l-4 border-purple-500 cursor-pointer">
+      Buscar Ofertas
+    </a>
+    <div class="p-3"> <!-- Añadimos un poco de padding para que no pegue al borde -->
+      <div class="relative w-full">
+        <!-- Añadimos [(ngModel)] y el evento (input) -->
+        <input 
+          type="text" 
+          placeholder="Escribe el título del puesto..."
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+          class="w-full bg-[#eef3f8] border border-transparent px-4 py-2 rounded-lg text-sm text-gray-700 focus:outline-none focus:bg-white focus:border-purple-300 transition">
       </div>
+    </div>
+  </nav>
+</div>
     </aside>
 
     <main class="col-span-6 space-y-4">
@@ -112,34 +123,35 @@
       }
     </main>
 
-<aside class="col-span-3 space-y-4">
-  <div class="bg-white rounded-2xl border border-purple-100 p-5 shadow-sm">
-    <h4 class="font-medium text-sm text-purple-900 mb-4 tracking-tight">Candidatos disponibles</h4>
-    
-    <div class="flex flex-col gap-4">
-      @for (candidate of candidates; track candidate.id) {
-        <div class="p-3 rounded-xl bg-purple-50/50 border border-purple-100">
-          <div class="flex gap-3 items-center mb-2">
-            <div class="w-8 h-8 bg-purple-200 rounded-full flex items-center justify-center text-purple-700 text-[10px] font-bold">
-              {{ candidate.name.substring(0, 2).toUpperCase() }}
+    <aside class="col-span-3 space-y-4">
+      <div class="bg-white rounded-2xl border border-purple-100 p-5 shadow-sm">
+        <h4 class="font-medium text-sm text-purple-900 mb-4 tracking-tight">Candidatos disponibles</h4>
+
+        <div class="flex flex-col gap-4">
+          @for (candidate of candidates; track candidate.id) {
+          <div class="p-3 rounded-xl bg-purple-50/50 border border-purple-100">
+            <div class="flex gap-3 items-center mb-2">
+              <div
+                class="w-8 h-8 bg-purple-200 rounded-full flex items-center justify-center text-purple-700 text-[10px] font-bold">
+                {{ candidate.name.substring(0, 2).toUpperCase() }}
+              </div>
+              <div>
+                <p class="text-[11px] text-purple-900 font-bold">{{ candidate.name }}</p>
+                <p class="text-[9px] text-purple-400">{{ candidate.email }}</p>
+              </div>
             </div>
-            <div>
-              <p class="text-[11px] text-purple-900 font-bold">{{ candidate.name }}</p>
-              <p class="text-[9px] text-purple-400">{{ candidate.email }}</p>
-            </div>
+
+            <button (click)="openInterviewModal(candidate)"
+              class="w-full py-2 bg-white text-purple-600 text-[10px] font-bold rounded-lg border border-purple-100 hover:bg-purple-600 hover:text-white transition uppercase tracking-tighter">
+              Solicitar Entrevista
+            </button>
           </div>
-          
-          <button (click)="openInterviewModal(candidate)" 
-                  class="w-full py-2 bg-white text-purple-600 text-[10px] font-bold rounded-lg border border-purple-100 hover:bg-purple-600 hover:text-white transition uppercase tracking-tighter">
-            Solicitar Entrevista
-          </button>
+          } @empty {
+          <p class="text-[10px] text-purple-400 italic">No hay candidatos disponibles...</p>
+          }
         </div>
-      } @empty {
-        <p class="text-[10px] text-purple-400 italic">No hay candidatos disponibles...</p>
-      }
-    </div>
-  </div>
-</aside>
+      </div>
+    </aside>
 
   </div>
 </div>
@@ -197,33 +209,33 @@
 }
 
 @if (showInterviewModal) {
-  <div class="fixed inset-0 z-[60] flex items-center justify-center p-4">
-    <div class="absolute inset-0 bg-purple-900/30 backdrop-blur-md" (click)="showInterviewModal = false"></div>
-    
-    <div class="relative bg-white w-full max-w-md rounded-[2rem] shadow-2xl border border-purple-100 overflow-hidden animate-in zoom-in duration-300">
-      <div class="p-6 bg-purple-50/50 border-b border-purple-100">
-        <h3 class="font-black text-purple-900 italic tracking-tighter">SOLICITAR ENTREVISTA</h3>
-        <p class="text-[10px] text-purple-400 font-bold uppercase mt-1">Candidato: {{ selectedCandidate?.name }}</p>
-      </div>
+<div class="fixed inset-0 z-[60] flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-purple-900/30 backdrop-blur-md" (click)="showInterviewModal = false"></div>
 
-      <div class="p-6 space-y-4">
-        <label class="block text-[10px] font-bold text-purple-400 uppercase">Mensaje de invitación</label>
-        <textarea [(ngModel)]="interviewMessage" 
-                  class="w-full bg-purple-50 border border-purple-100 rounded-2xl p-4 text-sm text-purple-900 outline-none focus:ring-2 focus:ring-purple-500/20 transition"
-                  rows="5"
-                  placeholder="Escribe algo personalizado para el candidato..."></textarea>
-        
-        <div class="flex gap-3 pt-2">
-          <button (click)="showInterviewModal = false" 
-                  class="flex-1 py-3 text-[10px] font-bold text-purple-400 hover:bg-purple-50 rounded-xl transition uppercase tracking-widest">
-            Cancelar
-          </button>
-          <button (click)="confirmInterview()" 
-                  class="flex-1 py-3 text-[10px] font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow-lg shadow-purple-200 transition uppercase tracking-widest">
-            Enviar Invitación
-          </button>
-        </div>
+  <div
+    class="relative bg-white w-full max-w-md rounded-[2rem] shadow-2xl border border-purple-100 overflow-hidden animate-in zoom-in duration-300">
+    <div class="p-6 bg-purple-50/50 border-b border-purple-100">
+      <h3 class="font-black text-purple-900 italic tracking-tighter">SOLICITAR ENTREVISTA</h3>
+      <p class="text-[10px] text-purple-400 font-bold uppercase mt-1">Candidato: {{ selectedCandidate?.name }}</p>
+    </div>
+
+    <div class="p-6 space-y-4">
+      <label class="block text-[10px] font-bold text-purple-400 uppercase">Mensaje de invitación</label>
+      <textarea [(ngModel)]="interviewMessage"
+        class="w-full bg-purple-50 border border-purple-100 rounded-2xl p-4 text-sm text-purple-900 outline-none focus:ring-2 focus:ring-purple-500/20 transition"
+        rows="5" placeholder="Escribe algo personalizado para el candidato..."></textarea>
+
+      <div class="flex gap-3 pt-2">
+        <button (click)="showInterviewModal = false"
+          class="flex-1 py-3 text-[10px] font-bold text-purple-400 hover:bg-purple-50 rounded-xl transition uppercase tracking-widest">
+          Cancelar
+        </button>
+        <button (click)="confirmInterview()"
+          class="flex-1 py-3 text-[10px] font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl shadow-lg shadow-purple-200 transition uppercase tracking-widest">
+          Enviar Invitación
+        </button>
       </div>
     </div>
   </div>
+</div>
 }

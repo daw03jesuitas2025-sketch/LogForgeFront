@@ -18,6 +18,8 @@ export class CompanyDashboardComponent implements OnInit {
   myOffers: any[] = [];
   candidates: any[] = [];
   companyProfile: any = null;
+allOffers: any[] = [];     // El respaldo con todas las ofertas reales
+searchTerm: string = '';   // El texto del buscador
   
   // Estados de Modales
   showModal: boolean = false;
@@ -69,12 +71,29 @@ export class CompanyDashboardComponent implements OnInit {
 
   // --- CARGA DE DATOS ---
 
-  loadMyOffers(): void {
-    this.http.get<any[]>(`${this.API_BASE}/my-offers`, { headers: this.getHeaders() }).subscribe({
-      next: (data) => this.myOffers = data,
-      error: (err) => console.error('Error cargando ofertas:', err)
-    });
+loadMyOffers(): void {
+  this.http.get<any[]>(`${this.API_BASE}/my-offers`, { headers: this.getHeaders() }).subscribe({
+    next: (data) => {
+      this.myOffers = data;
+      this.allOffers = data;
+    },
+    error: (err) => console.error('Error cargando ofertas:', err)
+  });
+}
+
+  onSearch() {
+  const term = this.searchTerm.toLowerCase().trim();
+
+  if (!term) {
+    this.myOffers = [...this.allOffers]; // Si está vacío, restauramos todo
+    return;
   }
+
+  // Filtramos sobre la copia original
+  this.myOffers = this.allOffers.filter(job => 
+    job.title.toLowerCase().includes(term)
+  );
+}
 
   loadCandidates(): void {
     this.http.get<any[]>(`${this.API_BASE}/candidates`, { headers: this.getHeaders() }).subscribe({
@@ -182,4 +201,20 @@ export class CompanyDashboardComponent implements OnInit {
         }
       });
   }
+  getTotalCandidates(): number {
+  return this.myOffers.reduce((acc, offer) => acc + (offer.applications_count || 0), 0);
+}
+
+// 2. Método para obtener la URL correcta del logo (el mismo que usamos en el perfil)
+getFullImageUrl(logoPath: string | null | undefined): string {
+  if (!logoPath) return '';
+  if (logoPath.startsWith('data:')) return logoPath;
+  if (logoPath.startsWith('http')) return logoPath;
+
+  const baseUrl = environment.apiUrl.includes('http')
+    ? environment.apiUrl
+    : `https://${environment.apiUrl}`;
+
+  return `${baseUrl}${logoPath}`;
+}
 }
