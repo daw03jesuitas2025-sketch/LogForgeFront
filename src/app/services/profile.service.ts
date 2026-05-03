@@ -6,7 +6,10 @@ import { environment } from 'src/environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
 
-  private apiUrl = `https://${environment.apiUrl}/api`;
+private apiUrl = environment.apiUrl.includes('http') 
+    ? `${environment.apiUrl}/api` 
+    : `https://${environment.apiUrl}/api`;  
+    
   constructor(private http: HttpClient) { }
 
   private getHeaders() {
@@ -19,14 +22,13 @@ export class ProfileService {
   }
 
   // --- Perfil Base ---
-  show(): Observable<any> {
+ show(): Observable<any> {
     return this.http.get(`${this.apiUrl}/profile`, this.getHeaders());
   }
 
   updateBasicInfo(data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/profile`, data, this.getHeaders());
   }
-
   // --- Experiencia ---
   addExperience(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/experiences`, data, this.getHeaders());

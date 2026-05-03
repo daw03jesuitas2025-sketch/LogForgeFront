@@ -70,9 +70,8 @@ export class ProfileComponent implements OnInit {
     this.isModalOpen = true;
   }
 
- saveChanges(formData: any) {
+saveChanges(formData: any) {
   let request: Observable<any> | null = null;
-
   if (this.currentType === 'basic') {
     request = this.profileService.updateBasicInfo(formData);
   } else if (this.currentType === 'experience') {
@@ -83,6 +82,20 @@ export class ProfileComponent implements OnInit {
     request = (this.selectedData?.id)
       ? this.profileService.updateEducation(this.selectedData.id, formData)
       : this.profileService.addEducation(formData);
+  }
+  // EJECUCIÓN DE LA PETICIÓN
+  if (request) {
+    request.subscribe({
+      next: (res: any) => {
+        this.loadProfile(); 
+        this.isModalOpen = false;
+        console.log('Perfil actualizado correctamente');
+      },
+      error: (err) => {
+        console.error('Error al guardar:', err);
+        alert('Error al guardar los cambios');
+      }
+    });
   }
 }
   deleteElement(item: any, type: 'experience' | 'education') {
