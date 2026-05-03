@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { UserService } from 'src/app/services/user.service'; // Asegúrate de que la ruta coincide con tu carpeta
 
 @Component({
   selector: 'app-my-applications',
@@ -12,38 +11,31 @@ import { environment } from 'src/environments/environment';
 export class MyApplicationsComponent implements OnInit {
   appliedJobs: any[] = [];
   currentUser: any = null;
-  private API_BASE = `https://${environment.apiUrl}/api`; 
+  loading: boolean = true;
 
-  constructor(private http: HttpClient) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.loadCurrentUser();
-    this.loadMyApplications();
+    this.loadData();
   }
 
-  private getHeaders() {
-    const token = localStorage.getItem('token');
-    return {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${token}`
-      })
-    };
-  }
-
-  loadCurrentUser() {
-    this.http.get<any>(`${this.API_BASE}/me`, this.getHeaders()).subscribe({
+  loadData() {
+    // Cargamos la info del usuario
+    this.userService.getCurrentUser().subscribe({
       next: (user) => this.currentUser = user,
-      error: (err) => console.log('Error User:', err)
+      error: (err) => console.error('Error User:', err)
     });
-  }
 
- loadMyApplications() {
-    this.http.get<any[]>(`${this.API_BASE}/user/my-applications`, this.getHeaders()).subscribe({
+    // Cargamos las aplicaciones (Arregla el 404)
+    this.userService.getMyApplications().subscribe({
       next: (data) => {
         this.appliedJobs = data;
-        console.log('Mis postulaciones:', data);
+        this.loading = false;
       },
-      error: (err) => console.error('Error MyApps:', err)
+      error: (err) => {
+        console.error('Error MyApps:', err);
+        this.loading = false;
+      }
     });
   }
 }
