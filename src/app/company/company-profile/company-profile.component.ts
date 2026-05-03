@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; // Añadido HttpHeaders
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CompanyService } from '@services/company.service';
 
@@ -21,7 +21,7 @@ export class CompanyProfileComponent implements OnInit {
 
   loading: boolean = true;
   successMessage: string = '';
-  selectedFile: File | null = null; 
+  selectedFile: File | null = null;
 
   private API_URL = `${environment.apiUrl}/company/my-profile`;
 
@@ -53,7 +53,7 @@ export class CompanyProfileComponent implements OnInit {
     });
   }
 
-onFileSelected(event: any) {
+  onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
       this.selectedFile = file;
@@ -72,7 +72,7 @@ onFileSelected(event: any) {
     formData.append('description', this.profile.description || '');
 
     formData.append('_method', 'PUT');
-    
+
     if (this.selectedFile) {
       formData.append('logo', this.selectedFile);
     }
@@ -89,5 +89,19 @@ onFileSelected(event: any) {
         alert('Error al actualizar el perfil');
       }
     });
+  }
+  getFullImageUrl(logoPath: string): string {
+    // 1. Si es una previsualización en base64 (FileReader)
+    if (logoPath.startsWith('data:')) {
+      return logoPath;
+    }
+
+    // 2. Si es una ruta del servidor, construir URL completa
+    // Asumiendo que environment.apiUrl es algo como 'localhost:8000' o 'api.dominio.com'
+    const baseUrl = environment.apiUrl.includes('http')
+      ? environment.apiUrl
+      : `https://${environment.apiUrl}`;
+
+    return `${baseUrl}${logoPath}`;
   }
 }

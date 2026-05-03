@@ -11,7 +11,6 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class MyOffersComponent implements OnInit {
   appliedJobs: any[] = [];
-  //offers: any[] = [];
   selectedApplications: any[] = [];
   selectedOfferTitle: string = '';
   showModal: boolean = false;
