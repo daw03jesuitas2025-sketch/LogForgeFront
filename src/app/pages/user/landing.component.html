@@ -126,11 +126,6 @@
         </p>
 
         <div class="mt-4 pt-4 border-t border-gray-50 flex items-center justify-between">
-          <div class="flex items-center -space-x-2">
-            <div class="w-6 h-6 rounded-full border-2 border-white bg-slate-200"></div>
-            <div class="w-6 h-6 rounded-full border-2 border-white bg-slate-300"></div>
-            <p class="text-[10px] text-gray-400 ml-4 font-medium">3 contactos trabajan aquí</p>
-          </div>
           <button (click)="postularse(job.id)" [disabled]="hasApplied(job.id)" [ngClass]="{
           'bg-gray-200 text-gray-500 cursor-not-allowed': hasApplied(job.id),
           'bg-[#fce7f3] text-[#be185d] hover:bg-[#fbcfe8]': !hasApplied(job.id)
