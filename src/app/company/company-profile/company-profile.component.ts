@@ -70,6 +70,8 @@ onFileSelected(event: any) {
     formData.append('company_name', this.profile.company_name || '');
     formData.append('website', this.profile.website || '');
     formData.append('description', this.profile.description || '');
+
+    formData.append('_method', 'PUT');
     
     if (this.selectedFile) {
       formData.append('logo', this.selectedFile);

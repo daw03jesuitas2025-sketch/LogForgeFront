@@ -76,7 +76,6 @@ export class UsersListComponent implements OnInit {
     if (this.userForm.invalid) return;
 
     if (this.isEditing && this.selectedUserId) {
-      // LLAMADA A EDITAR (PUT)
       this.adminService.updateUser(this.selectedUserId, this.userForm.value).subscribe({
         next: (res) => {
           this.loadUsers(); // Recargamos la lista
@@ -84,7 +83,6 @@ export class UsersListComponent implements OnInit {
         }
       });
     } else {
-      // LLAMADA A CREAR (POST) - Tu lógica de createUser anterior
       this.adminService.createUser(this.userForm.value).subscribe({
         next: () => {
           this.loadUsers();
@@ -93,7 +91,7 @@ export class UsersListComponent implements OnInit {
       });
     }
   }
-  
+
   closeModal() { 
     this.showModal = false;
     this.userForm.reset({ role: 'candidate' });
