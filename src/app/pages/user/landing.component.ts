@@ -123,4 +123,17 @@ export class LandingComponent implements OnInit {
       error: (err) => console.error('Error cargando mensajes:', err)
     });
   }
+
+getFullImageUrl(logoPath: string | null | undefined): string {
+  if (!logoPath) return '';
+  if (logoPath.startsWith('data:')) return logoPath;
+  if (logoPath.startsWith('http')) return logoPath;
+
+  // Usamos el entorno para saber la URL de Railway
+  const baseUrl = environment.apiUrl.includes('http')
+    ? environment.apiUrl
+    : `https://${environment.apiUrl}`;
+
+  return `${baseUrl}${logoPath}`;
+}
 }

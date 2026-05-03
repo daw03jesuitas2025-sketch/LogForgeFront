@@ -11,8 +11,7 @@
   <div class="p-6 flex flex-wrap gap-2">
     <div
       *ngFor="let skill of skills"
-      class="group flex items-center gap-2 px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-sm border border-slate-200 shadow-sm hover:bg-white transition-all"
-    >
+class="group inline-flex items-center w-max gap-2 px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-sm border border-slate-200 shadow-sm hover:bg-white transition-all"    >
       <span (click)="openEdit(skill)" class="cursor-pointer">{{ getSkillName(skill) }}</span>
       
       <button 

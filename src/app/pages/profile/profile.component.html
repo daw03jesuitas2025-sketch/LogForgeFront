@@ -1,7 +1,6 @@
 <div class="bg-gray-50 min-h-screen py-4 md:py-8 text-left">
   <div class="max-w-7xl mx-auto px-4 md:px-6">
     
-    <!-- Encabezado adaptable -->
     <div class="mb-6">
       <h1 class="text-2xl md:text-3xl font-semibold text-gray-800">Editar Perfil</h1>
       <p class="text-sm md:text-base text-gray-500">
@@ -9,17 +8,12 @@
       </p>
     </div>
 
-    <!-- Grid principal: 1 columna en móvil, 12 en escritorio -->
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
       
-      <!-- Columna Principal (Izquierda) -->
-      <div class="col-span-1 md:col-span-8 space-y-6">
+      <div class="col-span-1 md:col-span-8 space-y-8">
 
-        <!-- Card de Información Básica Responsive -->
         <div class="bg-white rounded-xl shadow-sm border p-4 md:p-6 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-6">
-          
           <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-6 text-center sm:text-left w-full">
-            <!-- Avatar -->
             <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-700 text-3xl font-bold border-4 border-white shadow-sm shrink-0">
               {{ profileData?.name ? profileData.name.charAt(0).toUpperCase() : 'U' }}
             </div>
@@ -28,12 +22,10 @@
               <h2 class="text-xl md:text-2xl font-bold text-gray-800">
                 {{ profileData?.name || 'Cargando nombre...' }}
               </h2>
-
               <p class="text-base md:text-lg font-medium text-green-600 mt-1">
                 {{ profileData?.profile?.title || 'Añade un titular profesional' }}
               </p>
 
-              <!-- Ubicación y Email -->
               <div class="flex flex-col sm:flex-row flex-wrap justify-center sm:justify-start gap-x-6 gap-y-1 text-sm text-gray-500 mt-2">
                 <span class="flex items-center justify-center sm:justify-start gap-1">
                   <i class="fas fa-map-marker-alt"></i> {{ profileData?.profile?.location || 'Ubicación no definida' }}
@@ -43,7 +35,6 @@
                 </span>
               </div>
 
-              <!-- Biografía -->
               <div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-100 w-full text-left">
                 <p class="text-sm text-gray-600 leading-relaxed italic">
                   {{ profileData?.profile?.biography ? '"' + profileData.profile.biography + '"' : 'Aún no has añadido una biografía profesional.' }}
@@ -52,7 +43,6 @@
             </div>
           </div>
 
-          <!-- Botón de edición: Ancho completo en móvil -->
           <button (click)="handleEditBasic()"
             class="w-full sm:w-auto shrink-0 bg-green-100 text-green-700 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-green-200 transition-all flex items-center justify-center gap-2">
             <i class="fas fa-edit"></i>
@@ -60,23 +50,26 @@
           </button>
         </div>
 
-        <!-- Componentes hijos (Experiencia, Educación, Skills) -->
-        <app-experiences [jobs]="jobs" (add)="handleAdd('experience')" (edit)="handleEdit($event, 'experience')"
-          (delete)="deleteElement($event, 'experience')"> </app-experiences>
+        <div class="py-2">
+          <app-experiences [jobs]="jobs" (add)="handleAdd('experience')" (edit)="handleEdit($event, 'experience')"
+            (delete)="deleteElement($event, 'experience')"> </app-experiences>
+        </div>
 
-        <app-educations [educations]="educations" (edit)="handleEdit($event, 'education')"
-          (delete)="deleteElement($event, 'education')">
-        </app-educations>
+        <div class="py-2">
+          <app-educations [educations]="educations" (edit)="handleEdit($event, 'education')"
+            (delete)="deleteElement($event, 'education')">
+          </app-educations>
+        </div>
 
-        <app-skills [skills]="skills"></app-skills>
+        <div class="py-2">
+          <app-skills [skills]="skills"></app-skills>
+        </div>
       </div>
 
-      <!-- Barra Lateral (Derecha en PC, Abajo en Móvil) -->
       <div class="col-span-1 md:col-span-4 space-y-6 text-left">
         <app-cv-sidebar></app-cv-sidebar>
 
-        <div class="bg-white rounded-xl border shadow-sm p-5">
-          <div class="flex justify-between mb-2">
+        <div class="bg-white rounded-xl border shadow-sm p-6"> <div class="flex justify-between mb-2">
             <span class="text-sm text-gray-600">Fortaleza del Perfil</span>
             <span class="text-sm font-semibold text-green-600">85%</span>
           </div>
@@ -84,9 +77,9 @@
             <div class="bg-green-500 h-2 rounded transition-all duration-500" style="width:85%"></div>
           </div>
           <ul class="text-sm text-gray-500 mt-4 space-y-1">
-            <li>✔ Información Básica</li>
-            <li>✔ Experiencia</li>
-            <li>○ Añadir Portafolio de Proyectos</li>
+            <li class="py-0.5">✔ Información Básica</li>
+            <li class="py-0.5">✔ Experiencia</li>
+            <li class="py-0.5">○ Añadir Portafolio de Proyectos</li>
           </ul>
         </div>
       </div>

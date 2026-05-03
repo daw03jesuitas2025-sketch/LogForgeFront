@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from 'src/app/services/user.service'; // Asegúrate de que la ruta coincide con tu carpeta
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-my-applications',
@@ -37,5 +38,15 @@ export class MyApplicationsComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+  getFullImageUrl(logoPath: string | null | undefined): string {
+    if (!logoPath) return '';
+    if (logoPath.startsWith('http')) return logoPath;
+
+    const baseUrl = environment.apiUrl.includes('http')
+      ? environment.apiUrl
+      : `https://${environment.apiUrl}`;
+
+    return `${baseUrl}${logoPath}`;
   }
 }

@@ -2,97 +2,62 @@
 
   <div class="max-w-6xl mx-auto px-4 py-6 grid grid-cols-12 gap-6">
 
-   <aside class="col-span-3 space-y-4">
-    
-    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-      <div class="h-14 bg-[#e0e7ff]"></div>
-      <div class="px-4 pb-4">
-        <div class="relative flex justify-center">
-          <div class="absolute -top-8 w-16 h-16 bg-orange-200 rounded-full border-4 border-white flex items-center justify-center text-xl font-bold text-orange-700 shadow-sm">
-            {{ currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : '?' }}
-          </div>
-        </div>
-        <div class="mt-10 text-center">
-          <h2 class="font-bold text-slate-800 hover:underline cursor-pointer">
-            {{ currentUser?.name || 'Cargando...' }}
-          </h2>
-          <p class="text-[11px] text-gray-500 mt-1 uppercase">
-            {{ currentUser?.profile?.headline || 'Candidato en busca de retos' }}
-          </p>
-        </div>
+    <aside class="col-span-3 space-y-4">
 
-        <div class="mt-4 pt-4 border-t border-gray-100 space-y-2">
-          <div class="flex justify-between text-[11px]">
-            <span class="text-gray-500 font-semibold">Email</span>
-            <span class="text-indigo-600 font-bold">{{ currentUser?.email }}</span>
-          </div>
-          <div class="flex justify-between text-[11px]">
-            <span class="text-gray-500 font-semibold">Postulaciones</span>
-            <span class="text-indigo-600 font-bold">{{ appliedJobs.length }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bg-white rounded-xl border border-indigo-100 shadow-sm overflow-hidden">
-      <div class="p-4 border-b border-indigo-50 bg-indigo-50/30 flex items-center gap-2">
-        <h4 class="font-bold text-[10px] text-indigo-900 uppercase tracking-wider">Mis mensajes</h4>
-      </div>
-
-      <div class="divide-y divide-gray-50">
-        @for (msg of messages; track msg.id) {
-          <div class="p-4 hover:bg-indigo-50/30 transition cursor-pointer group">
-            <div class="flex justify-between items-start">
-              <span class="text-[9px] font-black text-indigo-600 uppercase tracking-tighter">{{ msg.from_name }}</span>
-              <span class="text-[8px] text-gray-400">{{ msg.created_at | date:'dd MMM' }}</span>
+      <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+        <div class="h-14 bg-[#e0e7ff]"></div>
+        <div class="px-4 pb-4">
+          <div class="relative flex justify-center">
+            <div
+              class="absolute -top-8 w-16 h-16 bg-orange-200 rounded-full border-4 border-white flex items-center justify-center text-xl font-bold text-orange-700 shadow-sm">
+              {{ currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : '?' }}
             </div>
-            <p class="text-[11px] font-bold text-slate-800 mt-1 line-clamp-1 group-hover:text-indigo-700 transition">
-              {{ msg.subject }}
-            </p>
-            <p class="text-[10px] text-slate-500 mt-1 line-clamp-2 leading-relaxed italic">
-              "{{ msg.message }}"
+          </div>
+          <div class="mt-10 text-center">
+            <h2 class="font-bold text-slate-800 hover:underline cursor-pointer">
+              {{ currentUser?.name || 'Cargando...' }}
+            </h2>
+            <p class="text-[11px] text-gray-500 mt-1 uppercase">
+              {{ currentUser?.profile?.headline || 'Candidato en busca de retos' }}
             </p>
           </div>
-        } @empty {
-          <div class="p-8 text-center">
-            <p class="text-[10px] text-gray-400 font-medium">Bandeja de entrada vacía</p>
+
+          <div class="mt-4 pt-4 border-t border-gray-100 space-y-2">
+            <div class="flex justify-between text-[11px]">
+              <span class="text-gray-500 font-semibold">Email</span>
+              <span class="text-indigo-600 font-bold">{{ currentUser?.email }}</span>
+            </div>
+            <div class="flex justify-between text-[11px]">
+              <span class="text-gray-500 font-semibold">Postulaciones</span>
+              <span class="text-indigo-600 font-bold">{{ appliedJobs.length }}</span>
+            </div>
           </div>
-        }
+        </div>
       </div>
 
-      @if (messages.length > 0) {
-        <button class="w-full py-2.5 bg-indigo-50/50 text-indigo-600 text-[9px] font-bold uppercase tracking-widest hover:bg-indigo-100 transition border-t border-indigo-50">
-          Ver todos los mensajes
-        </button>
-      }
-    </div>
-
-  </aside>
+    </aside>
 
     <main class="col-span-6 space-y-4">
-<div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
-  <div class="flex gap-3">
-    <div class="w-10 h-10 bg-orange-100 rounded-full flex-shrink-0 flex items-center justify-center text-orange-600 font-bold">
-      {{ currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : '?' }}
-    </div>
+      <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+        <div class="flex gap-3">
+          <div
+            class="w-10 h-10 bg-orange-100 rounded-full flex-shrink-0 flex items-center justify-center text-orange-600 font-bold">
+            {{ currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : '?' }}
+          </div>
 
-<div class="flex-1 relative">
-  <input 
-    type="text"
-    [(ngModel)]="searchTerm"
-    placeholder="Buscar una oferta de trabajo..."
-    class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-full text-slate-700 text-sm font-medium focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition"
-  >
-</div>
-  </div>
-</div>
+          <div class="flex-1 relative">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Buscar una oferta de trabajo..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-full text-slate-700 text-sm font-medium focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+          </div>
+        </div>
+      </div>
       <div class="flex items-center gap-4 py-2">
         <div class="h-[1px] bg-gray-200 flex-1"></div>
         <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest italic">Sugerencias para ti</span>
         <div class="h-[1px] bg-gray-200 flex-1"></div>
       </div>
 
-   @for (job of filteredJobOffers; track job.id) {
+      @for (job of filteredJobOffers; track job.id) {
       <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm relative hover:shadow-md transition-shadow">
         <button class="absolute top-4 right-4 text-gray-400 hover:text-indigo-600 transition">
         </button>
@@ -100,8 +65,13 @@
         <div class="flex gap-4">
           <div
             class="w-12 h-12 bg-white border border-gray-100 rounded-lg flex items-center justify-center shadow-sm p-1">
-            <img [src]="job.companyLogo" class="object-contain" alt="logo">
-            <span *ngIf="!job.companyLogo" class="font-bold text-indigo-600">G</span>
+            <img *ngIf="job.company?.logo" [src]="getFullImageUrl(job.company.logo)"
+              class="w-full h-full object-contain" alt="logo">
+
+            <!-- Si no hay logo, mostramos la inicial del nombre de la empresa -->
+            <span *ngIf="!job.company?.logo" class="font-bold text-indigo-600 uppercase">
+              {{ job.company?.company_name?.charAt(0) || 'G' }}
+            </span>
           </div>
           <div class="flex-1">
             <h3
@@ -110,14 +80,6 @@
             <p class="text-sm text-slate-600">{{ job.companyName }}</p>
             <p class="text-xs text-gray-400 mt-0.5">{{ job.location }} • <span class="text-green-600 font-medium">hace 2
                 horas</span></p>
-
-            <div class="flex gap-2 mt-3">
-              <span
-                class="px-3 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-full border border-emerald-100">Tiempo
-                completo</span>
-              <span
-                class="px-3 py-0.5 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded-full border border-indigo-100">Híbrido</span>
-            </div>
           </div>
         </div>
 
@@ -138,45 +100,68 @@
     </main>
 
     <aside class="col-span-3 space-y-4">
-      <div class="bg-gradient-to-br from-indigo-50/50 to-white rounded-xl border border-indigo-100 p-5 shadow-sm">
-        <h4 class="font-bold text-indigo-900 text-sm italic">¿Buscas empleo?</h4>
-        <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">Exporta tu perfil profesional completo a un formato
-          PDF elegante con un solo clic.</p>
+
+      <div class="bg-white rounded-xl border border-indigo-100 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-indigo-50 bg-indigo-50/30 flex items-center gap-2">
+          <h4 class="font-bold text-[10px] text-indigo-900 uppercase tracking-wider">Mis mensajes</h4>
+        </div>
+
+        <div class="divide-y divide-gray-50">
+          @for (msg of messages; track msg.id) {
+          <div class="p-4 hover:bg-indigo-50/30 transition cursor-pointer group">
+            <div class="flex justify-between items-start">
+              <span class="text-[9px] font-black text-indigo-600 uppercase tracking-tighter">{{ msg.from_name }}</span>
+              <span class="text-[8px] text-gray-400">{{ msg.created_at | date:'dd MMM' }}</span>
+            </div>
+            <p class="text-[11px] font-bold text-slate-800 mt-1 line-clamp-1 group-hover:text-indigo-700 transition">
+              {{ msg.subject }}
+            </p>
+            <p class="text-[10px] text-slate-500 mt-1 line-clamp-2 leading-relaxed italic">
+              "{{ msg.message }}"
+            </p>
+          </div>
+          } @empty {
+          <div class="p-8 text-center">
+            <p class="text-[10px] text-gray-400 font-medium">Bandeja de entrada vacía</p>
+          </div>
+          }
+        </div>
+
+        @if (messages.length > 0) {
         <button
-          class="w-full mt-5 bg-white border border-indigo-200 text-indigo-600 py-2.5 rounded-lg text-xs font-bold shadow-sm hover:bg-indigo-50 transition flex items-center justify-center gap-2">
-          EXPORTAR CV
+          class="w-full py-2.5 bg-indigo-50/50 text-indigo-600 text-[9px] font-bold uppercase tracking-widest hover:bg-indigo-100 transition border-t border-indigo-50">
+          Ver todos los mensajes
         </button>
+        }
       </div>
 
-<div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
-  <div class="flex justify-between items-center mb-4">
-    <h4 class="font-bold text-xs text-slate-800">Gente que podrías conocer</h4>
-  </div>
 
-  <div class="space-y-4">
-    @for (user of suggestions; track user.id) {
-    <div class="flex gap-3">
-      <div class="w-10 h-10 bg-orange-100 rounded-full flex-shrink-0 border border-orange-50 flex items-center justify-center text-orange-600 font-bold text-xs">
-        {{ user.name.charAt(0).toUpperCase() }}
-      </div>
-      <div>
-        <p class="text-xs font-bold text-slate-800 hover:underline cursor-pointer">{{ user.name }}</p>
-        <p class="text-[10px] text-gray-400">Usuario de la plataforma</p>
-        <button class="mt-2 border-2 border-slate-200 text-slate-600 px-4 py-1 rounded-full text-[10px] font-bold hover:bg-slate-50 transition hover:border-slate-400">
-          Conectar
-        </button>
-      </div>
-    </div>
-    } @empty {
-      <p class="text-[10px] text-gray-400 text-center">No hay más usuarios por conocer.</p>
-    }
-  </div>
+      <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+        <div class="flex justify-between items-center mb-4">
+          <h4 class="font-bold text-xs text-slate-800">Gente que podrías conocer</h4>
+        </div>
 
-  <button class="w-full text-indigo-600 text-[10px] font-bold mt-6 hover:underline uppercase tracking-wider">
-    Ver todas las recomendaciones →
-  </button>
-</div>
+        <div class="space-y-4">
+          @for (user of suggestions; track user.id) {
+          <div class="flex gap-3">
+            <div
+              class="w-10 h-10 bg-orange-100 rounded-full flex-shrink-0 border border-orange-50 flex items-center justify-center text-orange-600 font-bold text-xs">
+              {{ user.name.charAt(0).toUpperCase() }}
+            </div>
+            <div>
+              <p class="text-xs font-bold text-slate-800 hover:underline cursor-pointer">{{ user.name }}</p>
+              <p class="text-[10px] text-gray-400">Usuario de la plataforma</p>
+              <button
+                class="mt-2 border-2 border-slate-200 text-slate-600 px-4 py-1 rounded-full text-[10px] font-bold hover:bg-slate-50 transition hover:border-slate-400">
+                Conectar
+              </button>
+            </div>
+          </div>
+          } @empty {
+          <p class="text-[10px] text-gray-400 text-center">No hay más usuarios por conocer.</p>
+          }
+        </div>
+      </div>
     </aside>
-
   </div>
 </div>

@@ -1,13 +1,11 @@
-
-    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
-      <h3 class="font-bold text-gray-700">Tu CV</h3>
-      <div class="w-full bg-gray-100 h-2 rounded-full">
-        <div class="bg-green-500 h-full rounded-full transition-all" 
-             [style.width.%]="completionPercentage"></div>
-      </div>
-      <p class="text-xs text-gray-500">Fortaleza del perfil: {{ completionPercentage }}%</p>
-          <button (click)="downloadResume()"
-            class="h-fit ml-3 bg-blue-100 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors">
-            Descargar CV (PDF)
-          </button>
-    </div>
+<div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+  <h3 class="font-bold text-gray-700">Tu CV</h3>
+  <div class="w-full bg-gray-100 h-2 rounded-full">
+  </div>
+  <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">Exporta tu perfil profesional completo a un formato
+    PDF elegante con un solo clic.</p>
+  <button (click)="downloadResume()"
+    class="h-fit ml-3 bg-blue-100 text-blue-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-200 transition-colors">
+    Descargar CV (PDF)
+  </button>
+</div>
