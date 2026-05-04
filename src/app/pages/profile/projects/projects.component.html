@@ -1,45 +1,49 @@
 <div class="bg-white rounded-xl border shadow-sm">
-  <!-- Cabecera idéntica a Formación -->
-  <div class="flex justify-between items-center p-5 border-b bg-purple-50/30">
-    <h3 class="font-semibold text-gray-700">Portafolio de Proyectos</h3>
-    <button (click)="add.emit()" 
-      class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center hover:bg-green-200 transition-colors">
-      +
-    </button>
-  </div>
-
-  <div class="p-6 space-y-6">
-    <div *ngFor="let project of projects" class="flex justify-between items-start group">
-      <div class="flex gap-4">
-        <!-- Icono de carpeta con el mismo estilo que el birrete -->
-        <div class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-xl shadow-sm border border-gray-50">
-          📂
-        </div>
-        <div>
-          <h4 class="font-semibold text-gray-800 flex items-center gap-2">
-            {{ project.title }}
-            <a *ngIf="project.repo_url" [href]="project.repo_url" target="_blank" class="text-gray-400 hover:text-gray-600 transition-colors">
-              <i class="fab fa-github text-sm"></i>
-            </a>
-          </h4>
-          <p class="text-sm text-gray-500 leading-relaxed max-w-2xl">{{ project.description }}</p>
-        </div>
-      </div>
-
-      <!-- Botones con el estilo uppercase y opacity-0 del ejemplo -->
-      <div class="flex gap-3">
-        <button (click)="edit.emit(project)" class="text-[11px] font-bold text-blue-500 opacity-0 group-hover:opacity-100 transition-all uppercase hover:text-blue-700">
-          Editar
+    <!-- Cabecera idéntica a Formación -->
+    <div class="flex justify-between items-center p-5 border-b bg-purple-50/30">
+        <h3 class="font-semibold text-gray-700">Portafolio de Proyectos</h3>
+        <button (click)="add.emit()"
+            class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center hover:bg-green-200 transition-colors">
+            +
         </button>
-        <button (click)="delete.emit(project)" class="text-[11px] font-bold text-red-500 opacity-0 group-hover:opacity-100 transition-all uppercase hover:text-red-700">
-          Eliminar
-        </button>
-      </div>
     </div>
-    
-    <!-- Empty State -->
-    <div *ngIf="projects.length === 0" class="text-center py-4 text-gray-400 text-sm italic">
-      No hay proyectos registrados en el portafolio.
+
+    <div class="p-6 space-y-6">
+        <div *ngFor="let project of projects" class="flex justify-between items-start group">
+            <div class="flex gap-4">
+                <!-- Icono de carpeta con el mismo estilo que el birrete -->
+                <div
+                    class="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-xl shadow-sm border border-gray-50">
+                    📂
+                </div>
+                <div>
+                    <h4 class="font-semibold text-gray-800 flex items-center gap-2">
+                        {{ project.title }}
+                        <a *ngIf="project.repo_url" [href]="project.repo_url" target="_blank"
+                            class="text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fab fa-github text-sm"></i>
+                        </a>
+                    </h4>
+                    <p class="text-sm text-gray-500 leading-relaxed max-w-2xl">{{ project.description }}</p>
+                </div>
+            </div>
+
+            <!-- Botones con el estilo uppercase y opacity-0 del ejemplo -->
+            <div class="flex gap-3">
+                <button (click)="edit.emit(project)"
+                    class="text-[11px] font-bold text-blue-500 opacity-0 group-hover:opacity-100 transition-all uppercase hover:text-blue-700">
+                    Editar
+                </button>
+                <button (click)="onDelete(project)"
+                    class="text-[11px] font-bold text-red-500 opacity-0 group-hover:opacity-100 transition-all uppercase hover:text-red-700">
+                    Eliminar
+                </button>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="projects.length === 0" class="text-center py-4 text-gray-400 text-sm italic">
+            No hay proyectos registrados en el portafolio.
+        </div>
     </div>
-  </div>
 </div>

@@ -18,4 +18,10 @@ export class ProjectsComponent {
   @Output() delete = new EventEmitter<any>();
 
   constructor() {}
+  
+  onDelete(project: any) {
+    if (confirm('¿Estás seguro de que quieres eliminar este proyecto?')) {
+      this.delete.emit(project);
+    }
+  }
 }
