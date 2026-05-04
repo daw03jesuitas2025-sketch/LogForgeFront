@@ -2,16 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../services/admin.service';
 import { Router } from '@angular/router'; 
+import { FormsModule } from '@angular/forms'; 
 
 @Component({
   selector: 'app-companies-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './companies-list.component.html'
 })
 export class CompaniesListComponent implements OnInit {
   companies: any[] = [];
   loading: boolean = true;
+  showEditModal = false;
+editingCompany: any = {};
 
   constructor(private adminService: AdminService, private router: Router) {}
 
@@ -40,30 +43,24 @@ export class CompaniesListComponent implements OnInit {
 }
 
 editCompany(company: any) {
-  const newName = prompt('Nombre de la empresa:', company.company_profile?.company_name || company.name);
-  const newWeb = prompt('Sitio web:', company.company_profile?.website || '');
-  const newDesc = prompt('Descripción de la empresa:', company.company_profile?.description || '');
-
-  if (newName !== null) {
-    const updateData = { 
-      company_name: newName, 
-      website: newWeb,
-      description: newDesc // Enviamos la descripción al backend
-    };
-    
-    this.adminService.updateCompanyProfile(company.id, updateData).subscribe({
-      next: (res) => {
-        // Actualizamos el objeto local para que la tabla se refresque al instante
-        if (!company.company_profile) company.company_profile = {};
-        
-        company.company_profile.company_name = newName;
-        company.company_profile.website = newWeb;
-        company.company_profile.description = newDesc;
-        
-        alert('Información comercial actualizada');
-      },
-      error: (err) => alert('Error al actualizar: ' + err.error.message)
-    });
-  }
+  // Creamos una copia para no modificar la tabla antes de guardar
+  this.editingCompany = { ...company, ...company.company_profile };
+  this.showEditModal = true;
+}
+loadCompanies() {
+  this.adminService.getCompanies().subscribe({
+    next: (data) => this.companies = data,
+    error: (err) => console.error(err)
+  });
+}
+saveCompanyChanges() {
+  this.adminService.updateCompanyProfile(this.editingCompany.user_id || this.editingCompany.id, this.editingCompany).subscribe({
+    next: (res) => {
+      this.showEditModal = false;
+      this.loadCompanies(); // Recargamos la lista
+      alert('Perfil actualizado');
+    },
+    error: (err) => alert('Error 404: Revisa que la ruta en api.php sea /companies/{id}/profile')
+  });
 }
 }

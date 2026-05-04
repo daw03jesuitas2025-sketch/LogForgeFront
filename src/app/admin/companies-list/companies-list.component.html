@@ -40,16 +40,6 @@
   Editar Perfil
 </button>
 
-            <!-- Botón Eliminar -->
-            <button (click)="deleteCompany(company.id)"
-              class="flex items-center gap-1 px-3 py-1.5 bg-red-50 text-red-600 rounded-md hover:bg-red-100 transition text-xs font-bold uppercase tracking-wider">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-              Eliminar
-            </button>
           </td>
         </tr>
         } @empty {
@@ -63,3 +53,32 @@
     </table>
   </div>
 </div>
+
+<!-- Modal de Edición -->
+@if (showEditModal) {
+<div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+  <div class="relative p-8 border w-full max-w-md shadow-lg rounded-2xl bg-white">
+    <h3 class="text-xl font-bold text-gray-900 mb-4">Editar Perfil de Empresa</h3>
+    
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Nombre Comercial</label>
+        <input [(ngModel)]="editingCompany.company_name" class="mt-1 block w-full border rounded-md p-2 shadow-sm">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Sitio Web</label>
+        <input [(ngModel)]="editingCompany.website" class="mt-1 block w-full border rounded-md p-2 shadow-sm">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Descripción</label>
+        <textarea [(ngModel)]="editingCompany.description" rows="3" class="mt-1 block w-full border rounded-md p-2 shadow-sm"></textarea>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-6">
+      <button (click)="showEditModal = false" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg">Cancelar</button>
+      <button (click)="saveCompanyChanges()" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Guardar</button>
+    </div>
+  </div>
+</div>
+}
