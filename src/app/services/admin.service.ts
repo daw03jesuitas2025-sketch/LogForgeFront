@@ -10,7 +10,14 @@ export class AdminService {
   // Definimos una única base para evitar confusiones
   private apiUrl = `https://${environment.apiUrl}/api`;
   constructor(private http: HttpClient) { }
-
+private getHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+  }
   /**
    * Obtiene las estadísticas numéricas (Total usuarios, ofertas, etc.)
    */
@@ -58,6 +65,12 @@ export class AdminService {
   toggleOfferStatus(id: number): Observable<any> {
     return this.http.patch(`${this.apiUrl}/admin/offers/${id}/toggle`, {});
   }
+
+  // mensajes
+  // admin.service.ts
+deleteMessage(id: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/admin/messages/${id}`, this.getHeaders());
+}
 
 
 }

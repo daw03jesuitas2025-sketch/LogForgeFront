@@ -27,25 +27,22 @@ export class LandingComponent implements OnInit {
 
   // Inyectamos el UserService
   constructor(
-    private http: HttpClient,
+    private http: HttpClient, 
     private messageService: MessageService,
-    private userService: UserService
+    private userService: UserService 
   ) { }
 
   // Función para obtener la URL base limpia (evita el error de doble https://)
   private get API_BASE() {
-    return environment.apiUrl.includes('http')
-      ? `${environment.apiUrl}/api`
+    return environment.apiUrl.includes('http') 
+      ? `${environment.apiUrl}/api` 
       : `https://${environment.apiUrl}/api`;
   }
 
   ngOnInit(): void {
     // 1. Cargar ofertas públicas (esta ruta es libre)
     this.http.get<any[]>(`${this.API_BASE}/job-offers`).subscribe({
-      next: (data) => {
-        console.log('ESTRUCTURA DE LA PRIMERA OFERTA:', data[0]); // <--- AÑADE ESTO
-        this.jobOffers = data;
-      },
+      next: (data) => this.jobOffers = data,
       error: (err) => console.error('Error cargando ofertas:', err)
     });
 
@@ -106,7 +103,7 @@ export class LandingComponent implements OnInit {
     this.http.post(`${this.API_BASE}/applications`, payload, this.getHeaders()).subscribe({
       next: (res: any) => {
         alert('¡Postulación enviada con éxito!');
-        this.loadMyApplications();
+        this.loadMyApplications(); 
       },
       error: (err) => {
         alert('Error: ' + (err.error.message || 'No se pudo enviar'));
@@ -116,8 +113,8 @@ export class LandingComponent implements OnInit {
 
   hasApplied(jobId: number): boolean {
     if (!this.appliedJobs) return false;
-    return this.appliedJobs.some(app =>
-      app.job_offer_id === jobId ||
+    return this.appliedJobs.some(app => 
+      app.job_offer_id === jobId || 
       (app.job_offer && app.job_offer.id === jobId)
     );
   }
@@ -131,22 +128,22 @@ export class LandingComponent implements OnInit {
     });
   }
 
-  getFullImageUrl(logoPath: string | null | undefined): string {
-    if (!logoPath) return '';
-    if (logoPath.startsWith('data:') || logoPath.startsWith('http')) return logoPath;
+getFullImageUrl(logoPath: string | null | undefined): string {
+  if (!logoPath) return '';
+  if (logoPath.startsWith('data:') || logoPath.startsWith('http')) return logoPath;
 
-    const baseUrl = environment.apiUrl.includes('http')
-      ? environment.apiUrl
-      : `https://${environment.apiUrl}`;
+  const baseUrl = environment.apiUrl.includes('http')
+    ? environment.apiUrl
+    : `https://${environment.apiUrl}`;
 
-    // Aseguramos que la ruta pase por el symlink de storage de Laravel
-    const cleanPath = logoPath.startsWith('/') ? logoPath : `/${logoPath}`;
-
-    // Si tu path en la BD no incluye 'storage', lo añadimos aquí
-    if (!cleanPath.includes('/storage/')) {
+  // Aseguramos que la ruta pase por el symlink de storage de Laravel
+  const cleanPath = logoPath.startsWith('/') ? logoPath : `/${logoPath}`;
+  
+  // Si tu path en la BD no incluye 'storage', lo añadimos aquí
+  if (!cleanPath.includes('/storage/')) {
       return `${baseUrl}/storage${cleanPath}`;
-    }
-
-    return `${baseUrl}${cleanPath}`;
   }
+
+  return `${baseUrl}${cleanPath}`;
+}
 }

@@ -10,10 +10,10 @@ interface AdminMessage {
   to_user_id: number;
   from_name: string;
   from_email: string;
-  to_name : string;
+  to_name: string;
   subject: string;
   message: string;
-  created_at: string; 
+  created_at: string;
 }
 
 @Component({
@@ -23,11 +23,12 @@ interface AdminMessage {
   imports: [CommonModule, RouterOutlet, RouterModule],
 })
 export class AdminComponent implements OnInit, OnDestroy {
-  
+
   users: any[] = [];
   messages: AdminMessage[] = [];
   lastUpdate: Date = new Date();
-  
+  selectedMessage: AdminMessage | null = null; // Para el modal
+
   stats = {
     totalUsers: 0,
     activeOffers: 0,
@@ -36,7 +37,7 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   private statsInterval: any;
 
-  constructor(private adminService: AdminService, private router: Router, private authService: AuthService) {}
+  constructor(private adminService: AdminService, private router: Router, private authService: AuthService) { }
 
   ngOnInit() {
     this.loadDashboardData();
@@ -84,23 +85,43 @@ export class AdminComponent implements OnInit, OnDestroy {
     });
   }
 
-  viewMessageDetail(id: number) {
-    console.log('Detalle del mensaje:', id);
+  onLogout() {
+    // Llamamos al servicio
+    this.authService.logout().subscribe({
+      next: () => {
+        // Cuando el servidor responde OK
+        console.log('Sesión cerrada en el servidor');
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        // Si el servidor da error (ej. token caducado), 
+        // igual redirigimos porque finalize() ya limpió el localStorage
+        console.warn('Error al cerrar sesión, pero saliendo igualmente...', err);
+        this.router.navigate(['/']);
+      }
+    });
   }
-onLogout() {
-  // Llamamos al servicio
-  this.authService.logout().subscribe({
-    next: () => {
-      // Cuando el servidor responde OK
-      console.log('Sesión cerrada en el servidor');
-      this.router.navigate(['/']);
-    },
-    error: (err) => {
-      // Si el servidor da error (ej. token caducado), 
-      // igual redirigimos porque finalize() ya limpió el localStorage
-      console.warn('Error al cerrar sesión, pero saliendo igualmente...', err);
-      this.router.navigate(['/']);
+  viewMessageDetail(id: number) {
+    // Buscamos el mensaje en nuestro array local
+    this.selectedMessage = this.messages.find(m => m.id === id) || null;
+  }
+
+  closeModal() {
+    this.selectedMessage = null;
+  }
+
+  deleteMessage(id: number) {
+    if (confirm('¿Estás seguro de que deseas eliminar este mensaje?')) {
+      this.adminService.deleteMessage(id).subscribe({
+        next: () => {
+          // Filtramos el array para quitar el mensaje borrado de la vista
+          this.messages = this.messages.filter(m => m.id !== id);
+          this.selectedMessage = null;
+          this.refreshStats(); // Actualizamos el contador de mensajes
+          alert('Mensaje eliminado correctamente');
+        },
+        error: (err: any) => console.error('Error al eliminar:', err)
+      });
     }
-  });
-}
+  }
 }

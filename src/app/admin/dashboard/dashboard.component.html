@@ -123,9 +123,14 @@
                 <div class="text-gray-400">{{ msg.created_at | date:'HH:mm' }}</div>
               </td>
 
-              <td class="px-4 py-4 text-center">
-                <button (click)="viewMessageDetail(msg.id)" class="text-blue-600 hover:text-blue-800 font-bold">
+              <td class="px-4 py-4 text-center flex justify-center gap-3">
+                <button (click)="viewMessageDetail(msg.id)"
+                  class="text-blue-600 hover:text-blue-800 font-bold text-xs uppercase">
                   Ver
+                </button>
+                <button (click)="deleteMessage(msg.id)"
+                  class="text-red-600 hover:text-red-800 font-bold text-xs uppercase">
+                  Eliminar
                 </button>
               </td>
             </tr>
@@ -134,10 +139,61 @@
         </table>
       </div>
     </div>
+    
+    }<!-- Modal de Detalle de Mensaje -->
+    @if (selectedMessage) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+      <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-100">
+        <div class="p-6 border-b border-gray-50 flex justify-between items-center bg-slate-50">
+          <h3 class="font-bold text-slate-800">Detalle del Mensaje #{{ selectedMessage.id }}</h3>
+          <button (click)="closeModal()" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="p-6 space-y-4">
+          <div>
+            <label class="text-[10px] font-bold text-blue-600 uppercase">Asunto</label>
+            <p class="text-lg font-bold text-slate-900">{{ selectedMessage.subject }}</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="text-[10px] font-bold text-gray-400 uppercase">De:</label>
+              <p class="text-sm font-semibold text-slate-700">{{ selectedMessage.from_name }}</p>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold text-gray-400 uppercase">Para:</label>
+              <p class="text-sm font-semibold text-slate-700">{{ selectedMessage.to_name }}</p>
+            </div>
+          </div>
+
+          <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+            <label class="text-[10px] font-bold text-gray-400 uppercase block mb-2">Mensaje</label>
+            <p class="text-sm text-slate-600 italic leading-relaxed whitespace-pre-wrap">
+              "{{ selectedMessage.message }}"
+            </p>
+          </div>
+        </div>
+
+        <div class="p-4 bg-gray-50 flex justify-end gap-3">
+          <button (click)="closeModal()"
+            class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-700">Cerrar</button>
+          <button (click)="deleteMessage(selectedMessage.id)"
+            class="px-4 py-2 bg-red-600 text-white text-sm font-bold rounded-lg hover:bg-red-700 transition shadow-sm">
+            Eliminar Mensaje
+          </button>
+        </div>
+      </div>
+    </div>
     }
 
     <div [hidden]="isRootAdmin()">
       <router-outlet></router-outlet>
     </div>
+
+
   </main>
 </div>
