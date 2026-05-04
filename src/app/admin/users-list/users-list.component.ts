@@ -72,25 +72,39 @@ export class UsersListComponent implements OnInit {
     this.showModal = true;
   }
 
-  saveUser() {
-    if (this.userForm.invalid) return;
+ // En users-list.component.ts
 
-    if (this.isEditing && this.selectedUserId) {
-      this.adminService.updateUser(this.selectedUserId, this.userForm.value).subscribe({
-        next: (res) => {
-          this.loadUsers(); // Recargamos la lista
-          this.closeModal();
-        }
-      });
-    } else {
-      this.adminService.createUser(this.userForm.value).subscribe({
-        next: () => {
-          this.loadUsers();
-          this.closeModal();
-        }
-      });
-    }
+saveUser() {
+  if (this.userForm.invalid) return;
+
+  const userData = this.userForm.value;
+  
+  // Si estamos editando y el password está vacío, lo eliminamos del objeto 
+  // para que Laravel no intente validar una cadena vacía o cambiarla.
+  if (this.isEditing && !userData.password) {
+    delete userData.password;
   }
+
+  if (this.isEditing && this.selectedUserId) {
+    this.adminService.updateUser(this.selectedUserId, userData).subscribe({
+      next: () => {
+        this.loadUsers();
+        this.closeModal();
+        alert('Usuario actualizado con éxito');
+      },
+      error: (err) => console.error('Error al actualizar:', err)
+    });
+  } else {
+    this.adminService.createUser(userData).subscribe({
+      next: () => {
+        this.loadUsers();
+        this.closeModal();
+        alert('Usuario creado con éxito');
+      },
+      error: (err) => console.error('Error al crear:', err)
+    });
+  }
+}
 
   closeModal() { 
     this.showModal = false;
@@ -114,9 +128,14 @@ export class UsersListComponent implements OnInit {
     }
   }
 
-  deleteUser(id: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
-      this.users = this.users.filter(u => u.id !== id);
-    }
+deleteUser(id: number): void {
+  if (confirm('¿Estás seguro de que deseas eliminar este usuario?')) {
+    this.adminService.deleteUser(id).subscribe({
+      next: () => {
+        this.users = this.users.filter(u => u.id !== id);
+      },
+      error: (err) => alert('No se pudo eliminar el usuario.')
+    });
   }
+}
 }
