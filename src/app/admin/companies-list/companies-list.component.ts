@@ -26,4 +26,21 @@ export class CompaniesListComponent implements OnInit {
       }
     });
   }
+  deleteCompany(id: number) {
+  if (confirm('¿Estás seguro de eliminar esta empresa? Se borrarán también sus ofertas y perfil.')) {
+    this.adminService.deleteUser(id).subscribe({
+      next: () => {
+        this.companies = this.companies.filter(c => c.id !== id);
+        alert('Empresa eliminada correctamente');
+      },
+      error: (err) => alert('Error al eliminar la empresa')
+    });
+  }
+}
+
+
+editCompany(company: any) {
+
+  this.router.navigate(['/admin/users'], { queryParams: { editId: company.id } });
+}
 }
