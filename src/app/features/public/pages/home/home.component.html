@@ -1,16 +1,16 @@
-<!-- Hero -->
 <section class="bg-gradient-to-b from-[#f6f8fb] to-white overflow-hidden">
-  <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 py-12 lg:grid-cols-2 lg:py-20">
+  <!-- 1. Cambio gap y padding para mejor respiro en desktop -->
+  <div class="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 px-6 py-12 lg:grid-cols-2 lg:py-24">
 
     <!-- Left: Texto -->
-    <!-- Agregamos 'text-center lg:text-left' para que en móvil se vea centrado y profesional -->
-    <div class="flex flex-col items-center lg:items-start text-center lg:text-left">
+    <!-- 2. Corregido: lg:items-start y lg:text-left para desktop -->
+    <div class="flex flex-col items-center lg:items-start text-center lg:text-left z-10">
       <div class="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-[10px] font-semibold text-emerald-600 shadow-sm ring-1 ring-slate-100">
         <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
         NUEVA PLATAFORMA 2.0
       </div>
 
-      <!-- Título: Bajamos el tamaño en móvil (text-4xl) y subimos en desktop (lg:text-[56px]) -->
+      <!-- 3. Título: Ajuste de leading y tamaños -->
       <h1 class="mt-6 text-4xl sm:text-5xl lg:text-[56px] font-extrabold leading-[1.1] tracking-tight text-slate-900">
         Conecta con tu
         <span class="block text-emerald-400">futuro profesional</span>
@@ -21,10 +21,9 @@
         tus metas laborales con la plataforma líder en gestión de talento.
       </p>
 
-      <!-- Botones: Se apilan en móvil pequeño (flex-col) y se alinean en desktop (sm:flex-row) -->
-      <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+      <!-- Botones: Centrados en móvil, izquierda en desktop -->
+      <div class="mt-10 flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
         <a routerLink="/login" class="flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-[#eef1ff] px-8 text-sm font-bold text-slate-700 shadow-sm ring-1 ring-[#e6e9ff] transition-all hover:bg-[#e7ebff]">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 17l5-5-5-5"/></svg>
           Iniciar Sesión
         </a>
 
@@ -46,10 +45,10 @@
       </div>
     </div>
 
-    <!-- Right: Ilustración Arreglada -->
-    <div class="relative w-full flex justify-center lg:justify-end">
-      <!-- El truco es 'w-full' y un 'aspect-video' para que no rompa el layout -->
-      <div class="relative aspect-[16/10] w-full max-w-[460px] overflow-hidden rounded-2xl bg-white shadow-[0_20px_50px_rgba(15,23,42,0.1)] ring-1 ring-slate-100">
+    <!-- Right: Ilustración -->
+    <!-- 4. Cambio lg:mt-0 para asegurar que no haya márgenes raros -->
+    <div class="relative w-full flex justify-center lg:justify-end mt-12 lg:mt-0">
+      <div class="relative aspect-[16/10] w-full max-w-[480px] overflow-hidden rounded-2xl bg-white shadow-[0_20px_50px_rgba(15,23,42,0.1)] ring-1 ring-slate-100">
         
         <!-- Bolas decorativas -->
         <div class="absolute inset-0 z-0 overflow-hidden">
@@ -60,7 +59,7 @@
         </div>
 
         <!-- Tarjeta de estadísticas -->
-        <div class="absolute bottom-6 left-6 right-6 z-10 rounded-xl bg-white/90 p-5 shadow-xl ring-1 ring-slate-100 backdrop-blur-md">
+        <div class="absolute bottom-6 left-6 right-6 z-10 rounded-xl bg-white/95 p-5 shadow-xl ring-1 ring-slate-100 backdrop-blur-md">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
               <div class="h-10 w-10 flex items-center justify-center rounded-full bg-indigo-50 text-indigo-600">
@@ -83,7 +82,6 @@
   </div>
 </section>
 
-<!-- Why choose -->
 <!-- Why choose -->
 <section class="bg-white py-20 lg:py-32">
   <div class="mx-auto max-w-6xl px-6">
