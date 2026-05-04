@@ -1,30 +1,51 @@
-<div class="bg-white rounded-xl shadow-sm border p-6">
+<div class="bg-white rounded-xl shadow-sm border p-4 md:p-6">
+  <!-- Cabecera de la Sección -->
   <div class="flex justify-between items-center mb-6">
-    <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
-      <i class="fas fa-folder-open text-green-600"></i> Proyectos
-    </h3>
-    <button (click)="add.emit()" class="text-green-600 hover:bg-green-50 p-2 rounded-full transition-colors">
-      <i class="fas fa-plus-circle fa-lg"></i>
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600">
+        <i class="fas fa-folder-open text-lg"></i>
+      </div>
+      <h3 class="text-lg font-bold text-gray-800">Portafolio de Proyectos</h3>
+    </div>
+    
+    <!-- Botón Añadir -->
+    <button (click)="add.emit()" 
+      class="flex items-center gap-2 text-green-700 bg-green-50 hover:bg-green-100 px-4 py-2 rounded-xl text-sm font-bold transition-all">
+      <i class="fas fa-plus"></i>
+      <span>Añadir</span>
     </button>
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <div *ngFor="let project of projects" class="group relative border rounded-xl p-4 hover:border-green-500 transition-all">
-      <div class="flex justify-between items-start">
-        <h4 class="font-bold text-gray-800">{{ project.title }}</h4>
-        <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button (click)="edit.emit(project)" class="text-blue-500"><i class="fas fa-edit"></i></button>
-          <button (click)="delete.emit(project)" class="text-red-500"><i class="fas fa-trash"></i></button>
-        </div>
+  <!-- Lista de Proyectos -->
+  <div class="space-y-6">
+    <div *ngFor="let project of projects" class="group relative flex flex-col sm:flex-row justify-between gap-4 p-4 rounded-xl hover:bg-gray-50 transition-all border border-transparent hover:border-gray-100">
+      
+      <div class="flex-1">
+        <h4 class="text-md font-bold text-gray-800 flex items-center gap-2">
+          {{ project.title }}
+          <a *ngIf="project.repo_url" [href]="project.repo_url" target="_blank" class="text-gray-400 hover:text-green-600">
+            <i class="fab fa-github"></i>
+          </a>
+        </h4>
+        <p class="text-sm text-gray-600 mt-2 leading-relaxed">
+          {{ project.description }}
+        </p>
       </div>
-      <p class="text-sm text-gray-600 mt-2 line-clamp-2">{{ project.description }}</p>
-      <a *ngIf="project.repo_url" [href]="project.repo_url" target="_blank" class="text-xs text-green-600 mt-3 inline-flex items-center gap-1 hover:underline">
-        <i class="fab fa-github"></i> Ver repositorio
-      </a>
-    </div>
-  </div>
 
-  <div *ngIf="projects.length === 0" class="text-center py-8 border-2 border-dashed rounded-xl">
-    <p class="text-gray-400">No hay proyectos añadidos todavía.</p>
+      <!-- Acciones (Editar/Eliminar) -->
+      <div class="flex sm:flex-col gap-2 justify-end">
+        <button (click)="edit.emit(project)" class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button (click)="delete.emit(project)" class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="projects.length === 0" class="text-center py-8">
+      <p class="text-gray-400 text-sm italic">Aún no has añadido proyectos a tu portafolio.</p>
+    </div>
   </div>
 </div>

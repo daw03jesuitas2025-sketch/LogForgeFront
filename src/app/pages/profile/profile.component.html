@@ -1,6 +1,6 @@
 <div class="bg-gray-50 min-h-screen py-4 md:py-8 text-left">
   <div class="max-w-7xl mx-auto px-4 md:px-6">
-    
+
     <div class="mb-6">
       <h1 class="text-2xl md:text-3xl font-semibold text-gray-800">Editar Perfil</h1>
       <p class="text-sm md:text-base text-gray-500">
@@ -9,12 +9,15 @@
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-      
+
       <div class="col-span-1 md:col-span-8 space-y-8">
 
-        <div class="bg-white rounded-xl shadow-sm border p-4 md:p-6 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-6">
-          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-6 text-center sm:text-left w-full">
-            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-700 text-3xl font-bold border-4 border-white shadow-sm shrink-0">
+        <div
+          class="bg-white rounded-xl shadow-sm border p-4 md:p-6 flex flex-col sm:flex-row justify-between items-center sm:items-start gap-6">
+          <div
+            class="flex flex-col sm:flex-row items-center sm:items-start gap-4 md:gap-6 text-center sm:text-left w-full">
+            <div
+              class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center text-green-700 text-3xl font-bold border-4 border-white shadow-sm shrink-0">
               {{ profileData?.name ? profileData.name.charAt(0).toUpperCase() : 'U' }}
             </div>
 
@@ -26,7 +29,8 @@
                 {{ profileData?.profile?.title || 'Añade un titular profesional' }}
               </p>
 
-              <div class="flex flex-col sm:flex-row flex-wrap justify-center sm:justify-start gap-x-6 gap-y-1 text-sm text-gray-500 mt-2">
+              <div
+                class="flex flex-col sm:flex-row flex-wrap justify-center sm:justify-start gap-x-6 gap-y-1 text-sm text-gray-500 mt-2">
                 <span class="flex items-center justify-center sm:justify-start gap-1">
                   <i class="fas fa-map-marker-alt"></i> {{ profileData?.profile?.location || 'Ubicación no definida' }}
                 </span>
@@ -37,7 +41,8 @@
 
               <div class="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-100 w-full text-left">
                 <p class="text-sm text-gray-600 leading-relaxed italic">
-                  {{ profileData?.profile?.biography ? '"' + profileData.profile.biography + '"' : 'Aún no has añadido una biografía profesional.' }}
+                  {{ profileData?.profile?.biography ? '"' + profileData.profile.biography + '"' : 'Aún no has añadido
+                  una biografía profesional.' }}
                 </p>
               </div>
             </div>
@@ -61,14 +66,11 @@
           </app-educations>
         </div>
 
-<div class="py-2">
-  <app-projects 
-    [projects]="projects" 
-    (add)="handleAdd('project')" 
-    (edit)="handleEdit($event, 'project')"
-    (delete)="deleteElement($event, 'project')">
-  </app-projects>
-</div>
+        <div class="py-2">
+          <app-projects [projects]="projects" (add)="handleAdd('project')" (edit)="handleEdit($event, 'project')"
+            (delete)="deleteElement($event, 'project')">
+          </app-projects>
+        </div>
 
         <div class="py-2">
           <app-skills [skills]="skills"></app-skills>
@@ -78,7 +80,8 @@
       <div class="col-span-1 md:col-span-4 space-y-6 text-left">
         <app-cv-sidebar></app-cv-sidebar>
 
-        <div class="bg-white rounded-xl border shadow-sm p-6"> <div class="flex justify-between mb-2">
+        <div class="bg-white rounded-xl border shadow-sm p-6">
+          <div class="flex justify-between mb-2">
             <span class="text-sm text-gray-600">Fortaleza del Perfil</span>
             <span class="text-sm font-semibold text-green-600">85%</span>
           </div>

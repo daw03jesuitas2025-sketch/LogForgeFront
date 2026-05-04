@@ -50,6 +50,12 @@ export class EditModalComponent implements OnInit {
         location: [''],
         biography: ['']
       });
+    } else if (this.type === 'project') { 
+      this.form = this.fb.group({
+        title: ['', Validators.required],
+        description: ['', Validators.required],
+        repo_url: ['', [Validators.pattern('https?://.+')]] 
+      });
     } else {
       this.form = this.fb.group({});
     }
