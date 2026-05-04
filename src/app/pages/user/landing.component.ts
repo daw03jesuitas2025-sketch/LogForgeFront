@@ -128,15 +128,22 @@ export class LandingComponent implements OnInit {
     });
   }
 
-  getFullImageUrl(logoPath: string | null | undefined): string {
-    if (!logoPath) return '';
-    if (logoPath.startsWith('data:')) return logoPath;
-    if (logoPath.startsWith('http')) return logoPath;
+getFullImageUrl(logoPath: string | null | undefined): string {
+  if (!logoPath) return '';
+  if (logoPath.startsWith('data:') || logoPath.startsWith('http')) return logoPath;
 
-    const baseUrl = environment.apiUrl.includes('http')
-      ? environment.apiUrl
-      : `https://${environment.apiUrl}`;
+  const baseUrl = environment.apiUrl.includes('http')
+    ? environment.apiUrl
+    : `https://${environment.apiUrl}`;
 
-    return `${baseUrl}${logoPath}`;
+  // Aseguramos que la ruta pase por el symlink de storage de Laravel
+  const cleanPath = logoPath.startsWith('/') ? logoPath : `/${logoPath}`;
+  
+  // Si tu path en la BD no incluye 'storage', lo añadimos aquí
+  if (!cleanPath.includes('/storage/')) {
+      return `${baseUrl}/storage${cleanPath}`;
   }
+
+  return `${baseUrl}${cleanPath}`;
+}
 }
