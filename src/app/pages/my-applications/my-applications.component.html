@@ -20,18 +20,6 @@
         <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
           
           <div class="flex flex-col sm:flex-row gap-4 w-full">
-            <!-- Imagen/Logo de la Empresa (Centrado en móvil) -->
-            <div class="w-16 h-16 bg-slate-50 border border-gray-100 rounded-lg flex items-center justify-center overflow-hidden flex-shrink-0 mx-auto sm:mx-0">
-              @if (app.job_offer?.user?.company_profile?.logo || app.jobOffer?.user?.companyProfile?.logo) {
-                <img [src]="getFullImageUrl(app.job_offer?.user?.company_profile?.logo || app.jobOffer?.user?.companyProfile?.logo)"
-                     class="object-contain w-full h-full p-2" alt="Logo empresa" />
-              } @else {
-                <span class="text-indigo-600 font-bold text-2xl uppercase">
-                  {{ (app.job_offer?.user?.company_profile?.company_name || app.jobOffer?.user?.companyProfile?.company_name || "?").charAt(0) }}
-                </span>
-              }
-            </div>
-
             <!-- Información principal (Centrada en móvil) -->
             <div class="text-center sm:text-left flex-1">
               <h3 class="font-bold text-lg md:text-xl text-slate-800 leading-tight">
