@@ -98,18 +98,24 @@
 
         <div class="flex gap-4">
           <div class="relative flex justify-center">
-            <!-- Contenedor del logo -->
             <div
               class="absolute -top-6 w-12 h-12 bg-white rounded-xl border-2 border-purple-100 flex items-center justify-center shadow-sm overflow-hidden">
 
-              <!-- BUSCAMOS EL LOGO DENTRO DE CADA JOB -->
-              <img *ngIf="job.user?.companyProfile?.logo" [src]="getFullImageUrl(job.user.companyProfile.logo)"
-                class="w-full h-full object-cover" alt="logo">
+              <!-- Probamos con la ruta que Laravel genera por defecto (snake_case) -->
+              <ng-container *ngIf="job.user?.company_profile; else noProfile">
+                <img *ngIf="job.user.company_profile.logo" [src]="getFullImageUrl(job.user.company_profile.logo)"
+                  class="w-full h-full object-cover" alt="logo">
 
-              <!-- Si no hay logo, mostramos la inicial del nombre de la empresa -->
-              <span *ngIf="!job.user?.companyProfile?.logo" class="text-purple-600 font-bold text-[10px] uppercase">
-                {{ job.user?.companyProfile?.company_name?.charAt(0) || 'LOG' }}
-              </span>
+                <span *ngIf="!job.user.company_profile.logo" class="text-purple-600 font-bold text-[10px] uppercase">
+                  {{ job.user.company_profile.company_name?.charAt(0) || 'L' }}
+                </span>
+              </ng-container>
+
+              <!-- Si ni siquiera llega el objeto company_profile -->
+              <ng-template #noProfile>
+                <span class="text-gray-400 font-bold text-[10px]">?</span>
+              </ng-template>
+
             </div>
           </div>
 
