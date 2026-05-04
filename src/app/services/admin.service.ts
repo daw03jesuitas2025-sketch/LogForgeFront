@@ -63,6 +63,10 @@ export class AdminService {
     return this.http.patch(`${this.apiUrl}/admin/offers/${id}/toggle`, {}, this.getHeaders());
   }
 
+deleteOffer(id: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/admin/offers/${id}`, this.getHeaders());
+}
+
   /**
    * EMPRESAS Y MENSAJES
    */

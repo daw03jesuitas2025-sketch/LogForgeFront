@@ -35,4 +35,20 @@ export class JobOffersListComponent implements OnInit {
       }
     });
   }
+
+  deleteOffer(id: number) {
+  if (confirm('¿Estás seguro de que deseas eliminar esta oferta permanentemente?')) {
+    this.adminService.deleteUser(id).subscribe({ // Usaremos el método de borrar genérico del admin
+      next: () => {
+        // Filtramos la lista para quitar la oferta eliminada
+        this.offers = this.offers.filter(o => o.id !== id);
+        alert('Oferta eliminada correctamente');
+      },
+      error: (err) => {
+        console.error('Error al eliminar oferta:', err);
+        alert('No se pudo eliminar la oferta.');
+      }
+    });
+  }
+}
 }
