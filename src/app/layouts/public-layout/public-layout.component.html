@@ -1,27 +1,29 @@
-<!-- Header -->
-<header class="w-full border-b border-slate-100 bg-white">
-  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-    <!-- Brand -->
-    <a routerLink="/" class="flex items-center gap-2">
-      <div class="grid h-7 w-7 place-items-center">
-        <!-- simple 6-dot logo -->
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="7" cy="7" r="2" fill="#19E5B3"/>
-          <circle cx="15" cy="7" r="2" fill="#19E5B3"/>
-          <circle cx="11" cy="11" r="2" fill="#19E5B3"/>
-          <circle cx="7" cy="15" r="2" fill="#19E5B3"/>
+<header class="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/80 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+    
+    <!-- Brand: Logo más pequeño en móvil -->
+    <a routerLink="/" class="flex items-center gap-1.5 shrink-0">
+      <div class="grid h-6 w-6 place-items-center">
+        <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
+          <circle cx="7" cy="7" r="2" fill="#19E5B3"/><circle cx="15" cy="7" r="2" fill="#19E5B3"/>
+          <circle cx="11" cy="11" r="2" fill="#19E5B3"/><circle cx="7" cy="15" r="2" fill="#19E5B3"/>
           <circle cx="15" cy="15" r="2" fill="#19E5B3"/>
         </svg>
       </div>
-      <span class="text-sm font-semibold text-slate-900">LogForge</span>
+      <span class="text-xs font-bold tracking-tight text-slate-900 sm:text-sm">LogForge</span>
     </a>
 
-    <!-- Nav -->
-    <nav class="flex items-center gap-8 text-xs text-slate-500">
-      <a class="hover:text-slate-800" href="#">Sobre nosotros</a>
-      <a class="hover:text-slate-800" href="#">Contacto</a>
-      <a class="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-semibold text-slate-700 shadow-sm hover:bg-slate-50" href="#">Ayuda</a>
+    <!-- Nav: Visible siempre, pero ajusta el espaciado -->
+    <nav class="flex items-center gap-3 sm:gap-8">
+      <a class="text-[10px] font-medium text-slate-500 hover:text-slate-900 sm:text-xs" href="#">Nosotros</a>
+      <a class="text-[10px] font-medium text-slate-500 hover:text-slate-900 sm:text-xs" href="#">Contacto</a>
+      
+      <!-- Botón de ayuda más pequeño en móvil -->
+      <a class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-[10px] font-bold text-slate-700 shadow-sm transition-all hover:bg-slate-50 sm:px-5 sm:py-2 sm:text-xs" href="#">
+        Ayuda
+      </a>
     </nav>
+
   </div>
 </header>
 
@@ -30,39 +32,43 @@
 
 <!-- Footer -->
 <footer class="border-t border-slate-100 bg-white">
-  <div class="prevent-select mx-auto flex max-w-6xl items-center justify-between px-6 py-10">
-    <div class="flex items-center gap-2">
-      <div class="grid h-7 w-7 place-items-center">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="7" cy="7" r="2" fill="#19E5B3"/>
-          <circle cx="15" cy="7" r="2" fill="#19E5B3"/>
-          <circle cx="11" cy="11" r="2" fill="#19E5B3"/>
-          <circle cx="7" cy="15" r="2" fill="#19E5B3"/>
-          <circle cx="15" cy="15" r="2" fill="#19E5B3"/>
-        </svg>
+  <div class="mx-auto max-w-6xl px-6 py-10">
+    
+    <!-- Parte Superior: Logo y Links -->
+    <div class="flex flex-col items-center justify-between gap-8 md:flex-row">
+      
+      <!-- Logo -->
+      <div class="flex items-center gap-2">
+        <div class="grid h-7 w-7 place-items-center">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <circle cx="7" cy="7" r="2" fill="#19E5B3"/><circle cx="15" cy="7" r="2" fill="#19E5B3"/>
+            <circle cx="11" cy="11" r="2" fill="#19E5B3"/><circle cx="7" cy="15" r="2" fill="#19E5B3"/>
+            <circle cx="15" cy="15" r="2" fill="#19E5B3"/>
+          </svg>
+        </div>
+        <span class="text-sm font-bold text-slate-900">LogForge</span>
       </div>
-      <span class="text-sm font-semibold text-slate-900">LogForge</span>
+
+      <!-- Links: 2 columnas en móvil, fila en desktop -->
+      <div class="grid grid-cols-2 gap-x-10 gap-y-4 text-center md:flex md:gap-8 md:text-left">
+        <a href="#" class="text-[11px] font-medium text-slate-400 hover:text-emerald-500 sm:text-xs">Privacidad</a>
+        <a href="#" class="text-[11px] font-medium text-slate-400 hover:text-emerald-500 sm:text-xs">Términos</a>
+        <a href="#" class="text-[11px] font-medium text-slate-400 hover:text-emerald-500 sm:text-xs text-center md:text-left col-span-2 md:col-span-1">Soporte y Ayuda</a>
+      </div>
     </div>
 
-    <div class="flex items-center gap-8 text-xs text-slate-400">
-      <a href="#" class="hover:text-slate-600">Privacidad</a>
-      <a href="#" class="hover:text-slate-600">Términos y condiciones</a>
-      <a href="#" class="hover:text-slate-600">Ayuda</a>
-    </div>
-  </div>
-
-  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 pb-10 text-[11px] text-slate-400">
-    <span>© 2025 LogForge. Todos los derechos reservados.</span>
-    <div class="flex items-center gap-4">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-slate-500">
-        <path d="M22 5.8c-.7.3-1.4.5-2.2.6.8-.5 1.3-1.2 1.6-2.1-.7.4-1.5.7-2.4.9A3.7 3.7 0 0 0 12.5 6c0 .3 0 .6.1.9A10.5 10.5 0 0 1 3 4.1a3.7 3.7 0 0 0 1.1 5c-.6 0-1.2-.2-1.7-.5v.1c0 1.8 1.3 3.3 3 3.7-.3.1-.7.1-1 .1-.3 0-.5 0-.7-.1.5 1.6 2 2.8 3.8 2.8A7.5 7.5 0 0 1 2 18.1 10.6 10.6 0 0 0 7.7 20c6.8 0 10.6-5.7 10.6-10.6v-.5c.7-.5 1.3-1.2 1.7-2Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-slate-500">
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7H10V9h4v2a4 4 0 0 1 2-3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M2 9h4v12H2V9Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M4 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+    <!-- Parte Inferior: Copyright y Redes -->
+    <div class="mt-10 flex flex-col-reverse items-center justify-between gap-6 border-t border-slate-50 pt-8 md:flex-row">
+      <span class="text-[10px] text-slate-400">© 2026 LogForge. Made with love.</span>
+      
+      <div class="flex items-center gap-6">
+        <a href="#" class="text-slate-300 hover:text-slate-900 transition-colors">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+        </a>
+        <a href="#" class="text-slate-300 hover:text-blue-600 transition-colors">
+          <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25a1.75 1.75 0 110-3.5 1.75 1.75 0 010 3.5zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93-1.11 0-1.62.74-1.62 1.93V19h-3v-9h3v1.09c.47-.72 1.28-1.24 2.44-1.24 2.13 0 2.56 1.45 2.56 3.33z"></path></svg>
+        </a>
+      </div>
     </div>
   </div>
 </footer>
