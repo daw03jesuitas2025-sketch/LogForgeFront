@@ -91,6 +91,5 @@ updateCompanyProfile(id: number, data: any): Observable<any> {
 }
 // Actualizar perfil de candidato
   updateCandidateProfile(id: number, data: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/candidates/${id}`, data);
-  }
+return this.http.put<any>(`${this.apiUrl}/admin/candidates/${id}`, data, this.getHeaders());  }
 }
