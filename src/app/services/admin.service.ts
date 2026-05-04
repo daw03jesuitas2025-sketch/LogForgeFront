@@ -7,10 +7,12 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AdminService {
-  // Definimos una única base para evitar confusiones
   private apiUrl = `https://${environment.apiUrl}/api`;
+
   constructor(private http: HttpClient) { }
-private getHeaders() {
+
+  // Método privado para obtener el Token
+  private getHeaders() {
     const token = localStorage.getItem('token');
     return {
       headers: {
@@ -18,59 +20,61 @@ private getHeaders() {
       }
     };
   }
+
   /**
-   * Obtiene las estadísticas numéricas (Total usuarios, ofertas, etc.)
+   * ESTADÍSTICAS
    */
   getDashboardStats(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/admin/stats`);
-  }
-
-  /**
-   * Obtiene la lista de usuarios para la tabla
-   */
-  getUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/admin/users`);
-  }
-
-  createUser(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/admin/users`, userData);
-  }
-
-  updateUser(id: number, data: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/admin/users/${id}`, data);
-  }
-
-  deleteUser(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/admin/users/${id}`);
-  }
-
-  /**
-   * Obtiene la lista de ofertas de trabajo
-   */
-  getJobOffers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/admin/offers`);
+    // Añadido headers
+    return this.http.get<any>(`${this.apiUrl}/admin/stats`, this.getHeaders());
   }
 
   getStats(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/admin/stats`);
-  }
-  getMessages(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/admin/messages`);
-  }
-  getCompanies(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/admin/companies`);
+    return this.http.get<any>(`${this.apiUrl}/admin/stats`, this.getHeaders());
   }
 
-  // cambbiar estado de oferta (activar/desactivar)
+  /**
+   * USUARIOS
+   */
+  getUsers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/admin/users`, this.getHeaders());
+  }
+
+  createUser(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/admin/users`, userData, this.getHeaders());
+  }
+
+  updateUser(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/admin/users/${id}`, data, this.getHeaders());
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/admin/users/${id}`, this.getHeaders());
+  }
+
+  /**
+   * OFERTAS
+   */
+  getJobOffers(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/admin/offers`, this.getHeaders());
+  }
+
   toggleOfferStatus(id: number): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/admin/offers/${id}/toggle`, {});
+    return this.http.patch(`${this.apiUrl}/admin/offers/${id}/toggle`, {}, this.getHeaders());
   }
 
-  // mensajes
-  // admin.service.ts
-deleteMessage(id: number): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/admin/messages/${id}`, this.getHeaders());
-}
+  /**
+   * EMPRESAS Y MENSAJES
+   */
+  getCompanies(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/admin/companies`, this.getHeaders());
+  }
 
+  getMessages(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/admin/messages`, this.getHeaders());
+  }
 
+  deleteMessage(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/admin/messages/${id}`, this.getHeaders());
+  }
 }
