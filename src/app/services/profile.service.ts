@@ -82,4 +82,18 @@ private apiUrl = environment.apiUrl.includes('http')
       responseType: 'blob'
     });
   }
+
+  // proyectos
+
+addProject(data: any): Observable<any> {
+  return this.http.post(`${this.apiUrl}/projects`, data);
+}
+
+updateProject(id: number, data: any): Observable<any> {
+  return this.http.put(`${this.apiUrl}/projects/${id}`, data);
+}
+
+deleteProject(id: number): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/projects/${id}`);
+}
 }

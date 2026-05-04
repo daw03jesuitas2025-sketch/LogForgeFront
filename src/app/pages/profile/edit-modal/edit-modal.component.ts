@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class EditModalComponent implements OnInit {
   @Input() title: string = '';
   @Input() data: any = null;
-  @Input() type: 'experience' | 'education' | 'skills' | 'basic' = 'experience';
+  @Input() type: 'experience' | 'education' | 'basic' | 'skills' | 'project' = 'experience';
 
   @Output() close = new EventEmitter<void>();
   @Output() save = new EventEmitter<any>();
@@ -57,7 +57,7 @@ export class EditModalComponent implements OnInit {
 
   private patchFormValues() {
     if (!this.form || !this.data) return;
-    
+
     // Hacemos una copia para no alterar el objeto original directamente
     const formattedData = { ...this.data };
 

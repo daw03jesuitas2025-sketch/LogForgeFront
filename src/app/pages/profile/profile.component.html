@@ -61,6 +61,15 @@
           </app-educations>
         </div>
 
+<div class="py-2">
+  <app-projects 
+    [projects]="projects" 
+    (add)="handleAdd('project')" 
+    (edit)="handleEdit($event, 'project')"
+    (delete)="deleteElement($event, 'project')">
+  </app-projects>
+</div>
+
         <div class="py-2">
           <app-skills [skills]="skills"></app-skills>
         </div>
