@@ -5,7 +5,7 @@ import { ProfileService } from '../../../services/profile.service';
   selector: 'app-cv-sidebar',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './cv-sidebar.component.html' // Apunta al archivo HTML
+  templateUrl: './cv-sidebar.component.html'
 })
 export class CvSidebarComponent {
   @Input() completionPercentage: number = 0;

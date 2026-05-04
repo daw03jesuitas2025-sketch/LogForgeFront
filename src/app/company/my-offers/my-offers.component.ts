@@ -69,8 +69,6 @@ export class MyOffersComponent implements OnInit {
 
   confirmInterview() {
     if (!this.selectedCandidate) return;
-
-    // Aquí llamarías a tu servicio de mensajería o backend
     console.log('Enviando a:', this.selectedCandidate.id, 'Mensaje:', this.interviewMessage);
     
     // Simulación de éxito

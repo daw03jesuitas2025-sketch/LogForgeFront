@@ -72,15 +72,11 @@ export class UsersListComponent implements OnInit {
     this.showModal = true;
   }
 
- // En users-list.component.ts
-
 saveUser() {
   if (this.userForm.invalid) return;
 
   const userData = this.userForm.value;
-  
-  // Si estamos editando y el password está vacío, lo eliminamos del objeto 
-  // para que Laravel no intente validar una cadena vacía o cambiarla.
+
   if (this.isEditing && !userData.password) {
     delete userData.password;
   }
@@ -114,16 +110,12 @@ saveUser() {
   createUser() {
     if (this.userForm.valid) {
       console.log('Enviando datos al backend:', this.userForm.value);
-      // Aquí llamarías a tu servicio:
-      // this.adminService.createUser(this.userForm.value).subscribe({ ... });
-      
-      // Simulación para el frontend:
       const newUser = { 
         id: Date.now(), 
         ...this.userForm.value, 
         created_at: new Date().toISOString() 
       };
-      this.users.unshift(newUser); // Lo ponemos el primero de la lista
+      this.users.unshift(newUser); 
       this.closeModal();
     }
   }

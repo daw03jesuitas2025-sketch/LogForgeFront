@@ -52,7 +52,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Esta es la clave: detecta si estamos en la raíz del admin o en una sub-sección
   isRootAdmin(): boolean {
     return this.router.url === '/admin' || this.router.url === '/admin/dashboard';
   }
@@ -89,13 +88,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     // Llamamos al servicio
     this.authService.logout().subscribe({
       next: () => {
-        // Cuando el servidor responde OK
         console.log('Sesión cerrada en el servidor');
         this.router.navigate(['/']);
       },
       error: (err) => {
-        // Si el servidor da error (ej. token caducado), 
-        // igual redirigimos porque finalize() ya limpió el localStorage
+
         console.warn('Error al cerrar sesión, pero saliendo igualmente...', err);
         this.router.navigate(['/']);
       }
@@ -114,7 +111,6 @@ export class AdminComponent implements OnInit, OnDestroy {
     if (confirm('¿Estás seguro de que deseas eliminar este mensaje?')) {
       this.adminService.deleteMessage(id).subscribe({
         next: () => {
-          // Filtramos el array para quitar el mensaje borrado de la vista
           this.messages = this.messages.filter(m => m.id !== id);
           this.selectedMessage = null;
           this.refreshStats(); // Actualizamos el contador de mensajes

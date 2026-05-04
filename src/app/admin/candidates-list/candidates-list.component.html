@@ -1,0 +1,89 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Candidatos Registrados</h2>
+    <div class="text-sm text-gray-500">Total: {{ candidates.length }}</div>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+    <table class="w-full text-left">
+      <thead class="bg-gray-50 text-gray-600 uppercase text-xs font-bold">
+        <tr>
+          <th class="px-6 py-4">Candidato</th>
+          <th class="px-6 py-4">Ubicación</th>
+          <th class="px-6 py-4">Título Profesional</th>
+          <th class="px-6 py-4 text-center">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        @for (candidate of candidates; track candidate.id) {
+        <tr class="hover:bg-gray-50 transition">
+          <td class="px-6 py-4">
+            <div class="flex items-center">
+              <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xs">
+                {{ candidate.user?.name?.charAt(0) || 'C' }}
+              </div>
+              <div class="ml-4">
+                <div class="font-bold text-gray-900">{{ candidate.user?.name || 'Sin Nombre' }}</div>
+                <div class="text-xs text-gray-400">ID: #{{ candidate.id }}</div>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            <span class="text-sm text-gray-600 flex items-center gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              </svg>
+              {{ candidate.location || 'No especificada' }}
+            </span>
+          </td>
+          <td class="px-6 py-4">
+            <div class="text-sm font-medium text-gray-900">{{ candidate.title }}</div>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <button 
+              (click)="editCandidate(candidate)"
+              class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition text-xs font-bold uppercase">
+              Editar Perfil
+            </button>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="4" class="px-6 py-10 text-center text-gray-400">No hay candidatos registrados todavía.</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal de Edición de Candidato -->
+@if (showEditModal) {
+<div class="fixed inset-0 bg-black/50 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+  <div class="relative p-8 border w-full max-w-md shadow-2xl rounded-2xl bg-white">
+    <h3 class="text-xl font-bold text-gray-900 mb-6">Editar Perfil de Candidato</h3>
+    
+    <div class="space-y-4">
+      <div>
+        <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Título Profesional</label>
+        <input [(ngModel)]="editingCandidate.title" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+      </div>
+      <div>
+        <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Ubicación</label>
+        <input [(ngModel)]="editingCandidate.location" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+      </div>
+      <div>
+        <label class="block text-[10px] font-bold text-blue-600 uppercase mb-1">Biografía</label>
+        <textarea [(ngModel)]="editingCandidate.biography" rows="4" class="w-full border border-gray-200 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-3 mt-8">
+      <button (click)="showEditModal = false" class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-700">Cancelar</button>
+      <button (click)="saveCandidateChanges()" class="px-6 py-2 bg-blue-700 text-white text-sm font-bold rounded-lg hover:bg-blue-800 transition shadow-md">
+        Guardar Cambios
+      </button>
+    </div>
+  </div>
+</div>
+}

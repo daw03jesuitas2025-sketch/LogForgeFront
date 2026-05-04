@@ -8,7 +8,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const token = localStorage.getItem('token');
 
-  // 1. Clonamos la petición para añadir el token si existe
+  // 1. Clonar la petición para añadir el token si existe
   let authReq = req;
   if (token) {
     authReq = req.clone({
@@ -18,7 +18,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     });
   }
 
-  // 2. Enviamos la petición y manejamos posibles errores globales
+  // 2. Enviar la petición y manejamos posibles errores globales
   return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       // Si el servidor nos dice que el token no es válido o ha expirado (401)

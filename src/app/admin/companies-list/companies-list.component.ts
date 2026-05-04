@@ -43,7 +43,6 @@ editingCompany: any = {};
 }
 
 editCompany(company: any) {
-  // Creamos una copia para no modificar la tabla antes de guardar
   this.editingCompany = { ...company, ...company.company_profile };
   this.showEditModal = true;
 }

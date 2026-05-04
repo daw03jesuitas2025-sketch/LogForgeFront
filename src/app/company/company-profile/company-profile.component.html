@@ -1,57 +1,59 @@
 <div class="min-h-screen bg-[#f7f3ff] p-8">
   <div class="max-w-3xl mx-auto">
-    
+
     <div class="mb-8">
       <h1 class="text-2xl font-black text-purple-800 italic tracking-tighter">PERFIL DE EMPRESA</h1>
       <p class="text-purple-400 text-sm">Gestiona la información pública que verán los candidatos.</p>
     </div>
 
-    <div *ngIf="successMessage" class="mb-4 p-4 bg-teal-100 border border-teal-200 text-teal-700 rounded-2xl text-sm font-bold animate-bounce">
+    <div *ngIf="successMessage"
+      class="mb-4 p-4 bg-teal-100 border border-teal-200 text-teal-700 rounded-2xl text-sm font-bold animate-bounce">
       {{ successMessage }}
     </div>
 
     <div class="bg-white rounded-[2.5rem] border border-purple-100 shadow-xl shadow-purple-100/50 overflow-hidden">
-<!-- Sustituye la sección del banner/logo por esta -->
-<div class="h-40 bg-gradient-to-r from-purple-100 to-purple-50 flex flex-col items-center justify-center relative">
-  <div class="group relative w-24 h-24 bg-white rounded-3xl shadow-sm border-2 border-purple-100 flex items-center justify-center overflow-hidden">
-    <!-- Imagen actual o previsualización -->
-<!-- Imagen actual o previsualización -->
-<img *ngIf="profile.logo" 
-     [src]="getFullImageUrl(profile.logo)" 
-     class="w-full h-full object-contain p-2">    <span *ngIf="!profile.logo" class="text-purple-600 font-black text-xl italic">LOG</span>
+      <div
+        class="h-40 bg-gradient-to-r from-purple-100 to-purple-50 flex flex-col items-center justify-center relative">
+        <div
+          class="group relative w-24 h-24 bg-white rounded-3xl shadow-sm border-2 border-purple-100 flex items-center justify-center overflow-hidden">
 
-    <!-- Overlay de edición al pasar el ratón -->
-    <label class="absolute inset-0 bg-purple-900/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center">
-      <input type="file" (change)="onFileSelected($event)" class="hidden" accept="image/*">
-      <span class="text-white text-[10px] font-black uppercase">Cambiar</span>
-    </label>
-  </div>
-  <p class="text-[10px] font-black text-purple-400 uppercase mt-2 tracking-widest">Logo de Empresa</p>
-</div>
+          <img *ngIf="profile.logo" [src]="getFullImageUrl(profile.logo)" class="w-full h-full object-contain p-2">
+          <span *ngIf="!profile.logo" class="text-purple-600 font-black text-xl italic">LOG</span>
+          <label
+            class="absolute inset-0 bg-purple-900/40 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center">
+            <input type="file" (change)="onFileSelected($event)" class="hidden" accept="image/*">
+            <span class="text-white text-[10px] font-black uppercase">Cambiar</span>
+          </label>
+        </div>
+        <p class="text-[10px] font-black text-purple-400 uppercase mt-2 tracking-widest">Logo de Empresa</p>
+      </div>
 
       <form (ngSubmit)="updateProfile()" class="p-10 space-y-6">
-        
+
         <div>
-          <label class="block text-[11px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">Nombre Corporativo</label>
-          <input type="text" [(ngModel)]="profile.company_name" name="company_name" 
+          <label class="block text-[11px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">Nombre
+            Corporativo</label>
+          <input type="text" [(ngModel)]="profile.company_name" name="company_name"
             class="w-full bg-purple-50 border border-purple-50 rounded-2xl px-6 py-4 text-sm text-purple-800 outline-none focus:ring-4 focus:ring-purple-500/10 transition">
         </div>
 
         <div>
-          <label class="block text-[11px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">Sitio Web (URL)</label>
+          <label class="block text-[11px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">Sitio Web
+            (URL)</label>
           <input type="url" [(ngModel)]="profile.website" name="website" placeholder="https://tu-empresa.com"
             class="w-full bg-purple-50 border border-purple-50 rounded-2xl px-6 py-4 text-sm text-purple-800 outline-none focus:ring-4 focus:ring-purple-500/10 transition">
         </div>
 
         <div>
-          <label class="block text-[11px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">Descripción de la Empresa</label>
+          <label class="block text-[11px] font-black text-purple-400 uppercase tracking-widest mb-2 ml-1">Descripción de
+            la Empresa</label>
           <textarea [(ngModel)]="profile.description" name="description" rows="5"
             class="w-full bg-purple-50 border border-purple-50 rounded-2xl px-6 py-4 text-sm text-purple-800 outline-none focus:ring-4 focus:ring-purple-500/10 transition"
             placeholder="Cuéntale a los candidatos sobre la cultura de tu empresa..."></textarea>
         </div>
 
         <div class="pt-4">
-          <button type="submit" 
+          <button type="submit"
             class="w-full py-4 bg-purple-600 hover:bg-purple-700 text-white font-black text-xs uppercase tracking-[0.2em] rounded-2xl shadow-lg shadow-purple-200 transition-all active:scale-[0.98]">
             Actualizar Información
           </button>

@@ -8,13 +8,14 @@ import { LoginComponent } from './features/auth/pages/login/login.component';
 import { RegisterComponent } from './features/auth/pages/register/register.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { AdminComponent } from './admin/dashboard/dashboard.component';
-import { CompanyDashboardComponent } from './features/company/dashboard/dashboard.component';
+import { CompanyDashboardComponent } from './company/dashboard/dashboard.component';
 import { MyApplicationsComponent } from './pages/my-applications/my-applications.component';
 import { UsersListComponent } from './admin/users-list/users-list.component';
 import { CompaniesListComponent } from './admin/companies-list/companies-list.component';
 import { JobOffersListComponent } from './admin/offers-list/offers-list.component';
 import { CompanyProfileComponent } from './company/company-profile/company-profile.component';
 import { MyOffersComponent } from './company/my-offers/my-offers.component';
+import { CandidatesListComponent } from './admin/candidates-list/candidates-list.component';
 
 export const routes: Routes = [
   // RUTAS PÚBLICAS
@@ -47,7 +48,8 @@ export const routes: Routes = [
       { path: 'dashboard', component: AdminComponent },
       { path: 'users', component: UsersListComponent },
       { path: 'offers', component: JobOffersListComponent },
-      { path: 'companies', component: CompaniesListComponent }
+      { path: 'companies', component: CompaniesListComponent },
+      { path: 'candidates', component: CandidatesListComponent }
     ]
   },
   { path: '**', redirectTo: '' }

@@ -74,7 +74,6 @@ deleteOffer(id: number): Observable<any> {
   }
 
 updateCompanyProfile(id: number, data: any): Observable<any> {
-  // Asegúrate de usar this.getHeaders() para que Laravel autorice la petición
   return this.http.put(`${this.apiUrl}/admin/companies/${id}/profile`, data, this.getHeaders());
 }
 
@@ -84,5 +83,14 @@ updateCompanyProfile(id: number, data: any): Observable<any> {
 
   deleteMessage(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/admin/messages/${id}`, this.getHeaders());
+  }
+
+  // CANDIDATOS
+  getCandidates(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/admin/candidates`, this.getHeaders());
+}
+// Actualizar perfil de candidato
+  updateCandidateProfile(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/candidates/${id}`, data);
   }
 }

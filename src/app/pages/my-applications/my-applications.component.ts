@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService } from 'src/app/services/user.service'; // Asegúrate de que la ruta coincide con tu carpeta
+import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({

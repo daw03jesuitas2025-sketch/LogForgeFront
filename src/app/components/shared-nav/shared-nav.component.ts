@@ -81,13 +81,6 @@ loadUser() {
       }
     });
   }
-  // get homeRoute(): string {
-  //   return this.userRole === 'company' ? '/dashboard/company' : '/dashboard/landing';
-  // }
-
-  // get profileRoute(): string {
-  //   return this.userRole === 'company' ? '/dashboard/company-profile' : '/dashboard/profile';
-  // }
 
 // 1. Ruta de Inicio
 get homeRoute(): string {

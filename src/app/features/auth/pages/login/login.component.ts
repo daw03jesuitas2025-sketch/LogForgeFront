@@ -35,17 +35,16 @@ submit(): void {
     next: (res: any) => {
       console.log('Login exitoso. Rol:', res.user.role);
 
-      // --- PASO CRÍTICO: GUARDAR LOS DATOS ---
-      // Guardamos el token para las cabeceras API
+      // Guarda el token para las cabeceras API
       localStorage.setItem('token', res.token); 
       
-      // Guardamos el rol para que el Nav sepa qué mostrar
+      // Guarda el rol para que el Nav sepa qué mostrar
       localStorage.setItem('role', res.user.role);
       
-      // Guardamos el nombre para el avatar
+      // Guarda el nombre para el avatar
       localStorage.setItem('userName', res.user.name);
       
-      // Guardamos el objeto completo por si acaso
+      // Guarda el objeto completo por si acaso
       localStorage.setItem('user_data', JSON.stringify(res.user));
 
       // --- REDIRECCIÓN ---

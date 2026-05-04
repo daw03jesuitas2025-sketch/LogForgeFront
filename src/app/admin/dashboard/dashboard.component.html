@@ -30,6 +30,11 @@
         <span class="font-semibold text-sm">Empresas</span>
       </a>
 
+      <a routerLink="/admin/candidates" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
+        class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
+        <span class="font-semibold text-sm">Candidatos</span>
+      </a>
+
       <a routerLink="/admin/offers" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
         class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
         <span class="font-semibold text-sm">Ofertas de trabajo</span>
@@ -139,7 +144,7 @@
         </table>
       </div>
     </div>
-    
+
     }<!-- Modal de Detalle de Mensaje -->
     @if (selectedMessage) {
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">

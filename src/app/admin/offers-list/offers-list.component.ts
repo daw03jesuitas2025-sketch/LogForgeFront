@@ -40,7 +40,6 @@ deleteOffer(id: number) {
   if (confirm('¿Estás seguro de que deseas eliminar esta oferta permanentemente?')) {
     this.adminService.deleteOffer(id).subscribe({ 
       next: () => {
-        // Filtramos la lista para quitar la oferta eliminada de la vista
         this.offers = this.offers.filter(o => o.id !== id);
         alert('Oferta eliminada correctamente');
       },

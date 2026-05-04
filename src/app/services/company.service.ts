@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class CompanyService {
-  // Aseguramos que la URL sea correcta
   private apiUrl = `https://${environment.apiUrl}/api/company`;
 
   constructor(private http: HttpClient) { }
@@ -27,11 +26,8 @@ export class CompanyService {
     return this.http.get<any>(`${this.apiUrl}/my-profile`, this.getHeaders());
   }
 
-  /**
-   * Editar perfil de empresa.
-   * Como usas FormData para el logo, Laravel requiere que la petición sea POST 
-   * y que incluyas el campo '_method' con valor 'PUT' en el FormData del componente.
-   */
+   // Editar perfil de empresa.
+ 
   updateProfile(data: any): Observable<any> {
     // Si es FormData (para subir imágenes), forzamos POST para evitar problemas con PUT
     if (data instanceof FormData) {
@@ -53,7 +49,6 @@ export class CompanyService {
 
   /**
    * Ver candidatos que se han postulado a una oferta concreta.
-   * La ruta coincide con: company/job-offers/{id}/applications
    */
   getOfferApplications(offerId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/job-offers/${offerId}/applications`, this.getHeaders());

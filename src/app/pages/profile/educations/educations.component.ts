@@ -71,7 +71,6 @@ export class EducationsComponent implements OnInit {
     request.subscribe({
       next: () => {
         this.isModalOpen = false;
-        // Recargamos para que el ProfileComponent vuelva a pedir los datos actualizados
         window.location.reload();
       },
       error: (err) => {
