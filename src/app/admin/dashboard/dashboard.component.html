@@ -1,5 +1,6 @@
-<div class="min-h-screen bg-gray-100 flex">
-  <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col h-screen sticky top-0 shadow-sm">
+<div class="min-h-screen bg-gray-100 flex w-full">
+  <!-- SIDEBAR (Se mantiene oculto en móvil y visible en desktop) -->
+  <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col h-screen sticky top-0 shadow-sm shrink-0">
     <div class="p-6 border-b border-gray-50">
       <div class="flex items-center gap-2">
         <div class="bg-blue-700 p-1.5 rounded-lg">
@@ -44,7 +45,7 @@
     <div class="p-4 border-t border-gray-100">
       <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50">
         <div
-          class="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md">
+          class="h-8 w-8 shrink-0 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md">
           AD</div>
         <div class="flex-1 overflow-hidden">
           <p class="text-xs font-bold text-slate-900 truncate">Administrador</p>
@@ -57,57 +58,63 @@
     </div>
   </aside>
 
-  <main class="flex-1 p-8">
+  <!-- MAIN CONTENT: Ajustado padding y overflow -->
+  <main class="flex-1 p-4 sm:p-8 w-full max-w-full overflow-hidden">
     @if (isRootAdmin()) {
-    <header class="flex justify-between items-center mb-8">
-      <h2 class="text-3xl font-semibold text-gray-800">Panel de Control</h2>
-      <span class="text-sm text-gray-500">Última actualización: {{ lastUpdate | date:'HH:mm:ss' }}</span>
+    <!-- HEADER: Flex-col en móvil para que no choque la fecha con el título -->
+    <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-2">
+      <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800">Panel de Control</h2>
+      <span class="text-xs sm:text-sm text-gray-500 bg-gray-200/50 px-3 py-1 rounded-full">
+        Última actualización: {{ lastUpdate | date:'HH:mm:ss' }}
+      </span>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Usuarios Totales</p>
-        <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ stats.totalUsers }}</p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+      <div class="bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-gray-200">
+        <p class="text-xs sm:text-sm text-gray-500 uppercase font-bold tracking-wider">Usuarios Totales</p>
+        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">{{ stats.totalUsers }}</p>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Ofertas Activas</p>
-        <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ stats.activeOffers }}</p>
+      <div class="bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-gray-200">
+        <p class="text-xs sm:text-sm text-gray-500 uppercase font-bold tracking-wider">Ofertas Activas</p>
+        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">{{ stats.activeOffers }}</p>
       </div>
-      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-        <p class="text-sm text-gray-500 uppercase font-bold tracking-wider">Mensajes</p>
-        <p class="text-3xl font-extrabold text-slate-900 mt-2">{{ stats.reportedMessages }}</p>
+      <div class="bg-white p-5 sm:p-6 rounded-xl shadow-sm border border-gray-200">
+        <p class="text-xs sm:text-sm text-gray-500 uppercase font-bold tracking-wider">Mensajes</p>
+        <p class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">{{ stats.reportedMessages }}</p>
       </div>
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div class="p-6 border-b border-gray-200">
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 w-full">
+      <div class="p-4 sm:p-6 border-b border-gray-200">
         <h3 class="text-lg font-bold text-gray-800">Listado de Mensajes</h3>
       </div>
 
-      <div class="overflow-x-auto">
-        <table class="w-full text-left">
+      <!-- CONTENEDOR CON SCROLL HORIZONTAL PARA LA TABLA -->
+      <div class="overflow-x-auto w-full">
+        <!-- min-w-[900px] es clave aquí porque hay muchas columnas -->
+        <table class="w-full text-left min-w-[900px]">
           <thead class="bg-gray-50 text-gray-600 uppercase text-[10px] font-bold">
             <tr>
-              <th class="px-4 py-4">ID</th>
-              <th class="px-4 py-4">Remitente</th>
-              <th class="px-4 py-4">Destinatario</th>
-              <th class="px-4 py-4">Asunto</th>
-              <th class="px-4 py-4">Mensaje</th>
-              <th class="px-4 py-4">Fecha de envio</th>
-              <th class="px-4 py-4 text-center">Acciones</th>
+              <th class="px-4 py-4 whitespace-nowrap">ID</th>
+              <th class="px-4 py-4 whitespace-nowrap">Remitente</th>
+              <th class="px-4 py-4 whitespace-nowrap">Destinatario</th>
+              <th class="px-4 py-4 whitespace-nowrap">Asunto</th>
+              <th class="px-4 py-4 whitespace-nowrap">Mensaje</th>
+              <th class="px-4 py-4 whitespace-nowrap">Fecha de envio</th>
+              <th class="px-4 py-4 text-center whitespace-nowrap">Acciones</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
             @for (msg of messages; track msg.id) {
             <tr class="hover:bg-gray-50 transition text-sm">
-              <td class="px-4 py-4 font-mono text-gray-400">#{{ msg.id }}</td>
+              <td class="px-4 py-4 font-mono text-gray-400 whitespace-nowrap">#{{ msg.id }}</td>
 
-              <td class="px-4 py-4">
+              <td class="px-4 py-4 whitespace-nowrap">
                 <div class="font-bold text-gray-900">{{ msg.from_name }}</div>
                 <div class="text-xs text-gray-500">{{ msg.from_email }}</div>
               </td>
 
-              <td class="px-4 py-4">
+              <td class="px-4 py-4 whitespace-nowrap">
                 <div class="flex flex-col">
                   <span class="font-bold text-gray-900 text-sm">
                     {{ msg.to_name }}
@@ -115,26 +122,27 @@
                 </div>
               </td>
 
-              <td class="px-4 py-4 font-semibold text-gray-800">
+              <td class="px-4 py-4 font-semibold text-gray-800 whitespace-nowrap">
                 {{ msg.subject }}
               </td>
 
-              <td class="px-4 py-4 max-w-xs">
+              <!-- Se mantiene max-w-xs con truncate para que textos largos no empujen infinitamente la tabla -->
+              <td class="px-4 py-4 max-w-xs whitespace-nowrap">
                 <div class="text-xs text-gray-500 truncate italic">"{{ msg.message }}"</div>
               </td>
 
-              <td class="px-4 py-4 text-xs text-gray-600">
+              <td class="px-4 py-4 text-xs text-gray-600 whitespace-nowrap">
                 <div class="font-bold">{{ msg.created_at | date:'dd/MM/yyyy' }}</div>
                 <div class="text-gray-400">{{ msg.created_at | date:'HH:mm' }}</div>
               </td>
 
-              <td class="px-4 py-4 text-center flex justify-center gap-3">
+              <td class="px-4 py-4 text-center flex justify-center gap-3 whitespace-nowrap">
                 <button (click)="viewMessageDetail(msg.id)"
-                  class="text-blue-600 hover:text-blue-800 font-bold text-xs uppercase">
+                  class="text-blue-600 hover:text-blue-800 font-bold text-xs uppercase transition">
                   Ver
                 </button>
                 <button (click)="deleteMessage(msg.id)"
-                  class="text-red-600 hover:text-red-800 font-bold text-xs uppercase">
+                  class="text-red-600 hover:text-red-800 font-bold text-xs uppercase transition">
                   Eliminar
                 </button>
               </td>
@@ -144,27 +152,29 @@
         </table>
       </div>
     </div>
+    }
 
-    }<!-- Modal de Detalle de Mensaje -->
+    <!-- Modal de Detalle de Mensaje -->
     @if (selectedMessage) {
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-gray-100">
-        <div class="p-6 border-b border-gray-50 flex justify-between items-center bg-slate-50">
-          <h3 class="font-bold text-slate-800">Detalle del Mensaje #{{ selectedMessage.id }}</h3>
-          <button (click)="closeModal()" class="text-gray-400 hover:text-gray-600">
+      <!-- Añadido max-h-[90vh] y overflow-y-auto al modal por si el mensaje es muy largo en móviles -->
+      <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-gray-100 flex flex-col">
+        <div class="p-4 sm:p-6 border-b border-gray-50 flex justify-between items-center bg-slate-50 sticky top-0 z-10">
+          <h3 class="font-bold text-slate-800 truncate">Detalle del Mensaje #{{ selectedMessage.id }}</h3>
+          <button (click)="closeModal()" class="text-gray-400 hover:text-gray-600 ml-2">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
 
-        <div class="p-6 space-y-4">
+        <div class="p-4 sm:p-6 space-y-4">
           <div>
             <label class="text-[10px] font-bold text-blue-600 uppercase">Asunto</label>
-            <p class="text-lg font-bold text-slate-900">{{ selectedMessage.subject }}</p>
+            <p class="text-base sm:text-lg font-bold text-slate-900">{{ selectedMessage.subject }}</p>
           </div>
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="text-[10px] font-bold text-gray-400 uppercase">De:</label>
               <p class="text-sm font-semibold text-slate-700">{{ selectedMessage.from_name }}</p>
@@ -177,15 +187,15 @@
 
           <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
             <label class="text-[10px] font-bold text-gray-400 uppercase block mb-2">Mensaje</label>
-            <p class="text-sm text-slate-600 italic leading-relaxed whitespace-pre-wrap">
+            <p class="text-sm text-slate-600 italic leading-relaxed whitespace-pre-wrap break-words">
               "{{ selectedMessage.message }}"
             </p>
           </div>
         </div>
 
-        <div class="p-4 bg-gray-50 flex justify-end gap-3">
+        <div class="p-4 bg-gray-50 flex justify-end gap-3 mt-auto">
           <button (click)="closeModal()"
-            class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-700">Cerrar</button>
+            class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-700 transition">Cerrar</button>
           <button (click)="deleteMessage(selectedMessage.id)"
             class="px-4 py-2 bg-red-600 text-white text-sm font-bold rounded-lg hover:bg-red-700 transition shadow-sm">
             Eliminar Mensaje
@@ -198,7 +208,6 @@
     <div [hidden]="isRootAdmin()">
       <router-outlet></router-outlet>
     </div>
-
 
   </main>
 </div>

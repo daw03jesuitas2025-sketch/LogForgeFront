@@ -1,8 +1,10 @@
 <div class="min-h-screen bg-[#f3f4f6] font-sans text-slate-900">
 
-  <div class="max-w-6xl mx-auto px-4 py-6 grid grid-cols-12 gap-6">
+  <!-- Cambio 1: grid-cols-1 por defecto (móvil), lg:grid-cols-12 en escritorio -->
+  <div class="max-w-6xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-    <aside class="col-span-3 space-y-4">
+    <!-- Cambio 2: Añadido prefijo lg: a col-span-3 -->
+    <aside class="lg:col-span-3 space-y-4">
 
       <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
         <div class="h-14 bg-[#e0e7ff]"></div>
@@ -71,7 +73,8 @@
 
     </aside>
 
-    <main class="col-span-6 space-y-4">
+    <!-- Cambio 3: Añadido prefijo lg: a col-span-6 -->
+    <main class="lg:col-span-6 space-y-4">
       <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
         <div class="flex gap-3">
           <div
@@ -129,9 +132,8 @@
       }
     </main>
 
-    <aside class="col-span-3 space-y-4">
-
-
+    <!-- Cambio 4: Añadido prefijo lg: a col-span-3 -->
+    <aside class="lg:col-span-3 space-y-4">
 
       <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
         <div class="flex justify-between items-center mb-4">
