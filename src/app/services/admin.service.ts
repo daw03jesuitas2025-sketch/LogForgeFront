@@ -25,7 +25,6 @@ export class AdminService {
    * ESTADÍSTICAS
    */
   getDashboardStats(): Observable<any> {
-    // Añadido headers
     return this.http.get<any>(`${this.apiUrl}/admin/stats`, this.getHeaders());
   }
 

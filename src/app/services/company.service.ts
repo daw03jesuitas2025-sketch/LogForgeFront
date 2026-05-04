@@ -12,11 +12,7 @@ export class CompanyService {
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Método privado para centralizar los headers con el Token.
-   * IMPORTANTE: No añadimos 'Content-Type' manualmente cuando usamos FormData,
-   * ya que el navegador debe insertar el 'boundary' automáticamente.
-   */
+  // Método privado para centralizar los headers con el Token.
   private getHeaders() {
     const token = localStorage.getItem('token');
     return {
