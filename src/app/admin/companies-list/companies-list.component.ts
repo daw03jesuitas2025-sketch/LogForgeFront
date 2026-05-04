@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminService } from '../../services/admin.service';
+import { Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-companies-list',
@@ -12,7 +13,7 @@ export class CompaniesListComponent implements OnInit {
   companies: any[] = [];
   loading: boolean = true;
 
-  constructor(private adminService: AdminService) {}
+  constructor(private adminService: AdminService, private router: Router) {}
 
   ngOnInit(): void {
     this.adminService.getCompanies().subscribe({
