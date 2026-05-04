@@ -39,9 +39,31 @@ export class CompaniesListComponent implements OnInit {
   }
 }
 
-
 editCompany(company: any) {
+  const newName = prompt('Nombre de la empresa:', company.company_profile?.company_name || company.name);
+  const newWeb = prompt('Sitio web:', company.company_profile?.website || '');
+  const newDesc = prompt('Descripción de la empresa:', company.company_profile?.description || '');
 
-  this.router.navigate(['/admin/users'], { queryParams: { editId: company.id } });
+  if (newName !== null) {
+    const updateData = { 
+      company_name: newName, 
+      website: newWeb,
+      description: newDesc // Enviamos la descripción al backend
+    };
+    
+    this.adminService.updateCompanyProfile(company.id, updateData).subscribe({
+      next: (res) => {
+        // Actualizamos el objeto local para que la tabla se refresque al instante
+        if (!company.company_profile) company.company_profile = {};
+        
+        company.company_profile.company_name = newName;
+        company.company_profile.website = newWeb;
+        company.company_profile.description = newDesc;
+        
+        alert('Información comercial actualizada');
+      },
+      error: (err) => alert('Error al actualizar: ' + err.error.message)
+    });
+  }
 }
 }
