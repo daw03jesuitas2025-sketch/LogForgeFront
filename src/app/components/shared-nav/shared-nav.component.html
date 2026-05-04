@@ -1,28 +1,56 @@
-<nav class="flex items-center gap-6">
-  <a [routerLink]="homeRoute" routerLinkActive="active-class">Inicio</a>
+<nav class="flex items-center gap-1 sm:gap-4">
+  <!-- Enlaces de navegación con efecto hover y active moderno -->
+  <div class="flex items-center gap-1 sm:gap-2 mr-2 sm:mr-4">
+    <a [routerLink]="homeRoute" 
+       routerLinkActive="bg-blue-50 text-blue-600 shadow-sm ring-1 ring-blue-100"
+       [routerLinkActiveOptions]="{exact: true}"
+       class="px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200">
+      Inicio
+    </a>
 
-  <a [routerLink]="offersRoute" routerLinkActive="active-class">Mis Ofertas</a>
+    <a [routerLink]="offersRoute" 
+       routerLinkActive="bg-blue-50 text-blue-600 shadow-sm ring-1 ring-blue-100"
+       class="px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200">
+      Mis Ofertas
+    </a>
 
-  <a [routerLink]="profileRoute" routerLinkActive="active-class">Perfil</a>
+    <a [routerLink]="profileRoute" 
+       routerLinkActive="bg-blue-50 text-blue-600 shadow-sm ring-1 ring-blue-100"
+       class="px-4 py-2 rounded-lg text-sm font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all duration-200">
+      Perfil
+    </a>
+  </div>
 
-  <div class="relative ml-4">
+  <!-- Contenedor de Usuario -->
+  <div class="relative">
     <button (click)="toggleMenu()"
-      class="w-9 h-9 bg-[#dbeafe] rounded-full flex items-center justify-center text-[#1e3a8a] font-semibold text-sm hover:bg-[#bfdbfe] transition border-2 border-white shadow-sm">
+      class="w-10 h-10 bg-gradient-to-br from-[#dbeafe] to-[#bfdbfe] rounded-full flex items-center justify-center text-[#1e3a8a] font-bold text-sm hover:scale-105 transition-all duration-200 border-2 border-white shadow-md active:scale-95">
       {{ userInitial }}
     </button>
 
+    <!-- Menú Desplegable (Dropdown) mejorado -->
     <div *ngIf="isMenuOpen"
-      class="absolute right-0 mt-3 w-52 bg-white rounded-xl border border-[#e5e7eb] shadow-lg py-2 z-[100]">
-      <div class="px-4 py-2 border-b border-gray-100 mb-1">
-        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Usuario</p>
-        <p class="text-sm font-medium text-gray-700 truncate">{{ userName }}</p>
+      class="absolute right-0 mt-3 w-60 bg-white rounded-2xl border border-slate-100 shadow-[0_10px_40px_rgba(0,0,0,0.08)] py-2 z-[100] animate-in fade-in slide-in-from-top-2 duration-200">
+      
+      <div class="px-5 py-3 border-b border-slate-50 mb-1">
+        <p class="text-[10px] text-slate-400 uppercase font-extrabold tracking-widest">Cuenta activa</p>
+        <p class="text-sm font-bold text-slate-800 truncate mt-0.5">{{ userName }}</p>
       </div>
-      <button (click)="onLogout()"
-        class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-red-50 transition flex items-center gap-2">
-        Cerrar sesión
-      </button>
+
+      <div class="px-2">
+        <button (click)="onLogout()"
+          class="w-full text-left px-4 py-2.5 text-sm font-semibold text-red-500 hover:bg-red-50 rounded-xl transition-colors flex items-center gap-3 group">
+          <div class="w-8 h-8 rounded-lg bg-red-100/50 flex items-center justify-center group-hover:bg-red-100">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"></path>
+            </svg>
+          </div>
+          Cerrar sesión
+        </button>
+      </div>
     </div>
     
-    <div *ngIf="isMenuOpen" class="fixed inset-0 z-[90]" (click)="isMenuOpen = false"></div>
+    <!-- Overlay transparente para cerrar al hacer clic fuera -->
+    <div *ngIf="isMenuOpen" class="fixed inset-0 z-[90]" (click)="toggleMenu()"></div>
   </div>
 </nav>
