@@ -1,42 +1,83 @@
-<div class="min-h-screen bg-gray-100 flex w-full">
-  <!-- SIDEBAR (Se mantiene oculto en móvil y visible en desktop) -->
-  <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col h-screen sticky top-0 shadow-sm shrink-0">
-    <div class="p-6 border-b border-gray-50">
+<!-- Cambiamos a flex-col en móvil y flex-row en escritorio -->
+<div class="min-h-screen bg-gray-100 flex flex-col md:flex-row w-full relative">
+
+  <!-- ========================================== -->
+  <!-- BARRA SUPERIOR MÓVIL (Solo visible en celulares) -->
+  <!-- ========================================== -->
+  <header class="md:hidden bg-white border-b border-gray-200 p-4 flex justify-between items-center sticky top-0 z-40 shadow-sm">
+    <div class="flex items-center gap-2">
+      <div class="bg-blue-700 p-1.5 rounded-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      </div>
+      <h1 class="text-lg font-extrabold tracking-tight text-slate-800">Admin<span class="text-blue-700">Panel</span></h1>
+    </div>
+    
+    <!-- Botón Hamburguesa para abrir el menú -->
+    <button (click)="isMobileMenuOpen = true" class="text-gray-500 hover:text-blue-700 focus:outline-none p-1">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- FONDO OSCURO MÓVIL (Se muestra al abrir el menú) -->
+  <!-- ========================================== -->
+  @if (isMobileMenuOpen) {
+  <div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden" (click)="isMobileMenuOpen = false"></div>
+  }
+
+  <!-- ========================================== -->
+  <!-- SIDEBAR (Panel izquierdo) -->
+  <!-- ========================================== -->
+  <!-- Quitamos "hidden", lo hacemos "fixed" y controlamos su posición con isMobileMenuOpen -->
+  <aside 
+    [class.-translate-x-full]="!isMobileMenuOpen"
+    class="w-64 bg-white border-r border-gray-200 flex flex-col h-screen fixed md:sticky top-0 left-0 z-50 shadow-2xl md:shadow-sm shrink-0 transition-transform duration-300 ease-in-out md:translate-x-0">
+    
+    <div class="p-6 border-b border-gray-50 flex justify-between items-center">
       <div class="flex items-center gap-2">
         <div class="bg-blue-700 p-1.5 rounded-lg">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
         </div>
-        <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Admin<span class="text-blue-700">Panel</span>
-        </h1>
+        <h1 class="text-xl font-extrabold tracking-tight text-slate-800">Admin<span class="text-blue-700">Panel</span></h1>
       </div>
+      <!-- Botón cerrar menú solo visible en móvil -->
+      <button class="md:hidden text-gray-400 hover:text-red-500" (click)="isMobileMenuOpen = false">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
     </div>
 
-    <nav class="mt-6 flex-1 px-3 space-y-1">
+    <!-- Añadimos (click)="isMobileMenuOpen = false" a los enlaces para que el menú se cierre al navegar -->
+    <nav class="mt-6 flex-1 px-3 space-y-1 overflow-y-auto">
       <a routerLink="/admin" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
-        [routerLinkActiveOptions]="{exact: true}"
+        [routerLinkActiveOptions]="{exact: true}" (click)="isMobileMenuOpen = false"
         class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
         <span class="font-semibold text-sm">Dashboard</span>
       </a>
 
-      <a routerLink="/admin/users" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
+      <a routerLink="/admin/users" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700" (click)="isMobileMenuOpen = false"
         class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
         <span class="font-semibold text-sm">Usuarios</span>
       </a>
 
-      <a routerLink="/admin/companies" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
+      <a routerLink="/admin/companies" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700" (click)="isMobileMenuOpen = false"
         class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
         <span class="font-semibold text-sm">Empresas</span>
       </a>
 
-      <a routerLink="/admin/candidates" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
+      <a routerLink="/admin/candidates" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700" (click)="isMobileMenuOpen = false"
         class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
         <span class="font-semibold text-sm">Candidatos</span>
       </a>
 
-      <a routerLink="/admin/offers" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700"
+      <a routerLink="/admin/offers" routerLinkActive="bg-blue-50 text-blue-700 border-r-4 border-blue-700" (click)="isMobileMenuOpen = false"
         class="group flex items-center px-4 py-3 text-gray-500 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200">
         <span class="font-semibold text-sm">Ofertas de trabajo</span>
       </a>
@@ -44,9 +85,7 @@
 
     <div class="p-4 border-t border-gray-100">
       <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50">
-        <div
-          class="h-8 w-8 shrink-0 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md">
-          AD</div>
+        <div class="h-8 w-8 shrink-0 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md">AD</div>
         <div class="flex-1 overflow-hidden">
           <p class="text-xs font-bold text-slate-900 truncate">Administrador</p>
           <p (click)="onLogout()"
@@ -58,10 +97,11 @@
     </div>
   </aside>
 
-  <!-- MAIN CONTENT: Ajustado padding y overflow -->
+  <!-- ========================================== -->
+  <!-- MAIN CONTENT -->
+  <!-- ========================================== -->
   <main class="flex-1 p-4 sm:p-8 w-full max-w-full overflow-hidden">
     @if (isRootAdmin()) {
-    <!-- HEADER: Flex-col en móvil para que no choque la fecha con el título -->
     <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-2">
       <h2 class="text-2xl sm:text-3xl font-semibold text-gray-800">Panel de Control</h2>
       <span class="text-xs sm:text-sm text-gray-500 bg-gray-200/50 px-3 py-1 rounded-full">
@@ -91,7 +131,6 @@
 
       <!-- CONTENEDOR CON SCROLL HORIZONTAL PARA LA TABLA -->
       <div class="overflow-x-auto w-full">
-        <!-- min-w-[900px] es clave aquí porque hay muchas columnas -->
         <table class="w-full text-left min-w-[900px]">
           <thead class="bg-gray-50 text-gray-600 uppercase text-[10px] font-bold">
             <tr>
@@ -126,7 +165,6 @@
                 {{ msg.subject }}
               </td>
 
-              <!-- Se mantiene max-w-xs con truncate para que textos largos no empujen infinitamente la tabla -->
               <td class="px-4 py-4 max-w-xs whitespace-nowrap">
                 <div class="text-xs text-gray-500 truncate italic">"{{ msg.message }}"</div>
               </td>
@@ -157,7 +195,6 @@
     <!-- Modal de Detalle de Mensaje -->
     @if (selectedMessage) {
     <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <!-- Añadido max-h-[90vh] y overflow-y-auto al modal por si el mensaje es muy largo en móviles -->
       <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-gray-100 flex flex-col">
         <div class="p-4 sm:p-6 border-b border-gray-50 flex justify-between items-center bg-slate-50 sticky top-0 z-10">
           <h3 class="font-bold text-slate-800 truncate">Detalle del Mensaje #{{ selectedMessage.id }}</h3>
