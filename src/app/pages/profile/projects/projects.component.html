@@ -25,6 +25,13 @@
                         </a>
                     </h4>
                     <p class="text-sm text-gray-500 leading-relaxed max-w-2xl">{{ project.description }}</p>
+                    <div *ngIf="project.repo_url" class="mt-1 flex items-center gap-1.5">
+                        <i class="fas fa-link text-[10px] text-blue-400"></i>
+                        <a [href]="project.repo_url" target="_blank" 
+                           class="text-xs text-blue-500 hover:underline truncate max-w-md italic">
+                            {{ project.repo_url }}
+                        </a>
+                    </div>
                 </div>
             </div>
 
