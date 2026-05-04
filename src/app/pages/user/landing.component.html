@@ -96,38 +96,37 @@
         <button class="absolute top-4 right-4 text-gray-400 hover:text-indigo-600 transition">
         </button>
 
-<div class="flex gap-4">
-  <div class="relative flex justify-center">
-    <!-- Contenedor del logo -->
-    <div class="absolute -top-6 w-12 h-12 bg-white rounded-xl border-2 border-purple-100 flex items-center justify-center shadow-sm overflow-hidden">
-      
-      <!-- BUSCAMOS EL LOGO DENTRO DE CADA JOB -->
-      <img *ngIf="job.user?.company_profile?.logo" 
-           [src]="getFullImageUrl(job.user.company_profile.logo)"
-           class="w-full h-full object-cover"
-           alt="logo">
+        <div class="flex gap-4">
+          <div class="relative flex justify-center">
+            <!-- Contenedor del logo -->
+            <div
+              class="absolute -top-6 w-12 h-12 bg-white rounded-xl border-2 border-purple-100 flex items-center justify-center shadow-sm overflow-hidden">
 
-      <!-- Si no hay logo, mostramos la inicial del nombre de la empresa -->
-      <span *ngIf="!job.user?.company_profile?.logo" 
-            class="text-purple-600 font-bold text-[10px] uppercase">
-        {{ job.user?.company_profile?.company_name?.charAt(0) || 'LOG' }}
-      </span>
-    </div>
-  </div>
-  
-  <div class="flex-1">
-    <h3 class="font-bold text-lg text-slate-800 leading-snug hover:text-indigo-600 hover:underline cursor-pointer">
-      {{ job.title }}
-    </h3>
-    <!-- Nombre de la empresa dinámico -->
-    <p class="text-sm text-slate-600">
-      {{ job.user?.company_profile?.company_name || 'Empresa' }}
-    </p>
-    <p class="text-xs text-gray-400 mt-0.5">
-      {{ job.location }} • <span class="text-green-600 font-medium">Activa</span>
-    </p>
-  </div>
-</div>
+              <!-- BUSCAMOS EL LOGO DENTRO DE CADA JOB -->
+              <img *ngIf="job.user?.companyProfile?.logo" [src]="getFullImageUrl(job.user.companyProfile.logo)"
+                class="w-full h-full object-cover" alt="logo">
+
+              <!-- Si no hay logo, mostramos la inicial del nombre de la empresa -->
+              <span *ngIf="!job.user?.companyProfile?.logo" class="text-purple-600 font-bold text-[10px] uppercase">
+                {{ job.user?.companyProfile?.company_name?.charAt(0) || 'LOG' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="flex-1">
+            <h3
+              class="font-bold text-lg text-slate-800 leading-snug hover:text-indigo-600 hover:underline cursor-pointer">
+              {{ job.title }}
+            </h3>
+            <!-- Nombre de la empresa dinámico -->
+            <p class="text-sm text-slate-600">
+              {{ job.user?.company_profile?.company_name || 'Empresa' }}
+            </p>
+            <p class="text-xs text-gray-400 mt-0.5">
+              {{ job.location }} • <span class="text-green-600 font-medium">Activa</span>
+            </p>
+          </div>
+        </div>
 
         <p class="text-xs text-slate-500 mt-4 leading-relaxed line-clamp-2">
           {{ job.description }}
@@ -146,8 +145,8 @@
     </main>
 
     <aside class="col-span-3 space-y-4">
-      
-      
+
+
 
       <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
         <div class="flex justify-between items-center mb-4">
