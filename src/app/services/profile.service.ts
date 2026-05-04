@@ -84,16 +84,15 @@ private apiUrl = environment.apiUrl.includes('http')
   }
 
   // proyectos
-
 addProject(data: any): Observable<any> {
-  return this.http.post(`${this.apiUrl}/projects`, data);
-}
+    return this.http.post(`${this.apiUrl}/projects`, data, this.getHeaders());
+  }
 
-updateProject(id: number, data: any): Observable<any> {
-  return this.http.put(`${this.apiUrl}/projects/${id}`, data);
-}
+  updateProject(id: number, data: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/projects/${id}`, data, this.getHeaders());
+  }
 
-deleteProject(id: number): Observable<any> {
-  return this.http.delete(`${this.apiUrl}/projects/${id}`);
-}
+  deleteProject(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/projects/${id}`, this.getHeaders()); 
+  }
 }
