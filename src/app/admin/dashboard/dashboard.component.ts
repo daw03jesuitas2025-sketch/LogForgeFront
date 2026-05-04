@@ -28,6 +28,7 @@ export class AdminComponent implements OnInit, OnDestroy {
   messages: AdminMessage[] = [];
   lastUpdate: Date = new Date();
   selectedMessage: AdminMessage | null = null; // Para el modal
+  isMobileMenuOpen = false;
 
   stats = {
     totalUsers: 0,
