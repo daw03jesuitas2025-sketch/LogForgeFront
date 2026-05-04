@@ -11,9 +11,7 @@
   <div class="p-6 flex flex-wrap gap-2">
     <div
       *ngFor="let skill of skills"
-class="group inline-flex items-center w-max gap-2 px-3 py-1 bg-slate-100 text-slate-700 rounded-lg text-sm border border-slate-200 shadow-sm hover:bg-white transition-all"    >
-      <span (click)="openEdit(skill)" class="cursor-pointer">{{ getSkillName(skill) }}</span>
-      
+class="group inline-flex items-center bg-slate-100 text-slate-700 rounded-full px-4 py-1.5 text-sm border border-slate-200 shadow-sm hover:bg-white hover:border-blue-300 transition-all cursor-default">            
       <button 
         (click)="deleteSkill(skill.id)" 
         class="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 transition-opacity leading-none text-lg"
